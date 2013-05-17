@@ -1,0 +1,10 @@
+[
+{
+  "modid": "tehbeard.schematic",
+  "name": "LibSchematic",
+  "version": "1.0",
+  "description": "Provides a unified schematic library for forge mods.",
+  "url":"tehbeard.com",
+  "authorList":["Tehbeard"]
+}
+]

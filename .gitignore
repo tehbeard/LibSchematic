@@ -1,0 +1,7 @@
+bin
+doc
+.settings
+target
+.project
+.classpath
+*.schematic
