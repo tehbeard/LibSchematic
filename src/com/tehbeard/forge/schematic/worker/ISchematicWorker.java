@@ -51,6 +51,12 @@ public abstract class ISchematicWorker {
         return block;
     }
     
+    /**
+     * Called to modify a tile Entity before placement
+     * @param tileEntity
+     * @param worker
+     * @return
+     */
     public TileEntity transformTileEntity(TileEntity tileEntity,SchematicWorker worker){
         return tileEntity;
     }

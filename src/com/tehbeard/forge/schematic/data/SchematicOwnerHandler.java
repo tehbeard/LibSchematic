@@ -4,6 +4,12 @@ import net.minecraft.tileentity.TileEntity;
 
 import com.tehbeard.forge.schematic.SchematicFile;
 
+/**
+ * Handlers that implement this can change the owner of a block.
+ * This is primarily for mod blocks that have a concept of ownership (safes, Forestry machines)
+ * @author James
+ *
+ */
 public interface SchematicOwnerHandler extends SchematicDataHandler {
     
     /**

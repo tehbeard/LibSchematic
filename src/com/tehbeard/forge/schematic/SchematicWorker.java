@@ -60,8 +60,6 @@ public class SchematicWorker {
                     v.add(initialVector);
                     SchVector offset = new SchVector(x,y,z);
 
-                    //offset.add(file.getExtension(WorldEditVectorExtension.class).getOffset());
-                    //offset.rotateVector(rotations);
                     for(ISchematicWorker worker : workers){
                         offset = worker.modifyOffsetVector(offset, this);
                     }
@@ -71,16 +69,7 @@ public class SchematicWorker {
                     int b_id = file.getBlockId(x, y, z);
                     int b_meta = file.getBlockData(x, y, z);
 
-                    //                    SchematicDataHandler handler = SchematicDataRegistry.dataHandlers[b_id];
-                    //
-                    //                    if(handler instanceof SchematicRotationHandler){
-                    //                        int old_meta = b_meta;
-                    //
-                    //                        b_meta = ((SchematicRotationHandler)handler).rotateData(file, x, y, z, b_id, b_meta, rotations);
-                    //
-                    //                        SchematicDataRegistry.logger().config("Transformer found for " + b_id + " : " + old_meta + " -> " + b_meta);
-                    //                    }
-                    int[] b = {b_id,b_meta};
+                   int[] b = {b_id,b_meta};
 
                     for(ISchematicWorker worker : workers){
                         b = worker.modifyBlock(b,v.getX(),v.getY(),v.getZ(),this);
@@ -89,11 +78,6 @@ public class SchematicWorker {
                     b_id = b[0];
                     b_meta = b[1];
 
-
-
-                    //                  if(b_id==0 && !pasteAir){
-                    //                  continue;
-                    //              }
                     boolean skip = false;
                     for(ISchematicWorker worker : workers){
                         if(!worker.canPaste(world,v.getX(), v.getY(), v.getZ(), b_id, b_meta,this)){
@@ -105,7 +89,7 @@ public class SchematicWorker {
                     }
 
 
-                    if(Block.blocksList[b_id] != null){
+                    if(Block.blocksList[b_id] != null || b_id == 0){
                         world.setBlock(v.getX(), v.getY(), v.getZ(), b_id, b_meta,0);
                     }
                     else

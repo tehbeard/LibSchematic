@@ -3,7 +3,7 @@ package com.tehbeard.forge.schematic.data;
 import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
- * This handler implements rotating a blocks metadata
+ * This handler is used for rotating a block (namely, changing the metadata of the block
  * @author James
  *
  */

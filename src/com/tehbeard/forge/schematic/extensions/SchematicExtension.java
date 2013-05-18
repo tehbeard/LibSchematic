@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Represents an extension to the Schematic file format
- * extensions add additional data ontop of the standard schematic format.
+ * extensions add additional data on top of the standard schematic format.
  * 
  * @author James
  *

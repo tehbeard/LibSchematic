@@ -7,7 +7,7 @@ import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
  * Adds access to WorldEdit's offset and origin vectors.
- * These vectors can be used by a SchematicWorker to place a schematic in a more intuative place.
+ * These vectors can be used by a SchematicWorker to place a schematic in a more intuitive place.
  * (e.g. Paste a house so that the front door is infront of the user).
  * @author James
  *

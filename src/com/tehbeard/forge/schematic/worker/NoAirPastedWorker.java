@@ -4,6 +4,11 @@ import net.minecraft.world.World;
 
 import com.tehbeard.forge.schematic.SchematicWorker;
 
+/**
+ * Makes a schematicWorker not paste if the schematic block is an air block
+ * @author James
+ *
+ */
 public class NoAirPastedWorker extends ISchematicWorker {
 
     @Override

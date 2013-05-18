@@ -7,7 +7,8 @@ import com.tehbeard.forge.schematic.data.SchematicDataHandler;
 import com.tehbeard.forge.schematic.data.SchematicRotationHandler;
 
 /**
- * Rotates a schematic
+ * Rotates a schematic, handles rotating metadata using DataHandlers.
+ * NOTE: Add to call stack after OffsetWorker to ensure correct offset vector is generated!
  * @author James
  *
  */

@@ -1,7 +1,6 @@
 package com.tehbeard.forge.schematic;
 
-import java.io.File;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,15 +13,12 @@ import com.tehbeard.forge.schematic.data.RotationHandler;
 import com.tehbeard.forge.schematic.data.SchematicDataHandler;
 import com.tehbeard.forge.schematic.extensions.ClassCatalogue;
 import com.tehbeard.forge.schematic.extensions.LayersExtension;
-import com.tehbeard.forge.schematic.extensions.ModItemExtension;
 import com.tehbeard.forge.schematic.extensions.SchExtension;
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
 import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 
@@ -92,10 +88,10 @@ public class SchematicDataRegistry {
         dataHandlers[Block.redstoneRepeaterActive.blockID] = RotationHandler.REPEATER;
         dataHandlers[Block.redstoneRepeaterIdle.blockID] = RotationHandler.REPEATER;
 
+        dataHandlers[Block.rail.blockID] = RotationHandler.RAIL;
         dataHandlers[Block.railPowered.blockID] = RotationHandler.RAIL;
-        dataHandlers[Block.railPowered.blockID] = RotationHandler.RAIL;
-        dataHandlers[Block.railPowered.blockID] = RotationHandler.RAIL;
-        dataHandlers[Block.railPowered.blockID] = RotationHandler.RAIL;
+        dataHandlers[Block.railDetector.blockID] = RotationHandler.RAIL;
+        dataHandlers[Block.railActivator.blockID] = RotationHandler.RAIL;
         
         dataHandlers[Block.stairsBrick.blockID] = RotationHandler.STAIRS;
         dataHandlers[Block.stairsCobblestone.blockID] = RotationHandler.STAIRS;
@@ -137,7 +133,6 @@ public class SchematicDataRegistry {
     static{
         schematicExtensions.addProduct(WorldEditVectorExtension.class);
         schematicExtensions.addProduct(LayersExtension.class);
-        schematicExtensions.addProduct(ModItemExtension.class);
     }
 
     /**
