@@ -3,8 +3,9 @@
   "modid": "tehbeard.schematic",
   "name": "LibSchematic",
   "version": "1.0",
-  "description": "Provides a unified schematic library for forge mods.",
+  "description": "Provides a unified schematic library that allows cross compatbility between forge mods when pasting their blocks.",
   "url":"tehbeard.com",
-  "authorList":["Tehbeard"]
+  "authorList":["Tehbeard"],
+  "logoFile":"/mods/LibSchematic/LibSchematic.png"
 }
 ]

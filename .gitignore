@@ -6,3 +6,4 @@ target
 .classpath
 *.schematic
 build.properties
+build_number.properties

@@ -9,7 +9,7 @@ import com.tehbeard.forge.schematic.SchematicWorker;
  * @author James
  *
  */
-public class NoAirPastedWorker extends ISchematicWorker {
+public class NoAirPastedWorker extends AbstractSchematicWorker {
 
     @Override
     public boolean canPaste(World world, int x, int y, int z, int b_id,

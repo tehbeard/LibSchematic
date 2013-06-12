@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import com.tehbeard.forge.schematic.data.SchematicDataHandler;
 import com.tehbeard.forge.schematic.data.SchematicRotationHandler;
 import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
-import com.tehbeard.forge.schematic.worker.ISchematicWorker;
+import com.tehbeard.forge.schematic.worker.AbstractSchematicWorker;
 
 /**
  * A schematic worker processes schematics and worlds, with hooks to handle runtime transformations
@@ -21,7 +21,7 @@ public class SchematicWorker {
 
     private SchematicFile file;
 
-    private List<ISchematicWorker> workers = new ArrayList<ISchematicWorker>();
+    private List<AbstractSchematicWorker> workers = new ArrayList<AbstractSchematicWorker>();
 
     public SchematicWorker loadSchematic(SchematicFile file){
         this.file = file;
@@ -29,8 +29,8 @@ public class SchematicWorker {
 
     }
 
-    public SchematicWorker loadWorkers(ISchematicWorker... workers){
-        for(ISchematicWorker worker : workers){
+    public SchematicWorker loadWorkers(AbstractSchematicWorker... workers){
+        for(AbstractSchematicWorker worker : workers){
             this.workers.add(worker);
         }
         return this;
@@ -45,10 +45,7 @@ public class SchematicWorker {
      * @param world world object to paste into
      * @param initVector Location to paste at, If the schematic contains an offset this is where the offset will be in world.
      */
-    public void paste(World world,SchVector initVector){
-
-        SchVector initialVector = new SchVector();
-        initialVector.add(initVector);
+    public void paste(World world){
 
 
         for(int y = 0;y<file.getHeight();y++){
@@ -57,11 +54,10 @@ public class SchematicWorker {
 
                     //Construct the vector for this location, taking into account rotation
                     SchVector v = new SchVector();
-                    v.add(initialVector);
                     SchVector offset = new SchVector(x,y,z);
 
-                    for(ISchematicWorker worker : workers){
-                        offset = worker.modifyOffsetVector(offset, this);
+                    for(AbstractSchematicWorker worker : workers){
+                        offset = worker.modifyOffsetVector(offset,new SchVector(x,y,z), this);
                     }
 
                     v.add(offset);
@@ -71,7 +67,7 @@ public class SchematicWorker {
 
                    int[] b = {b_id,b_meta};
 
-                    for(ISchematicWorker worker : workers){
+                    for(AbstractSchematicWorker worker : workers){
                         b = worker.modifyBlock(b,v.getX(),v.getY(),v.getZ(),this);
                     }
 
@@ -79,7 +75,7 @@ public class SchematicWorker {
                     b_meta = b[1];
 
                     boolean skip = false;
-                    for(ISchematicWorker worker : workers){
+                    for(AbstractSchematicWorker worker : workers){
                         if(!worker.canPaste(world,v.getX(), v.getY(), v.getZ(), b_id, b_meta,this)){
                             skip = true;
                         }
@@ -102,7 +98,7 @@ public class SchematicWorker {
 
                     TileEntity te = file.getTileEntityAt(x, y, z);
                     if(te!=null){
-                        for(ISchematicWorker worker : workers){
+                        for(AbstractSchematicWorker worker : workers){
                             te = worker.transformTileEntity(te, this);
                         }
                         SchematicDataRegistry.logger().config("Initialising Tile Entity " + te.toString());

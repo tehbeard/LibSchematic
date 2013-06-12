@@ -7,11 +7,11 @@ import com.tehbeard.forge.schematic.SchVector;
 import com.tehbeard.forge.schematic.SchematicWorker;
 
 /**
- * represents a process that can occur to a schematic during pasting
+ * A schematic worker can affect the process of a schematic paste
  * @author James
  *
  */
-public abstract class ISchematicWorker {
+public abstract class AbstractSchematicWorker {
 
     
     /**
@@ -19,12 +19,13 @@ public abstract class ISchematicWorker {
      * The offset vector is the location in world relative to the initial start point that a block from a schematic will be pasted to
      * Final location can be calculated by summing the init vector with this one.
      * Hooked into for rotation and offsets.
-     * @param vector
+     * @param currentVector Current working vector, what you should be modifying
+     * @param schematicVector xyz of current block in schematic being worked on
      * @param worker
      * @return
      */
-    public SchVector modifyOffsetVector(SchVector vector,SchematicWorker worker){
-        return vector;
+    public SchVector modifyOffsetVector(SchVector currentVector,SchVector schematicVector,SchematicWorker worker){
+        return currentVector;
     }
     
     

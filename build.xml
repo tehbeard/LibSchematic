@@ -59,6 +59,7 @@
     <jar destfile="${build.dir.release}\${build.release.minecraft.version}\${build.release.mod.version}\LibSchematic-${build.release.mod.version}-${build_number.build_number}.jar">
       <fileset dir="${build.dir.development}\mcp\src\minecraft\" includes="mcmod.info" />
       <fileset dir="${build.dir.development}\mcp\reobf\minecraft" />
+      <fileset dir="resources" excludes="**/xcf/**" />
       <!--<fileset dir="${build.dir.development}\source\Equivalent-Exchange-3\resources" excludes="**/xcf/**" />-->
     </jar>
 
@@ -80,7 +81,7 @@
     <jar destfile="${build.dir.release}\${build.release.minecraft.version}\${build.release.mod.version}\LibSchematic-${build.release.mod.version}-${build_number.build_number}.jar">
       <fileset dir="${build.dir.development}\mcp\src\minecraft\" includes="mcmod.info" />
       <fileset dir="${build.dir.development}\mcp\reobf\minecraft" />
-      <!--<fileset dir="${build.dir.development}\source\Equivalent-Exchange-3\resources" excludes="**/xcf/**" />-->
+      <fileset dir="resources" excludes="**/xcf/**" />
     </jar>
 
     <!-- Sign the finished jar -->

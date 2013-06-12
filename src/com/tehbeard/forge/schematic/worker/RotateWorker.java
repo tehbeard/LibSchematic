@@ -12,7 +12,7 @@ import com.tehbeard.forge.schematic.data.SchematicRotationHandler;
  * @author James
  *
  */
-public class RotateWorker extends ISchematicWorker{
+public class RotateWorker extends AbstractSchematicWorker{
 
     private int rotations;
     
@@ -21,7 +21,7 @@ public class RotateWorker extends ISchematicWorker{
     }
     
     @Override
-    public SchVector modifyOffsetVector(SchVector vector, SchematicWorker worker) {
+    public SchVector modifyOffsetVector(SchVector vector,SchVector schematicVector, SchematicWorker worker) {
         vector.rotateVector(rotations);
         return vector;
     }

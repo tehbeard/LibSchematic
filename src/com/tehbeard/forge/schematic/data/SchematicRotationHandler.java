@@ -1,9 +1,10 @@
 package com.tehbeard.forge.schematic.data;
 
 import com.tehbeard.forge.schematic.SchematicFile;
+import com.tehbeard.forge.schematic.worker.RotateWorker;
 
 /**
- * This handler is used for rotating a block (namely, changing the metadata of the block
+ * Handlers that implement this interface are defered to when rotating a block in a schematic when the {@link RotateWorker} is added to the worker stack
  * @author James
  *
  */

@@ -20,6 +20,7 @@ import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkMod;
 
 
 /**
@@ -32,6 +33,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  *
  */
 @Mod(modid = "tehbeard.schematic",name="LibSchematic",version="1.00")
+@NetworkMod(clientSideRequired=false)
 public class SchematicDataRegistry {
 
     //BEGIN FORGE MOD SECTION
