@@ -31,7 +31,7 @@ public class LayersExtension implements SchematicExtension{
 
     @Override
     public void onSave(NBTTagCompound tag,SchematicFile file) {
-        // TODO Auto-generated method stub
+        tag.setByteArray("Layers", layers);
 
     }
     

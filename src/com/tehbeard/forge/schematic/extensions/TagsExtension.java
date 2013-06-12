@@ -14,14 +14,14 @@ import net.minecraft.nbt.NBTTagString;
  * @author James
  *
  */
-@SchExtension(name="Layered schematics",checkPath="metadata.tags")
+@SchExtension(name="Layered schematics",checkPath="Metadata.Tags")
 public class TagsExtension implements SchematicExtension{
 
     private Set<String> tags = new HashSet<String>();
     
     @Override
     public void onLoad(NBTTagCompound tag,SchematicFile file) {
-        NBTTagList list = tag.getCompoundTag("metadata").getTagList("tags");
+        NBTTagList list = tag.getCompoundTag("Metadata").getTagList("Tags");
         for(int i = 0;i<list.tagCount();i++){
             tags.add(((NBTTagString)list.tagAt(i)).data);
         }
@@ -29,14 +29,14 @@ public class TagsExtension implements SchematicExtension{
 
     @Override
     public void onSave(NBTTagCompound tag,SchematicFile file) {
-        NBTTagList list = new NBTTagList("tags");
+        NBTTagList list = new NBTTagList("Tags");
         for(String stag : tags){
             list.appendTag(new NBTTagString(null, stag));
         }
-        if(!tag.hasKey("metadata")){
-            tag.setCompoundTag("metadata", new NBTTagCompound());
+        if(!tag.hasKey("Metadata")){
+            tag.setCompoundTag("Metadata", new NBTTagCompound());
         }
-        tag.getCompoundTag("metadata").setTag("tags", list);
+        tag.getCompoundTag("Metadata").setTag("Tags", list);
     }
     
     
