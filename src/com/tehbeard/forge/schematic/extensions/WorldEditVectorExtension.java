@@ -37,7 +37,13 @@ public class WorldEditVectorExtension implements SchematicExtension{
 
     @Override
     public void onSave(NBTTagCompound tag,SchematicFile file) {
-        
+        tag.setInteger("WEOriginX",origin.getX());
+        tag.setInteger("WEOriginY",origin.getY());
+        tag.setInteger("WEOriginZ",origin.getZ());
+
+        tag.setInteger("WEOffsetX",offset.getX());
+        tag.setInteger("WEOffsetY",offset.getY());
+        tag.setInteger("WEOffsetZ",offset.getZ());
     }
     
     /**

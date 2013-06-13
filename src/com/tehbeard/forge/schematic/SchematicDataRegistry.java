@@ -15,6 +15,7 @@ import com.tehbeard.forge.schematic.extensions.ClassCatalogue;
 import com.tehbeard.forge.schematic.extensions.LayersExtension;
 import com.tehbeard.forge.schematic.extensions.SchExtension;
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
+import com.tehbeard.forge.schematic.extensions.TagsExtension;
 import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
 
 import cpw.mods.fml.common.Mod;
@@ -37,7 +38,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 public class SchematicDataRegistry {
 
     //BEGIN FORGE MOD SECTION
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     private static Logger logger;
 
@@ -60,7 +61,9 @@ public class SchematicDataRegistry {
     //data handlers for blocks
     public static final SchematicDataHandler[] dataHandlers = new SchematicDataHandler[4096];
 
-    //Initialise vanilla block data
+    /**
+     * Initialise vanilla data handlers
+     */
     static{
         dataHandlers[Block.chest.blockID] = RotationHandler.CONTAINER_PISTON;
         dataHandlers[Block.chestTrapped.blockID] = RotationHandler.CONTAINER_PISTON;
@@ -132,9 +135,13 @@ public class SchematicDataRegistry {
 
     private static final ClassCatalogue<SchematicExtension> schematicExtensions = new ClassCatalogue<SchematicExtension>();
 
+    /**
+     * Initialise installed extensions
+     */
     static{
         schematicExtensions.addProduct(WorldEditVectorExtension.class);
         schematicExtensions.addProduct(LayersExtension.class);
+        schematicExtensions.addProduct(TagsExtension.class);
     }
 
     /**

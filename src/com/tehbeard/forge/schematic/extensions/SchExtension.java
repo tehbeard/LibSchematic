@@ -19,7 +19,7 @@ public @interface SchExtension {
      */
 String name();
 /**
- * Dot seperated path of an NBT element to look for, if found then load this extension
+ * Dot separated path of an NBT element to look for, if found then load this extension
  * @return
  */
 String checkPath();
