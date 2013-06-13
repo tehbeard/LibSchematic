@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,13 +44,13 @@ public class SchematicFile {
     private short[] blocks;
     private byte[] blockData;
 
-    
+
 
     //Complex NBT objects
     private final List<NBTTagCompound> tileEntities = new ArrayList<NBTTagCompound>();
     private final List<NBTTagCompound> entities = new ArrayList<NBTTagCompound>();
-    
-    
+
+
     private List<SchematicExtension> extensions = new ArrayList<SchematicExtension>();
 
     /**
@@ -116,10 +117,10 @@ public class SchematicFile {
         resetArrays();
 
 
-        
+
         //read in block data; Vanilla lower byte array
         byte[] b_lower = tag.getByteArray("Blocks");
-       
+
 
         byte[] addBlocks = new byte[0];
         //Check and load Additional blocks array
@@ -127,8 +128,8 @@ public class SchematicFile {
             SchematicDataRegistry.logger().config("Extended block data detected!");
             addBlocks = tag.getByteArray("AddBlocks");
         }
-        
-        
+
+
         for (int index = 0; index < b_lower.length; index++) {
             if ((index >> 1) >= addBlocks.length) { 
                 blocks[index] = (short) (b_lower[index] & 0xFF);
@@ -140,7 +141,7 @@ public class SchematicFile {
                 }
             }
         }
-        
+
 
         blockData = tag.getByteArray("Data");
 
@@ -155,13 +156,14 @@ public class SchematicFile {
         for(int i =0;i<entityTag.tagCount();i++){
             entities.add((NBTTagCompound) tileEntityTag.tagAt(i));
         }
-        
+
         extensions = SchematicDataRegistry.getExtensions(tag, this);
     }
 
-    public void saveSchematic(File file) throws IOException{
-        throw new UnsupportedOperationException("Not implemented in this version");
-        /*NBTTagCompound tag  = new NBTTagCompound("schematic");
+    public void saveSchematic(OutputStream is) throws IOException{
+        //throw new UnsupportedOperationException("Not implemented in this version");
+
+        NBTTagCompound tag = new NBTTagCompound("schematic");
         tag.setString("Materials", "Alpha");
 
 
@@ -170,25 +172,36 @@ public class SchematicFile {
         tag.setShort("Length",length);
 
 
-        tag.setInteger("WEOriginX",origin.getX());
-        tag.setInteger("WEOriginY",origin.getY());
-        tag.setInteger("WEOriginZ",origin.getZ());
+        byte[] blocks_lower = new byte[blocks.length];
+        byte[] blocks_upper = new byte[blocks.length];
 
-        tag.setInteger("WEOffsetX",offset.getX());
-        tag.setInteger("WEOffsetY",offset.getY());
-        tag.setInteger("WEOffsetZ",offset.getZ());
+        for (int index = 0; index < blocks.length; index++) {
+
+            blocks_lower[index] = (byte) (blocks[index] & 0xFF);
+
+            if ((index & 1) == 0) {
+                //Shift >> 8 
+                blocks_lower[index >> 1] = (byte) (blocks_lower[index >> 1] | ((byte)blocks[index] & 0xF00 >> 8)); 
+            } else {
+                //Shift >> 4 
+                blocks_lower[index >> 1] = (byte) (blocks_lower[index >> 1] | ((byte)blocks[index] & 0xF00 >> 4));
+            }
+
+        }
 
 
-        tag.setByteArray("Layers",layers);
-        tag.setByteArray("Blocks",blocks);
-        tag.setByteArray("AddBlocks",addBlocks);
+        tag.setByteArray("Blocks",blocks_lower);
+        tag.setByteArray("AddBlocks",blocks_upper);
         tag.setByteArray("Data",blockData);
 
         //TODO: PARSE TILE ENTITIES
-
+        for(SchematicExtension ext : extensions){
+            ext.onSave(tag, this);
+        }
 
         //TODO: PARSE ENTITIES*/
-
+        
+        CompressedStreamTools.writeCompressed(tag, is);//Save out
     }
 
     /**
@@ -288,7 +301,7 @@ public class SchematicFile {
     public final List<NBTTagCompound> getTileEntities() {
         return tileEntities;
     }
-    
+
 
     /**
      * Grab tile entity at location
@@ -344,8 +357,8 @@ public class SchematicFile {
     }
 
 
-  
-    
+
+
     @SuppressWarnings("unchecked")
     public <T> T getExtension(Class<T> cl){
         for(SchematicExtension se : extensions){
@@ -353,9 +366,9 @@ public class SchematicFile {
                 return (T) se;
             }
         }
-        
+
         return null;
-        
+
     }
 }
 
