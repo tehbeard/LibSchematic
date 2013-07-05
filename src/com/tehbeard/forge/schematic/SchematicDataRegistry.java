@@ -165,6 +165,7 @@ public class SchematicDataRegistry {
      * @return
      */
     public static SchematicDataHandler getHandler(int blockId){
+        if(blockId == -1){return null;}
         if(blockId < 0 || blockId >= 4096){
             throw new IllegalArgumentException("INVALID BLOCKID (0-4095) " + blockId + " SUPPLIED");
         }
