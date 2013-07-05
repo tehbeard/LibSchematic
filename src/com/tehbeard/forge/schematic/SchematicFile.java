@@ -52,6 +52,8 @@ public class SchematicFile {
 
 
     private List<SchematicExtension> extensions = new ArrayList<SchematicExtension>();
+    
+    private SchVector initialVector = new SchVector();
 
     /**
      * Constructs an empty schematic, Not much use right now, will be when copying is implemented
@@ -193,15 +195,23 @@ public class SchematicFile {
         tag.setByteArray("Blocks",blocks_lower);
         tag.setByteArray("AddBlocks",blocks_upper);
         tag.setByteArray("Data",blockData);
-
-        //TODO: PARSE TILE ENTITIES
+        
         for(SchematicExtension ext : extensions){
             ext.onSave(tag, this);
         }
 
-        //TODO: PARSE ENTITIES*/
+
+        //TODO: PARSE TILE ENTITIES
+        
+        
+        //TODO: PARSE ENTITIES
         
         CompressedStreamTools.writeCompressed(tag, is);//Save out
+    }
+    
+    
+    public int getBlockId(SchVector vector){
+        return getBlockData(vector.getX(), vector.getY(), vector.getZ());
     }
 
     /**
@@ -221,6 +231,10 @@ public class SchematicFile {
 
         return blocks[index];
     }
+    
+    public byte getBlockData(SchVector vector){
+        return getBlockData(vector.getX(), vector.getY(), vector.getZ());
+    }
 
     /**
      * Get the block data at a coordinate (0-15)
@@ -229,13 +243,17 @@ public class SchematicFile {
      * @param z
      * @return
      */
-    public int getBlockData(int x,int y,int z){
+    public byte getBlockData(int x,int y,int z){
 
         int index =  y * width *length + z * width + x;
         if(index < 0 || index >= blockData.length){
             return 0;
         }
         return blockData[index];
+    }
+    
+    public void setBlockId(SchVector v, int b_id) {
+        setBlockId(v.getX(), v.getY(), v.getZ(), b_id);
     }
 
     /**
@@ -252,6 +270,10 @@ public class SchematicFile {
             return;
         }
         blocks[index] = (short) block;
+    }
+    
+    public void setBlockData(SchVector v, byte data) {
+        setBlockData(v.getX(), v.getY(), v.getZ(), data);
     }
 
     /**
@@ -302,7 +324,9 @@ public class SchematicFile {
         return tileEntities;
     }
 
-
+    public final NBTTagCompound getTileEntityTagAt(SchVector vector){
+        return getTileEntityTagAt(vector.getX(), vector.getY(), vector.getZ());
+    }
     /**
      * Grab tile entity at location
      * @param x
@@ -359,8 +383,9 @@ public class SchematicFile {
 
 
 
+
     @SuppressWarnings("unchecked")
-    public <T> T getExtension(Class<T> cl){
+    public <T extends SchematicExtension> T getExtension(Class<T> cl){
         for(SchematicExtension se : extensions){
             if(cl.isInstance(se)){
                 return (T) se;
@@ -370,5 +395,14 @@ public class SchematicFile {
         return null;
 
     }
+
+    public SchVector getInitialVector() {
+        return initialVector;
+    }
+
+    
+
+  
+    
 }
 

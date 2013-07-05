@@ -1,7 +1,7 @@
 package com.tehbeard.forge.schematic.worker;
 
 import com.tehbeard.forge.schematic.SchVector;
-import com.tehbeard.forge.schematic.SchematicWorker;
+import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
  * Offsets a schematic using a {@link SchVector}
@@ -17,11 +17,9 @@ public class VectorOffsetWorker extends AbstractSchematicWorker {
     }
 
     @Override
-    public SchVector modifyOffsetVector(SchVector vector,SchVector schematicVector,
-            SchematicWorker worker) {
-       
-        vector.add(vector);
-        return vector;
+    public SchematicFile modifySchematic(SchematicFile original) {
+        original.getInitialVector().add(vector);
+        return original;
     }
     
 }

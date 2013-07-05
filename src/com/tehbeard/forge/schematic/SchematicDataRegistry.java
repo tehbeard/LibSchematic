@@ -191,10 +191,10 @@ public class SchematicDataRegistry {
                     ext.onLoad(tag, file);
                     l.add(ext);
                 } catch (InstantiationException e) {
-                    // TODO Auto-generated catch block
+                    logger.severe("Could not load extension, instantiation error [" + exTagFull + "]");
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
+                    logger.severe("Could not load extension, access error [" + exTagFull + "]");
                     e.printStackTrace();
                 }
             }
