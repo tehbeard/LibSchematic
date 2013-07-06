@@ -53,4 +53,12 @@ public class TagsExtension implements SchematicExtension{
         tags.remove(tag);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public SchematicExtension copy(SchematicFile file) {
+        TagsExtension te = new TagsExtension();
+        te.tags = (Set<String>) ((HashSet<String>)tags).clone();
+        return te;
+    }
+
 }

@@ -26,5 +26,10 @@ public interface SchematicExtension {
      */
     public void onSave(NBTTagCompound tag,SchematicFile file);
     
-    
+    /**
+     * Creates a copy of this {@link SchematicExtension}, using the supplied {@link SchematicFile}
+     * @param file
+     * @return
+     */
+    public SchematicExtension copy(SchematicFile file);
 }

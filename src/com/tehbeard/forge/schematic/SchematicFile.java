@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
@@ -370,20 +371,6 @@ public class SchematicFile {
         return entities;
     }
 
-
-
-    public String toString(){
-        return "Schematic {" +
-                "[w: " + getWidth() + ", " +
-                "l: " + getLength() + ", " +
-                "h: " + getHeight() + "]\n}";
-
-    }
-
-
-
-
-
     @SuppressWarnings("unchecked")
     public <T extends SchematicExtension> T getExtension(Class<T> cl){
         for(SchematicExtension se : extensions){
@@ -401,6 +388,27 @@ public class SchematicFile {
     }
 
     
+    public SchematicFile copy(){
+        SchematicFile copy = new SchematicFile(width, height, length);
+        
+        copy.blocks    = Arrays.copyOf(blocks, blocks.length);
+        copy.blockData = Arrays.copyOf(blockData, blockData.length);
+        copy.initialVector.add(initialVector);
+        
+        for(NBTTagCompound t : entities){
+            copy.entities.add((NBTTagCompound) t.copy());
+        }
+        
+        for(NBTTagCompound t : tileEntities){
+            copy.tileEntities.add((NBTTagCompound) t.copy());
+        }
+        
+        for(SchematicExtension ex : extensions){
+            copy.extensions.add(ex.copy(copy));
+        }
+        return copy;
+    }
+
 
   
     

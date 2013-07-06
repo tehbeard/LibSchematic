@@ -1,5 +1,7 @@
 package com.tehbeard.forge.schematic.extensions;
 
+import java.util.Arrays;
+
 import com.tehbeard.forge.schematic.SchematicFile;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,6 +29,7 @@ public class LayersExtension implements SchematicExtension{
     @Override
     public void onLoad(NBTTagCompound tag,SchematicFile file) {
         layers = tag.getByteArray("Layers");
+        this.file = file;
     }
 
     @Override
@@ -65,6 +68,14 @@ public class LayersExtension implements SchematicExtension{
             return;
         }
         layers[index] = layer;
+    }
+
+    @Override
+    public SchematicExtension copy(SchematicFile file) {
+        LayersExtension le = new LayersExtension();
+        le.layers = Arrays.copyOf(layers, layers.length);
+        le.file = file;
+        return le;
     }
 
 }

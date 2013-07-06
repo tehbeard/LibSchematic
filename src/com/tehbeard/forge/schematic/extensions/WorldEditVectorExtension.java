@@ -62,4 +62,14 @@ public class WorldEditVectorExtension implements SchematicExtension{
         return offset;
     }
 
+    @Override
+    public SchematicExtension copy(SchematicFile file) {
+        WorldEditVectorExtension we = new WorldEditVectorExtension();
+        we.offset = new SchVector();
+        we.origin = new SchVector();
+        we.offset.add(offset);
+        we.origin.add(origin);
+        return we;
+    }
+
 }
