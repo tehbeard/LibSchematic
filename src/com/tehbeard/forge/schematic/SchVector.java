@@ -6,6 +6,11 @@ package com.tehbeard.forge.schematic;
  */
 public class SchVector {
 
+    @Override
+    public String toString() {
+        return "SchVector [x=" + x + ", y=" + y + ", z=" + z + "]";
+    }
+
     int x,y,z;
     
     public SchVector(){

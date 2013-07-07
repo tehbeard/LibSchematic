@@ -42,7 +42,7 @@ public class SchematicFile {
     private short length = 0;
 
     //block data
-    private short[] blocks;
+    private int[] blocks;
     private byte[] blockData;
 
 
@@ -96,7 +96,7 @@ public class SchematicFile {
      */
     private void resetArrays(){
         int size = width*height*length;
-        blocks = new short[size];
+        blocks = new int[size];
         blockData = new byte[size];
     }
 
@@ -212,7 +212,7 @@ public class SchematicFile {
     
     
     public int getBlockId(SchVector vector){
-        return getBlockData(vector.getX(), vector.getY(), vector.getZ());
+        return getBlockId(vector.getX(), vector.getY(), vector.getZ());
     }
 
     /**
@@ -227,7 +227,7 @@ public class SchematicFile {
         int index =  (y * width * length) + (z * width) + x;
 
         if(index < 0 || index >= blocks.length){
-            return 0;
+            throw new IllegalStateException("Invalid coordinates for block get!");
         }
 
         return blocks[index];
@@ -268,9 +268,9 @@ public class SchematicFile {
 
         int index =  (y * width * length) + (z * width) + x;
         if(index < 0 || index >= blocks.length){
-            return;
+            throw new IllegalStateException("Invalid coordinates for block set!");
         }
-        blocks[index] = (short) block;
+        blocks[index] = block;
     }
     
     public void setBlockData(SchVector v, byte data) {
