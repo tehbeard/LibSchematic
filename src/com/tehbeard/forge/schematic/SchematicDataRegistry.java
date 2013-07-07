@@ -205,6 +205,12 @@ public class SchematicDataRegistry {
         return l;
     }
 
+    /**
+     * Look for tag based on dot seperated path
+     * @param tag
+     * @param exTagFull
+     * @return
+     */
     private static boolean nbtContainsPath(NBTTagCompound tag,String exTagFull){
         NBTTagCompound base = tag;
         String[] parts = exTagFull.split(".");
