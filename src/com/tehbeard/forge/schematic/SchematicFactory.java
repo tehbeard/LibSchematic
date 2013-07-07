@@ -91,7 +91,7 @@ public class SchematicFactory {
                     if(b_id == -1){continue;}
 
                     if(Block.blocksList[b_id] != null || b_id == 0){
-                        world.setBlock(worldVector.getX(), worldVector.getY(), worldVector.getZ(), b_id, b_meta,0);
+                        world.setBlock(worldVector.getX(), worldVector.getY(), worldVector.getZ(), b_id, b_meta,2);
                     }
                     else
                     {
