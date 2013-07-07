@@ -202,15 +202,33 @@ public class SchematicFile {
         }
 
 
-        //TODO: PARSE TILE ENTITIES
+        //Save tile entities
+        NBTTagList tel = new NBTTagList("TileEntities");
+        for(NBTTagCompound te : tileEntities){
+            tel.appendTag(te);
+        }
+        tag.setTag("TileEntities", tel);
         
         
-        //TODO: PARSE ENTITIES
+        
+        //save entities
+        NBTTagList el = new NBTTagList("Entities");
+        for(NBTTagCompound e : entities){
+            el.appendTag(e);
+        }
+        
+        tag.setTag("Entities", tel);
+        
+        
         
         CompressedStreamTools.writeCompressed(tag, is);//Save out
     }
     
-    
+    /**
+     * get block id by vector
+     * @param vector
+     * @return
+     */
     public int getBlockId(SchVector vector){
         return getBlockId(vector.getX(), vector.getY(), vector.getZ());
     }
@@ -268,7 +286,7 @@ public class SchematicFile {
 
         int index =  (y * width * length) + (z * width) + x;
         if(index < 0 || index >= blocks.length){
-            throw new IllegalStateException("Invalid coordinates for block set!");
+            throw new IllegalStateException("Invalid coordinates for block set! ["+ x +", "+ y +", "+z +"] " + block);
         }
         blocks[index] = block;
     }
