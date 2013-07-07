@@ -286,7 +286,7 @@ public class SchematicFile {
 
         int index =  (y * width * length) + (z * width) + x;
         if(index < 0 || index >= blocks.length){
-            throw new IllegalStateException("Invalid coordinates for block set! ["+ x +", "+ y +", "+z +"] " + block);
+            throw new IllegalStateException("Invalid coordinates for block set! ["+ x +", "+ y +", "+z +"] " + block + " / sch : ["+ width +", "+ height +", "+ length +"]");
         }
         blocks[index] = block;
     }
