@@ -5,45 +5,23 @@ import net.minecraft.world.World;
 import com.tehbeard.forge.schematic.SchVector;
 import com.tehbeard.forge.schematic.SchematicFile;
 
-public class ValidateInWorld implements IFactoryOuput {
+public class ValidateInWorld extends ActOnWorld {
 
-    private World world;
-
-    public ValidateInWorld(World world){
-        this.world = world;
+    public ValidateInWorld(World world) {
+        super(world);
     }
 
     @Override
-    public Object process(SchematicFile file) {
-        if(file == null){throw new IllegalStateException("No schematic was passed to the factory! Aborting paste!");}
+    protected Object action(int x, int y, int z, int b_id, int b_meta,
+            SchVector worldVector, SchematicFile file) {
+        int w_id = world.getBlockId(worldVector.getX(), worldVector.getY(), worldVector.getZ());
+        byte w_meta = (byte) world.getBlockMetadata(worldVector.getX(), worldVector.getY(), worldVector.getZ());
 
-        for(int y = 0;y<file.getHeight();y++){
-            for(int x = 0;x<file.getWidth();x++){
-                for(int z = 0;z<file.getLength();z++){
-
-                    SchVector schVector = new SchVector(x,y,z);
-
-                    SchVector worldVector = new SchVector();
-                    worldVector.add(file.getInitialVector());
-                    worldVector.add(schVector);
-
-                    int b_id = file.getBlockId(schVector);
-                    byte b_meta = file.getBlockData(schVector);
-
-                    if(b_id == -1){continue;}
-
-                    int w_id = world.getBlockId(worldVector.getX(), worldVector.getY(), worldVector.getZ());
-                    byte w_meta = (byte) world.getBlockMetadata(worldVector.getX(), worldVector.getY(), worldVector.getZ());
-
-                    if(b_id != w_id || b_meta != w_meta){
-                        return false;
-                    }
-
-                }   
-            }   
+        if(b_id != w_id || b_meta != w_meta){
+            return false;
         }
-        return true;
-
+        return null;
     }
 
+  
 }

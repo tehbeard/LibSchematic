@@ -3,10 +3,6 @@ package com.tehbeard.forge.schematic;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
 import com.tehbeard.forge.schematic.product.IFactoryOuput;
 import com.tehbeard.forge.schematic.worker.AbstractSchematicWorker;
 
@@ -70,7 +66,7 @@ public class SchematicFactory {
     }
     
     public Object produce(IFactoryOuput output){
-        return output.process(processedSchematic);
+        return output.process(getSchematic());
     }
 
 }

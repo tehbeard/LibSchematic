@@ -56,7 +56,7 @@ public class SchVector {
      * Rotates vector in 90 degree increments clockwise 
      * @param direction
      */
-    public void rotateVector(int direction){
+    public SchVector rotateVector(int direction){
         int d[] = new int[4];
         d[0] =  z;
         d[1] =  x;
@@ -64,18 +64,22 @@ public class SchVector {
         d[3] = -x;
         x = (d[(direction+1)%4]);
         z = (d[(direction)%4]);
+        
+        return this;
     }
 
-    public void add(SchVector v){
+    public SchVector add(SchVector v){
         x += v.x;
         y += v.y;
         z += v.z;
+        return this;
     }
     
-    public void sub(SchVector v){
+    public SchVector sub(SchVector v){
         x -= v.x;
         y -= v.y;
         z -= v.z;
+        return this;
     }
 
 }
