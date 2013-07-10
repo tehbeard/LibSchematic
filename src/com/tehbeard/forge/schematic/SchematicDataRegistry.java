@@ -19,7 +19,7 @@ import com.tehbeard.forge.schematic.extensions.TagsExtension;
 import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
@@ -42,7 +42,7 @@ public class SchematicDataRegistry {
 
     private static Logger logger;
 
-    @PreInit
+    @EventHandler
     public void preInit(FMLPreInitializationEvent event){
         logger = event.getModLog();
         if(DEBUG_MODE){

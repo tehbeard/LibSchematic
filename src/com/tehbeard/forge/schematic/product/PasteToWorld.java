@@ -38,17 +38,16 @@ public class PasteToWorld implements IFactoryOuput {
             for(int x = 0;x<file.getWidth();x++){
                 for(int z = 0;z<file.getLength();z++){
                     
-                    SchVector baseSchematicVector = new SchVector(x,y,z);
-                    SchVector worldSchematicVector = new SchVector(baseSchematicVector);
-                    worldSchematicVector.add(file.getInitialVector());
+                    SchVector worldSchematicVector = new SchVector(x,y,z);
+                    //worldSchematicVector.add();
                     worldSchematicVector.rotateVector(rotations);
                     
                     SchVector worldVector = new SchVector(worldVec);
                     worldVector.add(worldSchematicVector);
+                    worldVector.add(file.getInitialVector());
                     
-                    
-                    int b_id = file.getBlockId(baseSchematicVector);
-                    byte b_meta = file.getBlockData(baseSchematicVector);
+                    int b_id = file.getBlockId(x,y,z);
+                    byte b_meta = file.getBlockData(x,y,z);
                     
                     if(b_id == -1){continue;}
                     
@@ -66,7 +65,7 @@ public class PasteToWorld implements IFactoryOuput {
                     else
                     {
                         if(b_id >0){
-                            SchematicDataRegistry.logger().severe("UNKNOWN BLOCK [" + baseSchematicVector.getX() +", " + baseSchematicVector.getY() +", " + baseSchematicVector.getZ() +"] "  + b_id + ":" + b_meta);
+                            SchematicDataRegistry.logger().severe("UNKNOWN BLOCK [" + x +", " + y +", " + z +"] "  + b_id + ":" + b_meta);
                         }
                     }
 

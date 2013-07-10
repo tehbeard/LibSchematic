@@ -1,13 +1,13 @@
 <?xml version="1.0" ?> 
-<project name="LibSchematic" default="build">
+<project name="${build.mod.name}" default="build">
 
+  <!-- load config -->
   <property file="build.properties" prefix="build"/>
   <property file="build_number.properties" prefix="build_number"/>
 
-  <target name="clean">
-    <delete file="${build.dir.development}\mcp\src\minecraft\mcmod.info" />
-    <delete dir="${build.dir.development}\mcp\src\minecraft\com\tehbeard" />
-    <delete dir="${build.dir.development}\mcp\reobf\minecraft" />
+  <target name="script_msg">
+    <echo>FML Mod Build Script v1.1</echo>
+    <echo>Building ${build.mod.name} v${build.mod.version} Build:${build_number.build_number}</echo>
   </target>
 
   <target name="increment_build_number">
@@ -16,78 +16,98 @@
     </propertyfile>
   </target>
 
-  <target name="prep">
-    <copy todir="${build.dir.development}\mcp\src\minecraft">
-      <fileset dir="C:\Users\James\forge dev\workspace\LibSchematic\src" />
+  <target name="reset_mcp_src">
+    <!-- Clean output -->
+    <delete dir="${build.dir.development}/mcp/reobf/minecraft" />
+    <!-- Clean Source -->
+    <delete dir="${build.dir.development}/mcp/src/minecraft/" />
+    <!-- Reset source from backup-->
+    <copy todir="${build.dir.development}/mcp/src/minecraft">
+      <fileset dir="${build.dir.development}/mcp/minecraftsrcbackup" />
     </copy>
   </target>
 
-  <!--<target name="replace_tokens">
-    <replace dir="${build.dir.development}\mcp\src\minecraft" token="@VERSION@" value="${build.release.mod.version}" />
-    <replace dir="${build.dir.development}\mcp\src\minecraft" token="@FINGERPRINT@" value="${build.release.mod.fingerprint}" />
-    <replace dir="${build.dir.development}\mcp\src\minecraft" token="@BUILD_NUMBER@" value="${build_number.build_number}" />
-  </target>-->
+  <target name="reset_lib">
+    <delete dir="${build.dir.development}/mcp/lib" />
+  </target>
+
+  <target name="copy_src">
+    <copy todir="${build.dir.development}/mcp/src/minecraft">
+      <fileset dir="${build.dir.workspace}/src" />
+    </copy>
+  </target>
+
+  <target name="copy_lib">
+    <copy failonerror="false" todir="${build.dir.development}/mcp/lib">
+      <fileset dir="${build.dir.workspace}/lib" />
+    </copy>
+  </target>
+
+  <target name="replace_tokens">
+    <replace dir="${build.dir.development}/mcp/src/minecraft" token="@VERSION@" value="${build.release.mod.version}" />
+    <replace dir="${build.dir.development}/mcp/src/minecraft" token="@FINGERPRINT@" value="${build.release.mod.fingerprint}" />
+    <replace dir="${build.dir.development}/mcp/src/minecraft" token="@BUILD_NUMBER@" value="${build_number.build_number}" />
+  </target>
+
+  <target name="mcp_process">
+    <antcall target="recompile" />    
+    <antcall target="reobfuscate" />
+  </target>
 
   <target name="recompile">
-    <exec dir="${build.dir.development}\mcp" executable="cmd" osfamily="windows">
+    <exec dir="${build.dir.development}/mcp" executable="cmd" osfamily="windows">
       <arg line="/c recompile.bat" />
     </exec>
-    <exec dir="${build.dir.development}\mcp" executable="bash" osfamily="unix">
+    <exec dir="${build.dir.development}/mcp" executable="bash" osfamily="unix">
       <arg line="recompile.sh" />
     </exec>
   </target>
 
   <target name="reobfuscate">
-    <exec dir="${build.dir.development}\mcp" executable="cmd" osfamily="windows">
+    <exec dir="${build.dir.development}/mcp" executable="cmd" osfamily="windows">
       <arg line="/c reobfuscate_srg.bat" />
     </exec>
-    <exec dir="${build.dir.development}\mcp" executable="bash" osfamily="unix">
+    <exec dir="${build.dir.development}/mcp" executable="bash" osfamily="unix">
       <arg line="reobfuscate_srg.sh" />
     </exec>
   </target>
 
-  <target name="build">
-    <!-- Prep for the build -->
-    <antcall target="clean" />
-    <antcall target="increment_build_number" />
-    <antcall target="prep" />
-    <antcall target="recompile" />    
-    <antcall target="reobfuscate" />
+  <target name="build_jar">
 
     <!-- Build the jar -->
-    <mkdir dir="${build.dir.release}\${build.release.minecraft.version}\${build.release.mod.version}" />
-    <jar destfile="${build.dir.release}\${build.release.minecraft.version}\${build.release.mod.version}\LibSchematic-${build.release.mod.version}-${build_number.build_number}.jar">
-      <fileset dir="${build.dir.development}\mcp\src\minecraft\" includes="mcmod.info" />
-      <fileset dir="${build.dir.development}\mcp\reobf\minecraft" />
-      <fileset dir="resources" excludes="**/xcf/**" />
-      <!--<fileset dir="${build.dir.development}\source\Equivalent-Exchange-3\resources" excludes="**/xcf/**" />-->
+    <mkdir dir="${build.dir.release}/${build.release.minecraft.version}/${build.mod.name}/${build.mod.version}" />
+    <!-- release/mcver/modname/mod version/modname-version-build.jar -->
+    <jar destfile="${build.dir.release}/${build.release.minecraft.version}/${build.mod.name}/${build.mod.version}/${build.mod.name}-${build.mod.version}-${build_number.build_number}.jar">
+      <fileset dir="${build.dir.development}/mcp/reobf/minecraft" />
+      <fileset dir="${build.dir.workspace}/resources" />
     </jar>
+  </target>
+  <target name="build">
+  	<antcall target="script_msg" />
+  	<antcall target="increment_build_number" />
+  	<antcall target="reset_mcp_src" />
+  	<antcall target="reset_lib" />
+  	<antcall target="copy_src" />
+  	<antcall target="copy_lib" />
+  	<antcall target="replace_tokens" />
+  	<antcall target="mcp_process" />
+  	<antcall target="build_jar" />
+  	
+  	<antcall target="reset_mcp_src" />
+  	<antcall target="reset_lib" />
 
-    <!-- Clean up the MCP source now that we are done -->
-    <antcall target="clean" />
   </target>
 
   <target name="release">
     <!-- Prep for the build -->
-    <antcall target="clean" />
-    <antcall target="increment_build_number" />
-    <antcall target="prep" />
-    <!--<antcall target="replace_tokens" />-->
-    <antcall target="recompile" />    
-    <antcall target="reobfuscate" />
-
-    <!-- Build the jar -->
-    <mkdir dir="${build.dir.release}\${build.release.minecraft.version}\${build.release.mod.version}" />
-    <jar destfile="${build.dir.release}\${build.release.minecraft.version}\${build.release.mod.version}\LibSchematic-${build.release.mod.version}-${build_number.build_number}.jar">
-      <fileset dir="${build.dir.development}\mcp\src\minecraft\" includes="mcmod.info" />
-      <fileset dir="${build.dir.development}\mcp\reobf\minecraft" />
-      <fileset dir="resources" excludes="**/xcf/**" />
-    </jar>
-
+    <antcall target="build" />
+    <!-- Other release build data here -->
     <!-- Sign the finished jar -->
     <!--<antcall target="sign_jar" />-->
 
     <!-- Clean up the MCP source now that we are done -->
     <antcall target="clean" />
   </target>
+
+
 </project>
