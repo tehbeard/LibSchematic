@@ -30,9 +30,16 @@ public abstract class ActOnWorld  implements IFactoryOuput {
     public Object process(SchematicFile file) {
         if(file == null){throw new IllegalStateException("No schematic was passed! Aborting paste!");}
     
+        int total = file.getHeight() * file.getWidth() * file.getLength();
+        int idx   = 0;
         for(int y = 0;y<file.getHeight();y++){
             for(int x = 0;x<file.getWidth();x++){
                 for(int z = 0;z<file.getLength();z++){
+                    
+                    idx ++;
+                    if(idx % 100 == 0){
+                        System.out.println(idx + "/" + total + "Blocks processed");
+                    }
                     
                     SchVector schematicWorldOffsetVector = new SchVector(x,y,z).add(file.getInitialVector()).rotateVector(rotations);
                     
@@ -62,6 +69,11 @@ public abstract class ActOnWorld  implements IFactoryOuput {
                 }   
             }   
         }
+        
+        if(idx % 100 == 0){
+            System.out.println(idx + "/" + total + "Blocks processed");
+        }
+        
         return null;
         
     }
