@@ -5,6 +5,11 @@ import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.data.SchematicDataHandler;
 import com.tehbeard.forge.schematic.data.SchematicOwnerHandler;
 
+/**
+ * Uses the {@link SchematicDataRegistry}s list of {@link SchematicDataHandler}s, specifically {@link SchematicOwnerHandler}s to change the owner of a schematic
+ * @author James
+ *
+ */
 public class SetOwnerWorker extends AbstractSchematicWorker {
     
     private String newOwner;

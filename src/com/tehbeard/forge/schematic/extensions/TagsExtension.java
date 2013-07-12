@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
 /**
- * Adds support for tagging a schematic
+ * Adds support for tagging a schematic with arbitrary flags
  * @author James
  *
  */

@@ -95,6 +95,7 @@
   	
   	<antcall target="reset_mcp_src" />
   	<antcall target="reset_lib" />
+  	<antcall target="javadoc" />
 
   </target>
 
@@ -109,5 +110,17 @@
     <antcall target="clean" />
   </target>
 
-
+	
+  <target name="javadoc">
+  <javadoc 
+  	destdir="${build.dir.release}/${build.release.minecraft.version}/${build.mod.name}/${build.mod.version}/javadocs"
+  	sourcepath="src"
+  	packagenames="com.tehbeard.*"
+  	author="true"
+  	windowtitle="LibSchematic API"
+  	>
+  	
+  	
+  </javadoc>
+  </target>
 </project>

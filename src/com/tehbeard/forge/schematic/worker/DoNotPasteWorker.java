@@ -7,7 +7,9 @@ import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
  * Makes a schematicWorker not paste the specified blocks from the workers constructor
- * This can be used to make hollow structures that intersect the ground more naturally
+ * This can be used to make hollow structures that intersect the ground more naturally, 
+ * by having the schematic use a certain block (i.e. sponge) as a marker for leave what the world has there.
+ * 
  * @author James
  *
  */

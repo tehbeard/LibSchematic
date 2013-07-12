@@ -18,7 +18,7 @@ public interface SchematicRotationHandler extends SchematicDataHandler {
      * @param z coord in schematic of block
      * @param blockId use if registering one class for multiple block ids
      * @param metadata metadata before rotation
-     * @param rotations number of rotations 90 degrees clockwise made
+     * @param rotations number of rotations (90 degrees clockwise) made
      * @return new metadata for rotation
      */
     public int rotateData(SchematicFile schematic,int x,int y, int z,int blockId, int metadata,int rotations);

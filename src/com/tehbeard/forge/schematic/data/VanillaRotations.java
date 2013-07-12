@@ -3,11 +3,12 @@ package com.tehbeard.forge.schematic.data;
 import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
- * Container class 
+ * Container class for all vanilla blocks/tile entities requiring rotation. 
+ * If your mod implements the same rotation as a vanilla block, look for it here!
  * @author James
  *
  */
-public class RotationHandler {
+public class VanillaRotations {
 
     public static final SchematicRotationHandler WALL_MOUNTED = new ArrayRotationHandler(0x8,1,3,2,4);
     public static final SchematicRotationHandler STAIRS = new ArrayRotationHandler(0x4,3,0,2,1);

@@ -5,6 +5,8 @@ import com.tehbeard.forge.schematic.SchematicFile;
 /**
  * An implementation of a schematic rotation handler
  * That uses an array lookup table + bitmask as the data for rotation
+ * For simple mod blocks this can be used in lieu of a custom {@link SchematicDataHandler}
+ * More complex handlers that implement several interfaces can use this class via delegation
  * @author James
  *
  */

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
+import com.tehbeard.forge.schematic.worker.AbstractSchematicWorker;
 
 
 import net.minecraft.nbt.CompressedStreamTools;
@@ -18,19 +19,19 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * SchematicFile provides a way to read .schematic files
- * SchematicFile acts as a container for SchematicExtensions, which add additional non-standard information to a schematic.
- * Feature supported:
- * <li>Extended Block Ids (WorldEdit feature)</li>
- * <li>Schematic origin and offset (WorldEdit feature)</li>
- * <li>Layers support (Own feature)</li>
- * <li>Support for mod block rotation</li>
- * 
- * Planned features:
- * <li>FML ModItemData dictionary support for automatic block id translation</li>
- * <li>No paste air blocks</li>
- * <li>layer selection support</li>
- * <li>Entity support</li>
+ * SchematicFile provides a way to read/write .schematic files. <br/>
+ * SchematicFile acts as a container for {@link SchematicExtension}s, which add additional non-standard information to a schematic.<br/>
+ * Extensions supported currently:<ul>
+ * <li>Schematic origin and offset (WorldEdit feature) - access to the vectors WorldEdit stores with .schematic files</li>
+ * <li>metadata tags (own feature) - Add arbitrary flags to a .schematic (e.g. could be used to classify a .schematic's type for worldgen?)</li>
+ * </ul>
+ * Planned extensions:<ul>
+ * <li>blockId <-> name dictionary to make .schematic portable across different configurations (read: different block ids for the same block)</li>
+ * <li>Layers support (Own feature) to provide more complex sub-selection of blocks in a schematic</li>
+ * </ul>
+ * <p>
+ * {@link SchematicExtension}s can be extended by mods to provide new kinds of metadata with a {@link SchematicFile}
+ * </p>
  * @author James
  *
  */
@@ -53,14 +54,14 @@ public class SchematicFile {
 
 
     private List<SchematicExtension> extensions = new ArrayList<SchematicExtension>();
-    
+
     private SchVector initialVector = new SchVector();
 
     /**
      * Constructs an empty schematic, Not much use right now, will be when copying is implemented
-     * @param width
-     * @param height
-     * @param length
+     * @param width size along x axis
+     * @param height size along y axis
+     * @param length size along z axis
      */
     public SchematicFile(short width,short height,short length){
         this.width = width;
@@ -72,13 +73,13 @@ public class SchematicFile {
     }
 
     /**
-     * Loads a schematic 
-     * @param is InputStream to schematic
+     * Loads a schematic from an inputstream
+     * @param is
      * @throws IOException
      */
     public SchematicFile(InputStream is) throws IOException{
 
-        loadSchematic(is);
+        this(CompressedStreamTools.readCompressed(is));
     }
 
     /**
@@ -87,8 +88,7 @@ public class SchematicFile {
      * @throws IOException
      */
     public SchematicFile(File file) throws IOException{
-
-        loadSchematic(new FileInputStream(file));
+        this(new FileInputStream(file));
     }
 
     /**
@@ -101,11 +101,10 @@ public class SchematicFile {
     }
 
     /**
-     * loads the schematic data into memory
+     * loads the schematic from an {@link NBTTagCompound}
      * @throws IOException 
      */
-    public void loadSchematic(InputStream is) throws IOException{
-        NBTTagCompound tag  = CompressedStreamTools.readCompressed(is);
+    public SchematicFile(NBTTagCompound tag) throws IOException{
 
         if(!tag.getName().equalsIgnoreCase("schematic")){
             throw new IOException("File is not a valid schematic");
@@ -163,7 +162,21 @@ public class SchematicFile {
         extensions = SchematicDataRegistry.getExtensions(tag, this);
     }
 
+    /**
+     * Save schematic to a stream
+     * @param is
+     * @throws IOException
+     */
     public void saveSchematic(OutputStream is) throws IOException{
+        CompressedStreamTools.writeCompressed(saveSchematicToTag(), is);
+    }
+    
+    /**
+     * Save schematic to a {@link NBTTagCompound}
+     * @return
+     * @throws IOException
+     */
+    public NBTTagCompound saveSchematicToTag() throws IOException{
         //throw new UnsupportedOperationException("Not implemented in this version");
 
         NBTTagCompound tag = new NBTTagCompound("schematic");
@@ -196,7 +209,7 @@ public class SchematicFile {
         tag.setByteArray("Blocks",blocks_lower);
         tag.setByteArray("AddBlocks",blocks_upper);
         tag.setByteArray("Data",blockData);
-        
+
         for(SchematicExtension ext : extensions){
             ext.onSave(tag, this);
         }
@@ -208,22 +221,22 @@ public class SchematicFile {
             tel.appendTag(te);
         }
         tag.setTag("TileEntities", tel);
-        
-        
-        
+
+
+
         //save entities
         NBTTagList el = new NBTTagList("Entities");
         for(NBTTagCompound e : entities){
             el.appendTag(e);
         }
-        
+
         tag.setTag("Entities", tel);
-        
-        
-        
-        CompressedStreamTools.writeCompressed(tag, is);//Save out
+
+
+
+        return tag;
     }
-    
+
     /**
      * get block id by vector
      * @param vector
@@ -250,7 +263,11 @@ public class SchematicFile {
 
         return blocks[index];
     }
-    
+    /**
+     * Get the block data by vector
+     * @param vector
+     * @return
+     */
     public byte getBlockData(SchVector vector){
         return getBlockData(vector.getX(), vector.getY(), vector.getZ());
     }
@@ -270,13 +287,18 @@ public class SchematicFile {
         }
         return blockData[index];
     }
-    
+
+    /**
+     * Set the block id at vector
+     * @param v
+     * @param b_id
+     */
     public void setBlockId(SchVector v, int b_id) {
         setBlockId(v.getX(), v.getY(), v.getZ(), b_id);
     }
 
     /**
-     * Set the block id at a coordinate (May not work, not tested with extended block support)
+     * Set the block id at a coordinate
      * @param x
      * @param y
      * @param z
@@ -290,7 +312,12 @@ public class SchematicFile {
         }
         blocks[index] = block;
     }
-    
+
+    /**
+     * Set  the block data at vector
+     * @param v
+     * @param data
+     */
     public void setBlockData(SchVector v, byte data) {
         setBlockData(v.getX(), v.getY(), v.getZ(), data);
     }
@@ -343,11 +370,17 @@ public class SchematicFile {
         return tileEntities;
     }
 
+    /**
+     * Get the {@link NBTTagCompound} for a tile entity at this vector
+     * @param vector
+     * @return
+     */
     public final NBTTagCompound getTileEntityTagAt(SchVector vector){
         return getTileEntityTagAt(vector.getX(), vector.getY(), vector.getZ());
     }
+    
     /**
-     * Grab tile entity at location
+     * Grab {@link NBTTagCompound} for a tile entity at these coordinates
      * @param x
      * @param y
      * @param z
@@ -401,34 +434,37 @@ public class SchematicFile {
 
     }
 
+    /**
+     * Returns the initial vector for a schematic, this vector allows {@link AbstractSchematicWorker}s to modify the relative final position of a schematic, such as with WorldEdit's offset vector
+     * @return
+     */
     public SchVector getInitialVector() {
         return initialVector;
     }
 
-    
+
+    /**
+     * Creates a duplicate of this {@link SchematicFile}
+     * @return
+     */
     public SchematicFile copy(){
         SchematicFile copy = new SchematicFile(width, height, length);
-        
+
         copy.blocks    = Arrays.copyOf(blocks, blocks.length);
         copy.blockData = Arrays.copyOf(blockData, blockData.length);
         copy.initialVector.add(initialVector);
-        
+
         for(NBTTagCompound t : entities){
             copy.entities.add((NBTTagCompound) t.copy());
         }
-        
+
         for(NBTTagCompound t : tileEntities){
             copy.tileEntities.add((NBTTagCompound) t.copy());
         }
-        
+
         for(SchematicExtension ex : extensions){
             copy.extensions.add(ex.copy(copy));
         }
         return copy;
     }
-
-
-  
-    
 }
-

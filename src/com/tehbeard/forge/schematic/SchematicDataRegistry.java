@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.tehbeard.forge.schematic.data.RotationHandler;
+import com.tehbeard.forge.schematic.data.VanillaRotations;
 import com.tehbeard.forge.schematic.data.SchematicDataHandler;
 import com.tehbeard.forge.schematic.extensions.ClassCatalogue;
 import com.tehbeard.forge.schematic.extensions.LayersExtension;
@@ -25,10 +25,10 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 
 /**
- * Main entry point for LibSchematic.
- * This class acts as the FML mod class, 
- * it handles holding data handlers for mod blocks 
- * and schematic extensions to access extra information 
+ * Main entry point for LibSchematic.<br/>
+ * This class acts as the FML mod class,<br/> 
+ * it handles holding data handlers for mod blocks<br/> 
+ * and schematic extensions to access extra information <br/>
  * embedded in a schematic
  * @author James
  *
@@ -51,6 +51,10 @@ public class SchematicDataRegistry {
 
     }
 
+    /**
+     * Returns the logger for this mod
+     * @return
+     */
     public static Logger logger(){
         return logger;
     }
@@ -65,72 +69,72 @@ public class SchematicDataRegistry {
      * Initialise vanilla data handlers
      */
     static{
-        dataHandlers[Block.chest.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.chestTrapped.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.enderChest.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.furnaceIdle.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.furnaceBurning.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.pistonStickyBase.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.pistonBase.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.pistonExtension.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.pistonMoving.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.ladder.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.signWall.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.dispenser.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.hopperBlock.blockID] = RotationHandler.CONTAINER_PISTON;
-        dataHandlers[Block.dropper.blockID] = RotationHandler.CONTAINER_PISTON;
+        dataHandlers[Block.chest.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.chestTrapped.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.enderChest.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.furnaceIdle.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.furnaceBurning.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.pistonStickyBase.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.pistonBase.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.pistonExtension.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.pistonMoving.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.ladder.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.signWall.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.dispenser.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.hopperBlock.blockID] = VanillaRotations.CONTAINER_PISTON;
+        dataHandlers[Block.dropper.blockID] = VanillaRotations.CONTAINER_PISTON;
 
-        dataHandlers[Block.torchRedstoneIdle.blockID] = RotationHandler.WALL_MOUNTED;
-        dataHandlers[Block.torchRedstoneActive.blockID] = RotationHandler.WALL_MOUNTED;
-        dataHandlers[Block.stoneButton.blockID] = RotationHandler.WALL_MOUNTED;
-        dataHandlers[Block.woodenButton.blockID] = RotationHandler.WALL_MOUNTED;
-        dataHandlers[Block.lever.blockID] = RotationHandler.WALL_MOUNTED;
-        dataHandlers[Block.torchWood.blockID] = RotationHandler.WALL_MOUNTED;
+        dataHandlers[Block.torchRedstoneIdle.blockID] = VanillaRotations.WALL_MOUNTED;
+        dataHandlers[Block.torchRedstoneActive.blockID] = VanillaRotations.WALL_MOUNTED;
+        dataHandlers[Block.stoneButton.blockID] = VanillaRotations.WALL_MOUNTED;
+        dataHandlers[Block.woodenButton.blockID] = VanillaRotations.WALL_MOUNTED;
+        dataHandlers[Block.lever.blockID] = VanillaRotations.WALL_MOUNTED;
+        dataHandlers[Block.torchWood.blockID] = VanillaRotations.WALL_MOUNTED;
 
 
-        dataHandlers[Block.redstoneComparatorActive.blockID] = RotationHandler.REPEATER;
-        dataHandlers[Block.redstoneComparatorIdle.blockID] = RotationHandler.REPEATER;
-        dataHandlers[Block.redstoneRepeaterActive.blockID] = RotationHandler.REPEATER;
-        dataHandlers[Block.redstoneRepeaterIdle.blockID] = RotationHandler.REPEATER;
+        dataHandlers[Block.redstoneComparatorActive.blockID] = VanillaRotations.REPEATER;
+        dataHandlers[Block.redstoneComparatorIdle.blockID] = VanillaRotations.REPEATER;
+        dataHandlers[Block.redstoneRepeaterActive.blockID] = VanillaRotations.REPEATER;
+        dataHandlers[Block.redstoneRepeaterIdle.blockID] = VanillaRotations.REPEATER;
 
-        dataHandlers[Block.rail.blockID] = RotationHandler.RAIL;
-        dataHandlers[Block.railPowered.blockID] = RotationHandler.RAIL;
-        dataHandlers[Block.railDetector.blockID] = RotationHandler.RAIL;
-        dataHandlers[Block.railActivator.blockID] = RotationHandler.RAIL;
+        dataHandlers[Block.rail.blockID] = VanillaRotations.RAIL;
+        dataHandlers[Block.railPowered.blockID] = VanillaRotations.RAIL;
+        dataHandlers[Block.railDetector.blockID] = VanillaRotations.RAIL;
+        dataHandlers[Block.railActivator.blockID] = VanillaRotations.RAIL;
         
-        dataHandlers[Block.stairsBrick.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsCobblestone.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsWoodOak.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsWoodSpruce.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsWoodBirch.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsWoodJungle.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsBrick.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsStoneBrick.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsSandStone.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsNetherQuartz.blockID] = RotationHandler.STAIRS;
-        dataHandlers[Block.stairsNetherBrick.blockID] = RotationHandler.STAIRS;
+        dataHandlers[Block.stairsBrick.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsCobblestone.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsWoodOak.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsWoodSpruce.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsWoodBirch.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsWoodJungle.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsBrick.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsStoneBrick.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsSandStone.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsNetherQuartz.blockID] = VanillaRotations.STAIRS;
+        dataHandlers[Block.stairsNetherBrick.blockID] = VanillaRotations.STAIRS;
         
 
-        dataHandlers[Block.vine.blockID] = RotationHandler.VINES;
+        dataHandlers[Block.vine.blockID] = VanillaRotations.VINES;
 
-        dataHandlers[Block.trapdoor.blockID] = RotationHandler.TRAPDOOR;
+        dataHandlers[Block.trapdoor.blockID] = VanillaRotations.TRAPDOOR;
 
-        dataHandlers[Block.tripWireSource.blockID] = RotationHandler.HOOK;
+        dataHandlers[Block.tripWireSource.blockID] = VanillaRotations.HOOK;
 
-        dataHandlers[Block.fenceGate.blockID] = RotationHandler.FENCEGATE;
+        dataHandlers[Block.fenceGate.blockID] = VanillaRotations.FENCEGATE;
 
-        dataHandlers[Block.anvil.blockID] = RotationHandler.ANVIL;
+        dataHandlers[Block.anvil.blockID] = VanillaRotations.ANVIL;
 
-        dataHandlers[Block.bed.blockID] = RotationHandler.BED;
+        dataHandlers[Block.bed.blockID] = VanillaRotations.BED;
 
-        dataHandlers[Block.signPost.blockID] = RotationHandler.SIGN_POST;
+        dataHandlers[Block.signPost.blockID] = VanillaRotations.SIGN_POST;
 
-        dataHandlers[Block.doorWood.blockID] = RotationHandler.DOOR;
-        dataHandlers[Block.doorIron.blockID] = RotationHandler.DOOR;
+        dataHandlers[Block.doorWood.blockID] = VanillaRotations.DOOR;
+        dataHandlers[Block.doorIron.blockID] = VanillaRotations.DOOR;
         
-        dataHandlers[Block.blockNetherQuartz.blockID] = RotationHandler.QUARTZ;
+        dataHandlers[Block.blockNetherQuartz.blockID] = VanillaRotations.QUARTZ;
         
-        dataHandlers[Block.wood.blockID] = RotationHandler.WOOD;
+        dataHandlers[Block.wood.blockID] = VanillaRotations.WOOD;
     }
 
     private static final ClassCatalogue<SchematicExtension> schematicExtensions = new ClassCatalogue<SchematicExtension>();
@@ -145,11 +149,13 @@ public class SchematicDataRegistry {
     }
 
     /**
-     * Add a data handler for a block, to be used by mods.
-     * Data handlers provide a way for mods to suggest how to handle a block in certain situations
-     * such as rotation of a block, changing the owner.
-     * @param blockId
-     * @param handler
+     * Add a data handler for a block, to be used by other forge mods to add compatibility.<br/>
+     * A data handler is a class that implements one to several interfaces, such as those in <code>com.tehbeard.schematic.data</code><br/>
+     * These interfaces provide a way for other forge mods to instruct LibSchematic on how to process blocks/tile entities, such as rotation
+     * or owner of the block.
+     * @param blockId id of the block you wish to configure
+     * @param handler object that implements one of several {@link SchematicDataHandler} interfaces for manipulating a block
+     * @throws IllegalArgumentException on invalid block id
      */
     public static void setHandler(int blockId, SchematicDataHandler handler){
         if(blockId < 0 || blockId >= 4096){
@@ -160,9 +166,10 @@ public class SchematicDataRegistry {
     }
 
     /**
-     * return data handler for block, it may implement one or several interfaces for 
-     * @param blockId
-     * @return
+     * return data handler for block, it may implement one or several interfaces related to manipulation of a block/tile entity
+     * @param blockId block if to get {@link SchematicDataHandler} for
+     * @return {@link SchematicDataHandler} or null if no block found, 
+     * @throws IllegalArgumentException on invalid block id
      */
     public static SchematicDataHandler getHandler(int blockId){
         if(blockId == -1){return null;}
@@ -174,9 +181,9 @@ public class SchematicDataRegistry {
     }
 
     /**
-     * Returns a list of extension objects for schematic
-     * @param tag
-     * @param file
+     * Returns a list of extension objects for schematic, used internally, do not touch.
+     * @param tag raw NBT tag of a schematic
+     * @param file {@link SchematicFile} passed to extensions
      * @return
      */
     public static List<SchematicExtension> getExtensions(NBTTagCompound tag,SchematicFile file){

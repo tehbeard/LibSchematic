@@ -8,6 +8,12 @@ import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.data.SchematicDataHandler;
 import com.tehbeard.forge.schematic.data.SchematicRotationHandler;
 
+/**
+ * Abstract {@link IFactoryOuput} that has methods for manipulating a world
+ * It is designed for Output's that iterate over a schematic with relation to a world's coords
+ * @author James
+ *
+ */
 public abstract class ActOnWorld  implements IFactoryOuput {
 
     protected final World world;

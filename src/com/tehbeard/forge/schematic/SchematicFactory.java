@@ -7,11 +7,21 @@ import com.tehbeard.forge.schematic.product.IFactoryOuput;
 import com.tehbeard.forge.schematic.worker.AbstractSchematicWorker;
 
 /**
- * {@link SchematicFactory} Processes a {@link SchematicFile} using one or more {@link AbstractSchematicWorker} workers
- * The factory will initially clone the SchematicFile, after which this clone may be modified or even replaced with another {@link SchematicFile}
- * 
- * The lifecycle of a {@link SchematicFactory} is as follows:
- * new() -> loadWorkers()... -> loadSchematic() -> paste()...
+ * <p>A SchematicFactory processes {@link SchematicFile}s , passing them to multiple {@link AbstractSchematicWorker}s.<br/>  
+ * These workers manipulate a Schematic, such as changing the owner of a block, removing blocks or rotating a schematic.<br/>
+ * The schematic passed into a SchematicFactory is copied before use, preserving the value of the original, additionally {@link AbstractSchematicWorker}s<br/>
+ * may generate new a {@link SchematicFile} and pass this along the chain (an example would be the rotation worker, which writes a new schematic based on<br/>
+ * rotating the old one.</p>
+ * <p>The lifecycle of a SchematicFactory is as follows:<br/>
+ * new() -> loadWorkers()... -> loadSchematic() -> produce({@link IFactoryOuput})<br/>
+ * Alternatively, in a scenario where you apply the same workers to multiple schematics:<br/>
+ * <pre>
+ * factory = new() -> loadWorkers()...;
+ * ...
+ * factory.loadSchematic();
+ * produce({@link IFactoryOuput})
+ * ...
+ * </pre>
  * @author James
  *
  */
@@ -22,9 +32,9 @@ public class SchematicFactory {
     private List<AbstractSchematicWorker> workers = new ArrayList<AbstractSchematicWorker>();
 
     /**
-     * set the initial schematic file
-     * @param file
-     * @return
+     * Load and process a {@link SchematicFile}
+     * @param file {@link SchematicFile} to process
+     * @return this {@link SchematicFactory} to allow method linking
      */
     public SchematicFactory loadSchematic(SchematicFile file){
         this.processedSchematic = process(file);
@@ -32,6 +42,7 @@ public class SchematicFactory {
 
     }
 
+    
     private SchematicFile process(SchematicFile file) {
         try{
         SchematicFile tmp = file.copy();
@@ -50,9 +61,9 @@ public class SchematicFactory {
     }
 
     /**
-     * Add workers to a schematic
-     * @param workers
-     * @return
+     * Add workers to this SchematicFactory
+     * @param workers {@link AbstractSchematicWorker}s to add
+     * @return this {@link SchematicFactory} to allow method linking
      */
     public SchematicFactory loadWorkers(AbstractSchematicWorker... workers){
         for(AbstractSchematicWorker worker : workers){
@@ -61,10 +72,19 @@ public class SchematicFactory {
         return this;
     }
 
+    /**
+     * Returns the processed {@link SchematicFile} or null if none exists
+     * @return
+     */
     public SchematicFile getSchematic(){
         return processedSchematic;
     }
     
+    /**
+     * Passes the output of this factory to a {@link IFactoryOuput}
+     * @param output {@link IFactoryOuput}
+     * @return result of {@link IFactoryOuput}
+     */
     public Object produce(IFactoryOuput output){
         return output.process(getSchematic());
     }

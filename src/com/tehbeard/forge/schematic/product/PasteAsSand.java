@@ -9,7 +9,12 @@ import net.minecraft.entity.item.EntityFallingSand;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-
+/**
+ * Iterates over a schematic and adds it to a world as a collection of {@link EntityFallingSand} objects
+ * <b>!!!WARNING!!! NO LIMITS ARE ENFORCED, TAKE CAUTION WHEN USING THIS {@link IFactoryOuput} WITH LARGE SCHEMATICS</b>
+ * @author James
+ *
+ */
 public class PasteAsSand extends ActOnWorld {
     
 

@@ -10,7 +10,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
-
+/**
+ * Pastes a schematic into a world as solid blocks
+ * @author James
+ *
+ */
 public class PasteToWorld extends ActOnWorld {
     
 

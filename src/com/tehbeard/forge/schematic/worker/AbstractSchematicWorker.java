@@ -3,7 +3,7 @@ package com.tehbeard.forge.schematic.worker;
 import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
- * A schematic worker can affect the process of a schematic paste
+ * A schematic worker can process a schematic
  * @author James
  *
  */
