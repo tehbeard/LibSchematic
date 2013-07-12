@@ -30,6 +30,8 @@ public class PasteToWorld extends ActOnWorld {
             
             storageArray.setExtBlockID(worldVector.getX() & 15, worldVector.getY() & 15, worldVector.getZ() & 15, b_id);
             storageArray.setExtBlockMetadata(worldVector.getX() & 15, worldVector.getY() & 15, worldVector.getZ() & 15, b_meta);
+            chunk.isModified = true;
+            
             world.markBlockForUpdate(worldVector.getX(), worldVector.getY(), worldVector.getZ());
             //world;
             TileEntity te = file.getTileEntityAt(x,y,z);

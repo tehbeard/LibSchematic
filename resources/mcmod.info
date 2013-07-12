@@ -6,6 +6,6 @@
   "description": "Provides a unified schematic library that allows cross compatbility between forge mods when pasting their blocks.",
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
-  "logoFile":"/mods/LibSchematic/LibSchematic.png"
+  "logoFile":"/mods/libschematic/libschematic.png"
 }
 ]
