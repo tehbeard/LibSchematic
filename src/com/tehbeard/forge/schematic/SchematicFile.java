@@ -71,6 +71,15 @@ public class SchematicFile {
         resetArrays();
 
     }
+    
+    /**
+     * Load schematic from a resource on the classpath
+     * @param name full path on class path, with starting /
+     * @throws IOException 
+     */
+    public SchematicFile(String name) throws IOException{
+        this(SchematicFile.class.getResourceAsStream(name));
+    }
 
     /**
      * Loads a schematic from an inputstream
