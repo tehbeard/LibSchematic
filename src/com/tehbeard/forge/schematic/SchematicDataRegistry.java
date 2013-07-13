@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.tehbeard.forge.schematic.data.VanillaRotations;
 import com.tehbeard.forge.schematic.data.SchematicDataHandler;
 import com.tehbeard.forge.schematic.extensions.ClassCatalogue;
+import com.tehbeard.forge.schematic.extensions.IdTranslateExtension;
 import com.tehbeard.forge.schematic.extensions.LayersExtension;
 import com.tehbeard.forge.schematic.extensions.SchExtension;
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
@@ -20,6 +21,12 @@ import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Metadata;
+import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
@@ -41,7 +48,9 @@ public class SchematicDataRegistry {
     public static final boolean DEBUG_MODE = false;
 
     private static Logger logger;
+    
 
+    //initialise our shit
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
         logger = event.getModLog();
@@ -49,6 +58,45 @@ public class SchematicDataRegistry {
             logger.setLevel(Level.FINEST);
         }
 
+    }
+    
+    //Register our shit
+    @EventHandler
+    public void init(FMLInitializationEvent event){
+        
+    }
+    
+    //ok, check any blocks for SchematicDataHandler
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event){
+        logger.info("Polling block array for Data handlers");
+        
+        for(Block b : Block.blocksList){
+            if(b instanceof SchematicDataHandler){
+                if(getHandler(b.blockID) == null){
+                    setHandler(b.blockID, (SchematicDataHandler) b);
+                }
+                else
+                {
+                    logger.warning("Alert! SchematicDataHandler already registered for block " + b.blockID);
+                }
+            }
+        }
+    }
+    
+    
+    @EventHandler
+    public void IMC(IMCEvent event){
+        
+        for(IMCMessage msg : event.getMessages()){
+            if(msg.isNBTMessage()){
+                //TODO - IMC interface
+            }
+            else
+            {
+                logger.warning("Invalid IMC message from " + msg.getSender());
+            }
+        }
     }
 
     /**
@@ -138,6 +186,14 @@ public class SchematicDataRegistry {
     }
 
     private static final ClassCatalogue<SchematicExtension> schematicExtensions = new ClassCatalogue<SchematicExtension>();
+    
+    /**
+     * Adds an extension for usage.
+     * @param _class
+     */
+    public void addSchematicExtension(Class<? extends SchematicExtension> _class){
+        schematicExtensions.addProduct(_class);
+    }
 
     /**
      * Initialise installed extensions
@@ -146,6 +202,7 @@ public class SchematicDataRegistry {
         schematicExtensions.addProduct(WorldEditVectorExtension.class);
         schematicExtensions.addProduct(LayersExtension.class);
         schematicExtensions.addProduct(TagsExtension.class);
+        schematicExtensions.addProduct(IdTranslateExtension.class);
     }
 
     /**
