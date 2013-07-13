@@ -1,7 +1,7 @@
 LibSchematic
 ============
 
-LibSchematic is a library for Forge (http://http://minecraftforge.net/) to allow mods to import .schematic files into a world, as part of worldgen, multiblock structure validation or misc. usage.
+LibSchematic is a library for Forge (http://minecraftforge.net/) to allow mods to import .schematic files into a world, as part of worldgen, multiblock structure validation or misc. usage.
 
 Features
 -----------
