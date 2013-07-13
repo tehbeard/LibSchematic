@@ -11,7 +11,7 @@ public class SchVector {
         return "SchVector [x=" + x + ", y=" + y + ", z=" + z + "]";
     }
 
-    int x,y,z;
+    private int x,y,z;
     
     public SchVector(SchVector initial){
         this();
@@ -81,5 +81,20 @@ public class SchVector {
         z -= v.z;
         return this;
     }
-
+    
+    public static SchVector min(SchVector v1,SchVector v2){
+        return new SchVector(
+                Math.min(v1.x, v2.x),
+                Math.min(v1.y, v2.y),
+                Math.min(v1.z, v2.z)
+                );
+    }
+    
+    public static SchVector max(SchVector v1,SchVector v2){
+        return new SchVector(
+                Math.max(v1.x, v2.x),
+                Math.max(v1.y, v2.y),
+                Math.max(v1.z, v2.z)
+                );
+    }
 }
