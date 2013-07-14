@@ -188,7 +188,7 @@ public class SchematicFile {
     public NBTTagCompound saveSchematicToTag() throws IOException{
         //throw new UnsupportedOperationException("Not implemented in this version");
 
-        NBTTagCompound tag = new NBTTagCompound("schematic");
+        NBTTagCompound tag = new NBTTagCompound("Schematic");
         tag.setString("Materials", "Alpha");
 
 
