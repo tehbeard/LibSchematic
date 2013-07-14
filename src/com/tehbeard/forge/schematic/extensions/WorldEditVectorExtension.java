@@ -16,10 +16,10 @@ import com.tehbeard.forge.schematic.SchematicFile;
 public class WorldEditVectorExtension implements SchematicExtension{
 
     //Original location in world
-    private SchVector origin;
+    private SchVector origin = new SchVector();
 
     //Offset vector
-    private SchVector offset;
+    private SchVector offset = new SchVector();
     
     @Override
     public void onLoad(NBTTagCompound tag,SchematicFile file) {
@@ -60,6 +60,15 @@ public class WorldEditVectorExtension implements SchematicExtension{
      */
     public SchVector getOffset() {
         return offset;
+    }
+    
+    
+    public void setOrigin(SchVector origin) {
+        this.origin = origin;
+    }
+
+    public void setOffset(SchVector offset) {
+        this.offset = offset;
     }
 
     @Override

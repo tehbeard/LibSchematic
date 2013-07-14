@@ -198,7 +198,8 @@ public class SchematicFile {
 
 
         byte[] blocks_lower = new byte[blocks.length];
-        byte[] blocks_upper = new byte[(int) Math.ceil(blocks.length/2)];
+        double d = blocks.length / 2D;
+        byte[] blocks_upper = new byte[(int) Math.ceil(d)];
 
         for (int index = 0; index < blocks.length; index++) {
 
@@ -453,6 +454,10 @@ public class SchematicFile {
 
         return null;
 
+    }
+    
+    public void addExtension(SchematicExtension cl){
+        extensions.add(cl);
     }
 
     /**
