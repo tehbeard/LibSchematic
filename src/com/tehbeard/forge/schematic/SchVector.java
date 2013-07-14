@@ -1,5 +1,7 @@
 package com.tehbeard.forge.schematic;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 /**
  * Schematic vector, used to do math needed for making a composite vector based on the world vector, offset vector and rotation
  *
@@ -8,10 +10,14 @@ public class SchVector {
 
     @Override
     public String toString() {
-        return "SchVector [x=" + x + ", y=" + y + ", z=" + z + "]";
+        return "" + x + ", " + y + ", " + z + "";
     }
 
     private int x,y,z;
+    
+    public SchVector(NBTTagCompound t){
+        this(t.getInteger("x"),t.getInteger("y"),t.getInteger("z"));
+    }
     
     public SchVector(SchVector initial){
         this();
@@ -96,5 +102,17 @@ public class SchVector {
                 Math.max(v1.y, v2.y),
                 Math.max(v1.z, v2.z)
                 );
+    }
+    
+    public NBTTagCompound asTag(){
+        NBTTagCompound t = new NBTTagCompound();
+        t.setInteger("x", x);
+        t.setInteger("y", y);
+        t.setInteger("z", z);
+        return t;
+        
+    }
+    public int area(){
+        return x * y * z; 
     }
 }
