@@ -21,7 +21,6 @@ public interface SchematicExtension {
     
     
     /**
-     * NOT IMPLEMENTED YET
      * @param tag
      */
     public void onSave(NBTTagCompound tag,SchematicFile file);
