@@ -45,6 +45,9 @@ public class Blueprint {
                         if(te!=null){
                             NBTTagCompound c = new NBTTagCompound();
                             te.writeToNBT(c);
+                            c.setInteger("x", x);
+                            c.setInteger("y", y);
+                            c.setInteger("z", z);
                             file.getTileEntities().add(c);
                         }
                     }
