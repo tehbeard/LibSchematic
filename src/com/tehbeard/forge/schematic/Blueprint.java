@@ -26,7 +26,7 @@ public class Blueprint {
     }
 
     public SchematicFile createSchematicFile(){
-        SchVector size = new SchVector(max);
+        SchVector size = new SchVector(max).add(new SchVector(1,1,1));
         size.sub(min);
         SchematicFile file = new SchematicFile((short)size.getX(), (short)size.getY(), (short)size.getZ());
 

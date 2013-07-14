@@ -71,7 +71,7 @@ public class SchematicFile {
         resetArrays();
 
     }
-    
+
     /**
      * Load schematic from a resource on the classpath
      * @param name full path on class path, with starting /
@@ -179,7 +179,7 @@ public class SchematicFile {
     public void saveSchematic(OutputStream is) throws IOException{
         CompressedStreamTools.writeCompressed(saveSchematicToTag(), is);
     }
-    
+
     /**
      * Save schematic to a {@link NBTTagCompound}
      * @return
@@ -198,25 +198,35 @@ public class SchematicFile {
 
 
         byte[] blocks_lower = new byte[blocks.length];
-        byte[] blocks_upper = new byte[blocks.length];
+        byte[] blocks_upper = new byte[(int) Math.ceil(blocks.length/2)];
 
         for (int index = 0; index < blocks.length; index++) {
 
             blocks_lower[index] = (byte) (blocks[index] & 0xFF);
 
+            byte upperbits = (byte) ((blocks[index] & 0xF00) >> 8);
+
             if ((index & 1) == 0) {
                 //Shift >> 8 
-                blocks_lower[index >> 1] = (byte) (blocks_lower[index >> 1] | ((byte)blocks[index] & 0xF00 >> 8)); 
+                blocks_upper[index >> 1] = (byte) (blocks_upper[index >> 1] | upperbits); 
             } else {
                 //Shift >> 4 
-                blocks_lower[index >> 1] = (byte) (blocks_lower[index >> 1] | ((byte)blocks[index] & 0xF00 >> 4));
+                blocks_upper[index >> 1] =  (byte) (blocks_upper[index >> 1] | (upperbits << 4));
             }
 
         }
 
 
         tag.setByteArray("Blocks",blocks_lower);
-        tag.setByteArray("AddBlocks",blocks_upper);
+        boolean tripAddBlocks = false;
+        for(byte b : blocks_upper){
+            if(b > 0){tripAddBlocks = true;break;}
+        }
+
+        if(tripAddBlocks){
+            tag.setByteArray("AddBlocks",blocks_upper);
+        }
+
         tag.setByteArray("Data",blockData);
 
         for(SchematicExtension ext : extensions){
@@ -229,8 +239,9 @@ public class SchematicFile {
         for(NBTTagCompound te : tileEntities){
             tel.appendTag(te);
         }
-        tag.setTag("TileEntities", tel);
-
+        if(tel.tagCount() > 0){
+            tag.setTag("TileEntities", tel);
+        }
 
 
         //save entities
@@ -238,8 +249,9 @@ public class SchematicFile {
         for(NBTTagCompound e : entities){
             el.appendTag(e);
         }
-
-        tag.setTag("Entities", tel);
+        if(el.tagCount() > 0){
+            tag.setTag("Entities", el);
+        }
 
 
 
@@ -387,7 +399,7 @@ public class SchematicFile {
     public final NBTTagCompound getTileEntityTagAt(SchVector vector){
         return getTileEntityTagAt(vector.getX(), vector.getY(), vector.getZ());
     }
-    
+
     /**
      * Grab {@link NBTTagCompound} for a tile entity at these coordinates
      * @param x
