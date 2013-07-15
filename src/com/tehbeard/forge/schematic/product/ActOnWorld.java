@@ -75,11 +75,9 @@ public abstract class ActOnWorld  implements IFactoryOuput {
                 }   
             }   
         }
-        
-        if(idx % 100 == 0){
-            System.out.println(idx + "/" + total + "Blocks processed");
-        }
-        
+        System.out.println(idx + "/" + total + "Blocks processed");
+
+        postAction(worldVec,file);
         return null;
         
     }

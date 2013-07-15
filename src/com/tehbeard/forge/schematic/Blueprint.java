@@ -72,6 +72,8 @@ public class Blueprint {
             for(Object o : entities){
                 Entity e = (Entity)o;
                 if(e instanceof EntityPlayer){continue;}
+                
+                System.out.println("located entity of type " + e.getTranslatedEntityName() + ", preparing cryogenics");
                 NBTTagCompound tag = new NBTTagCompound();
                 e.writeToNBT(tag);
                 //Overrride location
