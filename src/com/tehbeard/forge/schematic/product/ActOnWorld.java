@@ -94,4 +94,6 @@ public abstract class ActOnWorld  implements IFactoryOuput {
     
     protected abstract Object action(int x,int y,int z,int b_id, int b_meta, SchVector worldVector, SchematicFile file);
 
+    
+    protected abstract void postAction( SchVector worldVector, SchematicFile file);
 }

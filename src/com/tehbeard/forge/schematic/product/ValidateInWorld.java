@@ -31,5 +31,11 @@ public class ValidateInWorld extends ActOnWorld {
         return null;
     }
 
+    @Override
+    protected void postAction(SchVector worldVector, SchematicFile file) {
+        // TODO Auto-generated method stub
+        
+    }
+
   
 }

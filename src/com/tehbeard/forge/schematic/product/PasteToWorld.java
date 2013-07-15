@@ -5,6 +5,9 @@ import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -52,6 +55,17 @@ public class PasteToWorld extends ActOnWorld {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void postAction(SchVector worldVector, SchematicFile file) {
+        for(NBTTagCompound e : file.getEntities()){
+            Entity entity = EntityList.createEntityFromNBT(e, world);
+            entity.posX += worldVector.getX();
+            entity.posY += worldVector.getY();
+            entity.posZ += worldVector.getZ();
+            world.spawnEntityInWorld(entity);
+        }
     }
 
 }
