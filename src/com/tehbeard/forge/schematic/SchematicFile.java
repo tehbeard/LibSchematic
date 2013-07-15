@@ -165,7 +165,7 @@ public class SchematicFile {
         NBTTagList entityTag = tag.getTagList("Entities");
 
         for(int i =0;i<entityTag.tagCount();i++){
-            entities.add((NBTTagCompound) tileEntityTag.tagAt(i));
+            entities.add((NBTTagCompound) entityTag.tagAt(i));
         }
 
         extensions = SchematicDataRegistry.getExtensions(tag, this);

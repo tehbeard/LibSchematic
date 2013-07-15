@@ -61,6 +61,7 @@ public class PasteToWorld extends ActOnWorld {
     protected void postAction(SchVector worldVector, SchematicFile file) {
         for(NBTTagCompound e : file.getEntities()){
             Entity entity = EntityList.createEntityFromNBT(e, world);
+            if(entity == null){continue;}
             entity.posX += worldVector.getX();
             entity.posY += worldVector.getY();
             entity.posZ += worldVector.getZ();
