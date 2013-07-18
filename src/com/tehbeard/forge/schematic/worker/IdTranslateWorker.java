@@ -1,8 +1,6 @@
 package com.tehbeard.forge.schematic.worker;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.extensions.IdTranslateExtension;
 
@@ -20,12 +18,15 @@ public class IdTranslateWorker extends AbstractSchematicWorker {
     @Override
     public SchematicFile modifySchematic(SchematicFile original) {
         IdTranslateExtension ext = original.getExtension(IdTranslateExtension.class);
-        if(ext == null){return original;}
+        if(ext == null){SchematicDataRegistry.logger().severe("No extension found");return original;}
 
         for(int y = 0;y<original.getHeight();y++){
             for(int x = 0;x<original.getWidth();x++){
                 for(int z = 0;z<original.getLength();z++){
-                    original.setBlockId(x, y, z, ext.translateId(original.getBlockId(x, y, z)));
+                    int oldid = original.getBlockId(x, y, z);
+                    int newid = ext.translateId(oldid);
+                    SchematicDataRegistry.logger().info("" + oldid + " - " + newid);
+                    original.setBlockId(x, y, z, newid);
                 }
             }
         }

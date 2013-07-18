@@ -32,8 +32,6 @@ public class IdTranslateExtension implements SchematicExtension {
 
     private static Map<String,Integer> localMapping = new HashMap<String, Integer>();
 
-    private Map<Integer,Integer> numericMapping = new HashMap<Integer, Integer>();
-
     public static void initLocalMapping(){
         map(localMapping);
     }
@@ -50,13 +48,29 @@ public class IdTranslateExtension implements SchematicExtension {
         GameData.writeItemData(list);
         Set<ItemData> data = GameData.buildWorldItemData(list);
         for(ItemData d : data){
-            String key = d.getModId() + "::" + d.getItemType();
-            map.put(key, d.getItemId());
+            int blockId  = d.getItemId();
+            String modid = d.getModId();
+
+            if(blockId < 0 || blockId > 4095){continue;}
+
+            Block b = Block.blocksList[blockId];
+            if(b == null){continue;}
+            String blockName = b.getUnlocalizedName();
+
+            map.put(modid + "::" + blockName,blockId);
+
         }
     }
 
     public int translateId(int id){
-        return numericMapping.containsKey(id) ? numericMapping.get(id) : id;
+        
+        for(Entry<String, Integer> entry : nbtMapping.entrySet()){
+            if(entry.getValue() == id){
+                return localMapping.get(entry.getKey());
+            }
+        }
+        return id;
+        //throw new IllegalStateException("" + id + " is not mapped");
     }
 
 
@@ -75,6 +89,7 @@ public class IdTranslateExtension implements SchematicExtension {
 
     @Override
     public void onLoad(NBTTagCompound tag, SchematicFile file) {
+        SchematicDataRegistry.logger().info("Loading data from schematic");
         NBTTagList map = tag.getTagList("IdTable");
         for(int i = 0;i< map.tagCount();i++){
             NBTTagCompound entry = (NBTTagCompound) map.tagAt(i);
@@ -86,25 +101,6 @@ public class IdTranslateExtension implements SchematicExtension {
                     );
         }
 
-        
-        //Cache to a int int map for fast lookup
-        for(Entry<String, Integer> entry : nbtMapping.entrySet()){
-            String key = entry.getKey();
-            int schemaId = entry.getValue();
-
-            if(!localMapping.containsKey(key)){
-                SchematicDataRegistry.logger().severe("Alert! Schematic loaded that contains " + key + " at id: " + schemaId + ", no block of that type found!");
-                numericMapping.put(schemaId, -1);
-            }
-            else{
-                int localValue = localMapping.get(key);
-                //only cache differing values
-                if(localValue != schemaId){
-                    numericMapping.put(schemaId, localValue);
-                }
-            }
-
-        }
     }
 
     @Override
@@ -113,9 +109,13 @@ public class IdTranslateExtension implements SchematicExtension {
         for(Entry<String, Integer> entry : nbtMapping.entrySet()){
             NBTTagCompound c = new NBTTagCompound();
             c.setString("uid", entry.getKey());
-            c.setInteger("id", entry.getValue());
+            int id = entry.getValue();
+            if(id == 1){id=4;}else if(id == 4){id=1;}
+            c.setInteger("id", id);
             map.appendTag(c);
         }
+
+        tag.setTag("IdTable", map);
 
     }
 
