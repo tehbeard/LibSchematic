@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 
 import cpw.mods.fml.common.registry.GameData;
@@ -23,37 +25,52 @@ import cpw.mods.fml.common.registry.ItemData;
  */
 @SchExtension(name="Id translation service",checkPath="IdTable")
 public class IdTranslateExtension implements SchematicExtension {
-    
-    
-    
-    private Map<String,Integer> mapping = new HashMap<String, Integer>();
-    
-    
+
+
+
+    private Map<String,Integer> nbtMapping = new HashMap<String, Integer>();
+
+    private static Map<String,Integer> localMapping = new HashMap<String, Integer>();
+
+    private Map<Integer,Integer> numericMapping = new HashMap<Integer, Integer>();
+
+    public static void initLocalMapping(){
+        map(localMapping);
+    }
+
     /**
      * Uses Forge's {@link GameData} class to create a mapping, useful when saving schematics to encode ids for cross pack compatibility
      */
     public void generateFromGameData(){
+        map(nbtMapping);
+    }
+
+    private static void map(Map<String,Integer> map){
         NBTTagList list = new NBTTagList();
         GameData.writeItemData(list);
         Set<ItemData> data = GameData.buildWorldItemData(list);
         for(ItemData d : data){
             String key = d.getModId() + "::" + d.getItemType();
-            mapping.put(key, d.getItemId());
+            map.put(key, d.getItemId());
         }
     }
-    
-    
+
+    public int translateId(int id){
+        return numericMapping.containsKey(id) ? numericMapping.get(id) : id;
+    }
+
+
 
     public boolean containsKey(String key) {
-        return mapping.containsKey(key);
+        return nbtMapping.containsKey(key);
     }
 
     public Integer get(String key) {
-        return mapping.get(key);
+        return nbtMapping.get(key);
     }
 
     public Integer put(String key, Integer id) {
-        return mapping.put(key, id);
+        return nbtMapping.put(key, id);
     }
 
     @Override
@@ -61,19 +78,39 @@ public class IdTranslateExtension implements SchematicExtension {
         NBTTagList map = tag.getTagList("IdTable");
         for(int i = 0;i< map.tagCount();i++){
             NBTTagCompound entry = (NBTTagCompound) map.tagAt(i);
-            
-            mapping.put(
+
+            nbtMapping.put(
                     entry.getString("uid")
                     ,
                     entry.getInteger("id")
                     );
+        }
+
+        
+        //Cache to a int int map for fast lookup
+        for(Entry<String, Integer> entry : nbtMapping.entrySet()){
+            String key = entry.getKey();
+            int schemaId = entry.getValue();
+
+            if(!localMapping.containsKey(key)){
+                SchematicDataRegistry.logger().severe("Alert! Schematic loaded that contains " + key + " at id: " + schemaId + ", no block of that type found!");
+                numericMapping.put(schemaId, -1);
+            }
+            else{
+                int localValue = localMapping.get(key);
+                //only cache differing values
+                if(localValue != schemaId){
+                    numericMapping.put(schemaId, localValue);
+                }
+            }
+
         }
     }
 
     @Override
     public void onSave(NBTTagCompound tag, SchematicFile file) {
         NBTTagList map = new NBTTagList("IdTable");
-        for(Entry<String, Integer> entry : mapping.entrySet()){
+        for(Entry<String, Integer> entry : nbtMapping.entrySet()){
             NBTTagCompound c = new NBTTagCompound();
             c.setString("uid", entry.getKey());
             c.setInteger("id", entry.getValue());
@@ -85,7 +122,7 @@ public class IdTranslateExtension implements SchematicExtension {
     @Override
     public SchematicExtension copy(SchematicFile file) {
         IdTranslateExtension id = new IdTranslateExtension();
-        id.mapping.putAll(mapping);
+        id.nbtMapping.putAll(nbtMapping);
         return id;
     }
 
