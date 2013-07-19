@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityFallingSand;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
@@ -25,7 +26,8 @@ public class PasteAsSand extends ActOnWorld {
     }
 
     @Override
-    protected Object action(int x,int y,int z,int b_id, int b_meta, SchVector worldVector, SchematicFile file) {
+    protected Object action(int x, int y, int z, int b_id, int b_meta,
+            TileEntity tileEntity, SchVector worldVector, SchematicFile file) {
         if(Block.blocksList[b_id] != null || b_id == 0){
             
             //world.setBlock(,2);// - Vanilla Standard
@@ -73,5 +75,7 @@ public class PasteAsSand extends ActOnWorld {
         }
         
     }
+
+   
 
 }

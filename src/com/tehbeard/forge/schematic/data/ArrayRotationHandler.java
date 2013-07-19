@@ -1,5 +1,7 @@
 package com.tehbeard.forge.schematic.data;
 
+import net.minecraft.tileentity.TileEntity;
+
 import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
@@ -10,7 +12,7 @@ import com.tehbeard.forge.schematic.SchematicFile;
  * @author James
  *
  */
-public class ArrayRotationHandler implements SchematicRotationHandler{
+public class ArrayRotationHandler extends SimpleRotationHandler{
 
     private int [] rotationsArray;
     private int mask;
@@ -55,4 +57,5 @@ public class ArrayRotationHandler implements SchematicRotationHandler{
 
     }
 
+    
 }

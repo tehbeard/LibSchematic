@@ -1,5 +1,7 @@
 package com.tehbeard.forge.schematic.data;
 
+import net.minecraft.tileentity.TileEntity;
+
 import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
@@ -22,4 +24,18 @@ public interface SchematicRotationHandler extends SchematicDataHandler {
      * @return new metadata for rotation
      */
     public int rotateData(SchematicFile schematic,int x,int y, int z,int blockId, int metadata,int rotations);
+    
+    
+    /**
+     * 
+     * @param schematic
+     * @param x
+     * @param y
+     * @param z
+     * @param blockId
+     * @param metadata
+     * @param tileEntity
+     * @param rotations
+     */
+    public void rotateTileEntity(SchematicFile schematic,int x,int y, int z,int blockId,int metadata,TileEntity tileEntity,int rotations);
 }

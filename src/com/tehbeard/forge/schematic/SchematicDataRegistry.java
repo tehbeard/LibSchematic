@@ -38,7 +38,7 @@ import cpw.mods.fml.common.network.NetworkMod;
  * @author James
  *
  */
-@Mod(modid = "tehbeard.schematic",name="LibSchematic",version="1.00")
+@Mod(modid = "libschematic",name="LibSchematic",version="1.00")
 @NetworkMod(clientSideRequired=false)
 public class SchematicDataRegistry {
 
@@ -82,6 +82,7 @@ public class SchematicDataRegistry {
         }
         
         IdTranslateExtension.initLocalMapping();
+        
     }
     
     

@@ -1,5 +1,7 @@
 package com.tehbeard.forge.schematic.data;
 
+import net.minecraft.tileentity.TileEntity;
+
 import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
@@ -25,7 +27,7 @@ public class VanillaRotations {
     public static final SchematicRotationHandler QUARTZ = new ArrayRotationHandler(0,3,4);
     public static final SchematicRotationHandler WOOD = new ArrayRotationHandler(0x3,0x4,0x8);
     public static final SchematicRotationHandler ANVIL = new ArrayRotationHandler(0xE,0,1);
-    public static final SchematicRotationHandler RAIL = new SchematicRotationHandler(){
+    public static final SchematicRotationHandler RAIL = new SimpleRotationHandler(){
 
         @Override
         public int rotateData(SchematicFile schematic, int x, int y, int z,
@@ -70,9 +72,11 @@ public class VanillaRotations {
             //          0x9: southwest corner (connecting east and north)
         }
 
+        
+
     };
     
-    public static final SchematicDataHandler VINES = new SchematicRotationHandler() {
+    public static final SchematicDataHandler VINES = new SimpleRotationHandler() {
         
         @Override
         public int rotateData(SchematicFile schematic, int x, int y, int z,
@@ -83,16 +87,18 @@ public class VanillaRotations {
         }
     };
 
-    public static final SchematicDataHandler SIGN_POST = new SchematicRotationHandler() {
+    public static final SchematicDataHandler SIGN_POST = new SimpleRotationHandler() {
         
         @Override
         public int rotateData(SchematicFile schematic, int x, int y, int z,
                 int blockId, int metadata, int rotations) {
             return (metadata + (4*rotations)) % 16;
         }
+
+        
     };
     
-    public static final SchematicDataHandler DOOR = new SchematicRotationHandler() {
+    public static final SchematicDataHandler DOOR = new SimpleRotationHandler() {
         
         @Override
         public int rotateData(SchematicFile schematic, int x, int y, int z,
