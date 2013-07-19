@@ -1,11 +1,25 @@
 [
 {
-  "modid": "tehbeard.schematic",
+  "modid": "libschematic",
   "name": "LibSchematic",
   "version": "1.0",
   "description": "Provides a unified schematic library that allows cross compatbility between forge mods when pasting their blocks.",
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
   "logoFile":"/mods/libschematic/libschematic.png"
+}
+,
+{
+  "modid": "libschematic.compat.ironchest",
+  "name": "LibSchematic::IronChest",
+  "version": "1.0",
+  "description": "Test compatibility layer for IronChests",
+  "url":"tehbeard.com",
+  "authorList":["Tehbeard"],
+  "logoFile":"/mods/libschematic/libschematic.png",
+  "requiredMods":["libschematic"],
+  "dependencies":["libschematic"],
+  "useDependencyInformation":"true",
+  "parent":"libschematic"
 }
 ]
