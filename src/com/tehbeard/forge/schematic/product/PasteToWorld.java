@@ -59,11 +59,14 @@ public class PasteToWorld extends ActOnWorld {
     @Override
     protected void postAction(SchVector worldVector, SchematicFile file) {
         for(NBTTagCompound e : file.getEntities()){
+            //Entity entity = EntityList.createEntityFromNBT(e, world);
+            SchematicDataRegistry.logger().info("World is " + (world.isRemote ? " client " : " server "));
             Entity entity = EntityList.createEntityFromNBT(e, world);
             if(entity == null){continue;}
-            entity.posX += worldVector.getX();
-            entity.posY += worldVector.getY();
-            entity.posZ += worldVector.getZ();
+            entity.setPosition(entity.posX + worldVector.getX(),
+            entity.posY + worldVector.getY(),
+            entity.posZ + worldVector.getZ()
+            );
             world.spawnEntityInWorld(entity);
         }
     }
