@@ -17,7 +17,7 @@
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
   "logoFile":"/mods/libschematic/libschematic.png",
-  "requiredMods":["libschematic","IronChest"],
+  "requiredMods":["libschematic"],
   "dependencies":["libschematic","IronChest"],
   "useDependencyInformation":"true",
   "parent":"libschematic"
