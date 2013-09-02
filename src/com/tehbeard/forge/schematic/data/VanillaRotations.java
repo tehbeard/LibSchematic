@@ -1,7 +1,5 @@
 package com.tehbeard.forge.schematic.data;
 
-import net.minecraft.tileentity.TileEntity;
-
 import com.tehbeard.forge.schematic.SchematicFile;
 
 /**

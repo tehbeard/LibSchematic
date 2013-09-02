@@ -34,10 +34,18 @@ public class PasteToWorld extends ActOnWorld {
 
             Chunk chunk = world.getChunkFromBlockCoords(worldVector.getX(), worldVector.getZ());
             ExtendedBlockStorage storageArray = chunk.getBlockStorageArray()[worldVector.getY() >> 4];
+            
+            if (storageArray == null) {
+                ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
+                storageArrays[worldVector.getY() >> 4] = new ExtendedBlockStorage(storageArrays[(worldVector.getY() >> 4) - 1].getYLocation() + 16 ,!world.provider.hasNoSky);
+                storageArray = chunk.getBlockStorageArray()[worldVector.getY() >> 4];
+            }
 
             storageArray.setExtBlockID(worldVector.getX() & 15, worldVector.getY() & 15, worldVector.getZ() & 15, b_id);
             storageArray.setExtBlockMetadata(worldVector.getX() & 15, worldVector.getY() & 15, worldVector.getZ() & 15, b_meta);
             chunk.isModified = true;
+            
+            world.updateAllLightTypes(worldVector.getX(), worldVector.getY(), worldVector.getZ());
 
             world.markBlockForUpdate(worldVector.getX(), worldVector.getY(), worldVector.getZ());
             //world;
@@ -59,11 +67,14 @@ public class PasteToWorld extends ActOnWorld {
     @Override
     protected void postAction(SchVector worldVector, SchematicFile file) {
         for(NBTTagCompound e : file.getEntities()){
+            //Entity entity = EntityList.createEntityFromNBT(e, world);
+            SchematicDataRegistry.logger().info("World is " + (world.isRemote ? " client " : " server "));
             Entity entity = EntityList.createEntityFromNBT(e, world);
             if(entity == null){continue;}
-            entity.posX += worldVector.getX();
-            entity.posY += worldVector.getY();
-            entity.posZ += worldVector.getZ();
+            entity.setPosition(entity.posX + worldVector.getX(),
+            entity.posY + worldVector.getY(),
+            entity.posZ + worldVector.getZ()
+            );
             world.spawnEntityInWorld(entity);
         }
     }
