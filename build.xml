@@ -44,8 +44,8 @@
   </target>
 
   <target name="replace_tokens">
-    <replace dir="${build.dir.development}/mcp/src/minecraft" token="@VERSION@" value="${build.release.mod.version}" />
-    <replace dir="${build.dir.development}/mcp/src/minecraft" token="@FINGERPRINT@" value="${build.release.mod.fingerprint}" />
+    <replace dir="${build.dir.development}/mcp/src/minecraft" token="@VERSION@" value="${build.mod.version}" />
+    <replace dir="${build.dir.development}/mcp/src/minecraft" token="@FINGERPRINT@" value="${build.mod.fingerprint}" />
     <replace dir="${build.dir.development}/mcp/src/minecraft" token="@BUILD_NUMBER@" value="${build_number.build_number}" />
   </target>
 
