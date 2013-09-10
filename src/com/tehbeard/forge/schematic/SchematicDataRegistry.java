@@ -86,7 +86,7 @@ public class SchematicDataRegistry {
     }
     
     
-    @EventHandler
+    /*@EventHandler
     public void IMC(IMCEvent event){
         
         for(IMCMessage msg : event.getMessages()){
@@ -98,7 +98,7 @@ public class SchematicDataRegistry {
                 logger.warning("Invalid IMC message from " + msg.getSender());
             }
         }
-    }
+    }*/
 
     /**
      * Returns the logger for this mod
