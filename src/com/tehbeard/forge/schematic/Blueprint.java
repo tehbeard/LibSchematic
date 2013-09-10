@@ -75,7 +75,7 @@ public class Blueprint {
 
                 System.out.println("located entity of type " + e.getTranslatedEntityName() + ", preparing cryogenics");
                 NBTTagCompound tag = new NBTTagCompound();
-                if(e.addEntityID(tag)){
+                if(e.writeToNBTOptional(tag)){
                     //Overrride location
                     double x = e.posX - min.getX();
                     double y = e.posY - min.getY();
