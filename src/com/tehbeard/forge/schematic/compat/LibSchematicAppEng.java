@@ -24,6 +24,11 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 
+/**
+ * Adds rotation suport to AE blocks
+ * @author James
+ *
+ */
 @Mod(modid = "libschematic.compat.appeng",name="LibSchematic::AppliedEnergistics",version="1.0",dependencies="after:AppliedEnergistics")
 public class LibSchematicAppEng {
 	@EventHandler
@@ -39,6 +44,26 @@ public class LibSchematicAppEng {
 
 					return metadata;
 				}
+				
+				private Field getDatField(Class c,String fieldName,int depth){
+					
+					try {
+						Field f = c.getDeclaredField(fieldName);
+						f.setAccessible(true);
+						return f;
+					} catch (NoSuchFieldException e) {
+						if(depth > 1){
+							return getDatField(c.getSuperclass(), fieldName, depth-1);
+						}
+						else
+						{
+							return null;
+						}
+					} catch (SecurityException e) {
+						e.printStackTrace();
+						return null;
+					}
+				}
 
 				@Override
 				public void rotateTileEntity(SchematicFile schematic, int x, int y,
@@ -48,14 +73,14 @@ public class LibSchematicAppEng {
 					if(tileEntity instanceof AppEngTile){
 						try{
 							SchematicDataRegistry.logger().info("AE: " + tileEntity.getClass().getName());
-							Field f = tileEntity.getClass().getField("orientation");
-							f.setAccessible(true);
+							Field f = getDatField(tileEntity.getClass(),"orientation",2);
+							
+							if(f == null){	SchematicDataRegistry.logger().info("NO FIELD FOUND");return;}
+							
 							ForgeDirection dir = (ForgeDirection) f.get(tileEntity);
 							dir = fdRotate(dir, rotations);
 							f.set(tileEntity, dir);
-						}catch(NoSuchFieldException e){
-							SchematicDataRegistry.logger().info("NO FIELD FOUND");
-						} 
+						}
 						catch (IllegalArgumentException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
