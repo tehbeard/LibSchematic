@@ -47,12 +47,16 @@ public class LibSchematicAppEng {
 					if(tileEntity == null){return;}
 					if(tileEntity instanceof AppEngTile){
 						try{
+							SchematicDataRegistry.logger().info("AE: " + tileEntity.getClass().getName());
 							Field f = tileEntity.getClass().getField("orientation");
 							f.setAccessible(true);
 							ForgeDirection dir = (ForgeDirection) f.get(tileEntity);
 							dir = fdRotate(dir, rotations);
 							f.set(tileEntity, dir);
-						}catch(NoSuchFieldException e){} catch (IllegalArgumentException e) {
+						}catch(NoSuchFieldException e){
+							SchematicDataRegistry.logger().info("NO FIELD FOUND");
+						} 
+						catch (IllegalArgumentException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (IllegalAccessException e) {
