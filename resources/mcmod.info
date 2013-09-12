@@ -1,11 +1,22 @@
 [
 {
-  "modid": "tehbeard.schematic",
+  "modid": "libschematic",
   "name": "LibSchematic",
   "version": "1.0",
   "description": "Provides a unified schematic library that allows cross compatbility between forge mods when pasting their blocks.",
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
   "logoFile":"/mods/libschematic/libschematic.png"
+},
+{
+  "modid": "libschematic.compat.appeng",
+  "name": "LibSchematic::AppliedEnergistics",
+  "version": "1.0",
+  "description": "Adds support for Applied Energisitics blocks",
+  "url":"tehbeard.com",
+  "authorList":["Tehbeard"],
+  "parent":"libschematic",
+  "dependencies": [ "AppliedEnergistics" ],
+  "useDependencyInformation":"true"
 }
 ]
