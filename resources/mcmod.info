@@ -47,4 +47,20 @@
   "useDependencyInformation":"true",
   "parent":"libschematic"
 }
+,
+{
+  "modid": "libschematic.compat.buildcraft.silicon",
+  "name": "LibSchematic::Buildcraft::Silicon",
+  "version": "1.0",
+  "description": "BC laser support",
+  "url":"tehbeard.com",
+  "authorList":["Tehbeard"],
+  "logoFile":"/mods/libschematic/libschematic.png",
+  "requiredMods":["libschematic"],
+  "dependencies":["libschematic","BuildCraft|Silicon"],
+  "useDependencyInformation":"true",
+  "parent":"libschematic"
+}
 ]
+
+
