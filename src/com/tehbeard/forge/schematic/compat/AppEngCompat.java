@@ -30,7 +30,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
  *
  */
 @Mod(modid = "libschematic.compat.appeng",name="LibSchematic::AppliedEnergistics",version="1.0",dependencies="after:AppliedEnergistics",useMetadata=true)
-public class LibSchematicAppEng {
+public class AppEngCompat {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		if(Loader.isModLoaded("AppliedEnergistics")){

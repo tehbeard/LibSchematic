@@ -15,7 +15,7 @@ import cpw.mods.ironchest.IronChest;
 import cpw.mods.ironchest.TileEntityIronChest;
 
 @Mod(modid = "libschematic.compat.ironchest",name="LibSchematic::IronChest",version="1.0",useMetadata=true)
-public class SchematicIronChest {
+public class IronChestCompat {
 
 
     @EventHandler
@@ -34,7 +34,6 @@ public class SchematicIronChest {
                 @Override
                 public void rotateTileEntity(SchematicFile schematic, int x, int y,
                         int z, int blockId, int metadata, TileEntity tileEntity,int rotations) {
-                    SchematicDataRegistry.logger().info("IRON CHEST FIRED");
                     TileEntityIronChest teic = (TileEntityIronChest)tileEntity;
                     int facing = teic.getFacing();
                     facing = VanillaRotations.CONTAINER_PISTON.rotateData(schematic, x, y, z, blockId, facing, rotations);
