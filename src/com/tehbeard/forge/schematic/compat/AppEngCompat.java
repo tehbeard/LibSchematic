@@ -17,6 +17,7 @@ import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.data.SchematicRotationHandler;
 import com.tehbeard.forge.schematic.data.SimpleRotationHandler;
+import com.tehbeard.forge.schematic.data.TileEntityRotationHandler;
 import com.tehbeard.forge.schematic.data.VanillaRotations;
 
 import cpw.mods.fml.common.Loader;
@@ -36,14 +37,7 @@ public class AppEngCompat {
 		if(Loader.isModLoaded("AppliedEnergistics")){
 			SchematicDataRegistry.logger().info("Installing AppliedEnergistics handler");
 			
-			SimpleRotationHandler rotatron = new SimpleRotationHandler() {
-
-				@Override
-				public int rotateData(SchematicFile schematic, int x, int y, int z,
-						int blockId, int metadata, int rotations) {
-
-					return metadata;
-				}
+			TileEntityRotationHandler rotatron = new TileEntityRotationHandler() {
 				
 				private Field getDatField(Class c,String fieldName,int depth){
 					

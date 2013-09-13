@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.data.SchematicRotationHandler;
+import com.tehbeard.forge.schematic.data.TileEntityRotationHandler;
 import com.tehbeard.forge.schematic.data.VanillaRotations;
 
 import cpw.mods.fml.common.Loader;
@@ -22,14 +23,7 @@ public class IronChestCompat {
     public void postInit(FMLPostInitializationEvent event){
         if(Loader.isModLoaded("IronChest")){
             SchematicDataRegistry.logger().info("Installing IronChest handler");
-            SchematicDataRegistry.setHandler(IronChest.ironChestBlock.blockID, new SchematicRotationHandler() {
-
-                @Override
-                public int rotateData(SchematicFile schematic, int x, int y, int z,
-                        int blockId, int metadata, int rotations) {
-
-                    return metadata;
-                }
+            SchematicDataRegistry.setHandler(IronChest.ironChestBlock.blockID, new TileEntityRotationHandler() {
 
                 @Override
                 public void rotateTileEntity(SchematicFile schematic, int x, int y,
