@@ -24,12 +24,26 @@
   "modid": "libschematic.compat.ironchest",
   "name": "LibSchematic::IronChest",
   "version": "1.0",
-  "description": "Test compatibility layer for IronChests",
+  "description": "IronChests support",
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
   "logoFile":"/mods/libschematic/libschematic.png",
   "requiredMods":["libschematic"],
   "dependencies":["libschematic","IronChest"],
+  "useDependencyInformation":"true",
+  "parent":"libschematic"
+}
+,
+{
+  "modid": "libschematic.compat.buildcraft.energy",
+  "name": "LibSchematic::Buildcraft::energy",
+  "version": "1.0",
+  "description": "BC engine support",
+  "url":"tehbeard.com",
+  "authorList":["Tehbeard"],
+  "logoFile":"/mods/libschematic/libschematic.png",
+  "requiredMods":["libschematic"],
+  "dependencies":["libschematic","BuildCraft|Energy"],
   "useDependencyInformation":"true",
   "parent":"libschematic"
 }
