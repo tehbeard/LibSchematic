@@ -19,4 +19,18 @@
   "dependencies": [ "AppliedEnergistics" ],
   "useDependencyInformation":"true"
 }
+,
+{
+  "modid": "libschematic.compat.ironchest",
+  "name": "LibSchematic::IronChest",
+  "version": "1.0",
+  "description": "Test compatibility layer for IronChests",
+  "url":"tehbeard.com",
+  "authorList":["Tehbeard"],
+  "logoFile":"/mods/libschematic/libschematic.png",
+  "requiredMods":["libschematic"],
+  "dependencies":["libschematic","IronChest"],
+  "useDependencyInformation":"true",
+  "parent":"libschematic"
+}
 ]
