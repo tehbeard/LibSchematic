@@ -1,6 +1,7 @@
 package com.tehbeard.forge.schematic.extensions;
 
 
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,16 +12,23 @@ import java.util.Map;
  *
  * @param <T>
  */
-public class ClassCatalogue<T> {
+public abstract class ClassCatalogue<T> {
     
     private Map<String,Class<? extends T>> catalogue = new HashMap<String, Class<? extends T>>();
     
+    private Class<? extends Annotation> ann; 
+    
+    public ClassCatalogue(Class<? extends Annotation> annotation){
+    	this.ann = annotation;
+    }
     public void addProduct(Class<? extends T> _class){
-        if(_class.getAnnotation(SchExtension.class) == null){throw new IllegalStateException("No @SchExtension found for class " + _class.getSimpleName());}
-        catalogue.put(_class.getAnnotation(SchExtension.class).checkPath(), _class);
+        if(_class.getAnnotation(ann) == null){throw new IllegalStateException("No annotation found for class " + _class.getSimpleName());}
+        catalogue.put(getTag(_class), _class);
     }
     
-    public Class<? extends T> get(String tag){
+    protected abstract String getTag(Class<? extends T> _class);
+    
+	public Class<? extends T> get(String tag){
         return catalogue.get(tag);
     }
     

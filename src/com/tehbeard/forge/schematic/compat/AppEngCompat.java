@@ -16,9 +16,9 @@ import appeng.me.tile.TileTerminal;
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.data.SchematicRotationHandler;
-import com.tehbeard.forge.schematic.data.VanillaRotations;
 import com.tehbeard.forge.schematic.data.rotations.SimpleRotationHandler;
 import com.tehbeard.forge.schematic.data.rotations.TileEntityRotationHandler;
+import com.tehbeard.forge.schematic.data.rotations.VanillaRotations;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;

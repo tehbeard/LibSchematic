@@ -2,7 +2,9 @@ package com.tehbeard.forge.schematic;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,8 +14,9 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 
-import com.tehbeard.forge.schematic.data.VanillaRotations;
+import com.tehbeard.forge.schematic.data.ITileEntityLoadHandler;
 import com.tehbeard.forge.schematic.data.SchematicDataHandler;
+import com.tehbeard.forge.schematic.data.rotations.VanillaRotations;
 import com.tehbeard.forge.schematic.extensions.ClassCatalogue;
 import com.tehbeard.forge.schematic.extensions.IdTranslateExtension;
 import com.tehbeard.forge.schematic.extensions.LayersExtension;
@@ -188,7 +191,20 @@ public class SchematicDataRegistry {
 		dataHandlers[Block.wood.blockID] = VanillaRotations.WOOD;
 	}
 
-	private static final ClassCatalogue<SchematicExtension> schematicExtensions = new ClassCatalogue<SchematicExtension>();
+	private static final ClassCatalogue<SchematicExtension> schematicExtensions = 
+			new ClassCatalogue<SchematicExtension>(SchExtension.class){
+
+				@Override
+				protected String getTag(
+						Class<? extends SchematicExtension> _class) {
+					
+					return _class.getAnnotation(SchExtension.class).checkPath();
+				}
+		
+	};
+	
+	private static final Map<String,ITileEntityLoadHandler> tileEntityLoaders = new HashMap<String, ITileEntityLoadHandler>();
+	
 
 	/**
 	 * Adds an extension for usage.
