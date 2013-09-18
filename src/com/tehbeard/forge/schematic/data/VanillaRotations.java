@@ -1,6 +1,8 @@
 package com.tehbeard.forge.schematic.data;
 
 import com.tehbeard.forge.schematic.SchematicFile;
+import com.tehbeard.forge.schematic.data.rotations.ArrayRotationHandler;
+import com.tehbeard.forge.schematic.data.rotations.SimpleRotationHandler;
 
 /**
  * Container class for all vanilla blocks/tile entities requiring rotation. 

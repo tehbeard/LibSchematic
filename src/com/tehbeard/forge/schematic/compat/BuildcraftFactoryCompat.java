@@ -13,9 +13,9 @@ import buildcraft.energy.TileEngine;
 
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
-import com.tehbeard.forge.schematic.data.ForgeDirectionRotationHandler;
-import com.tehbeard.forge.schematic.data.SimpleRotationHandler;
-import com.tehbeard.forge.schematic.data.TileEntityRotationHandler;
+import com.tehbeard.forge.schematic.data.rotations.ForgeDirectionRotationHandler;
+import com.tehbeard.forge.schematic.data.rotations.SimpleRotationHandler;
+import com.tehbeard.forge.schematic.data.rotations.TileEntityRotationHandler;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
