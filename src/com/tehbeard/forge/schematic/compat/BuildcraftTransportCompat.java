@@ -28,7 +28,8 @@ public class BuildcraftTransportCompat {
 		if(Loader.isModLoaded("BuildCraft|Transport")){
 			SchematicDataRegistry.logger().info("Installing BuildCraft|Transport handler");
 			
-			//BuildCraftTransport.
+			SchematicDataRegistry.setHandler(BuildCraftTransport.genericPipeBlock.blockID, new ForgeDirectionRotationHandler());
+			SchematicDataRegistry.setHandler(BuildCraftTransport.filteredBufferBlock.blockID, new ForgeDirectionRotationHandler());
 		}
 	}
 }

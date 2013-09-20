@@ -14,6 +14,10 @@ public class ForgeDirectionRotationHandler extends SimpleRotationHandler{
 
     private int mask;
     
+    public ForgeDirectionRotationHandler(){
+    	this(0);
+    }
+    
     /**
      * 
      * @param mask mask for data that is NOT rotation bits
