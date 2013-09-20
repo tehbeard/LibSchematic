@@ -4,8 +4,6 @@ import java.lang.reflect.Field;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import appeng.common.AppEng;
-import appeng.common.base.AppEngTile;
 import buildcraft.BuildCraftEnergy;
 import buildcraft.energy.TileEngine;
 

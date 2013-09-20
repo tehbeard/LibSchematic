@@ -203,7 +203,7 @@ public class SchematicDataRegistry {
 		
 	};
 	
-	private static final Map<String,ITileEntityLoadHandler> tileEntityLoaders = new HashMap<String, ITileEntityLoadHandler>();
+	public static final Map<String,ITileEntityLoadHandler> tileEntityLoaders = new HashMap<String, ITileEntityLoadHandler>();
 	
 
 	/**

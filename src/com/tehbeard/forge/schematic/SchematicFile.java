@@ -433,6 +433,12 @@ public class SchematicFile {
     public final TileEntity getTileEntityAt(int x,int y, int z){
         NBTTagCompound te = getTileEntityTagAt(x, y, z);
         if(te==null){return null;}
+        String tileId = te.getString("id");
+        
+        //Run TileEntity tag through loader if needed.
+        if(SchematicDataRegistry.tileEntityLoaders.containsKey(tileId )){
+        	return SchematicDataRegistry.tileEntityLoaders.get(tileId).generateTileEntity(te);
+        }
         return TileEntity.createAndLoadEntity(te);
     }
 
