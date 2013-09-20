@@ -31,8 +31,7 @@ public class MultipartCompat {
 				
 				@Override
 				public TileEntity generateTileEntity(NBTTagCompound tag) {
-					//MultipartHelper helper =
-					return TileMultipart.createFromNBT(tag);
+					return TileMultipart.createFromNBT(tag);//TODO - Fix when I get a version of FMP with the helper.
 				}
 			};
 			
