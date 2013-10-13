@@ -19,7 +19,7 @@ import com.tehbeard.forge.schematic.extensions.TagsExtension;
 import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
 import com.tehbeard.forge.schematic.handlers.rotations.VanillaRotations;
-import com.tehbeard.forge.schematic.handlers.tileentity.ITileEntityLoadHandler;
+import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -185,7 +185,8 @@ public class SchematicDataRegistry {
 
     };
 
-    public static final Map<String, ITileEntityLoadHandler> tileEntityLoaders = new HashMap<String, ITileEntityLoadHandler>();
+    public static final Map<String, TileEntityTranslator> tileEntityManager = new HashMap<String, TileEntityTranslator>();
+    public static final TileEntityTranslator defaultTileEntityManager = new TileEntityTranslator();
 
     /**
      * Adds an extension for usage.

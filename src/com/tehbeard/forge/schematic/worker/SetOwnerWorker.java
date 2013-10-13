@@ -7,8 +7,8 @@ import com.tehbeard.forge.schematic.handlers.schematic.SchematicOwnerHandler;
 
 /**
  * Uses the {@link SchematicDataRegistry}s list of {@link SchematicDataHandler}
- * s, specifically {@link SchematicOwnerHandler}s to change the owner of a
- * schematic
+ * s, specifically {@link SchematicOwnerHandler}s to change the owner of blocks
+ * in a schematic
  * 
  * @author James
  * 
@@ -36,7 +36,7 @@ public class SetOwnerWorker extends AbstractSchematicWorker {
                         ownerChanger.setOwner(original, x, y, z,
                                 original.getBlockId(x, y, z),
                                 original.getBlockData(x, y, z),
-                                original.getTileEntityAt(x, y, z), newOwner);
+                                original.getTileEntityTagAt(x, y, z), newOwner);
                     }
 
                 }

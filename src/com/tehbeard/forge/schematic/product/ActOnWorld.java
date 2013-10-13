@@ -1,5 +1,6 @@
 package com.tehbeard.forge.schematic.product;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -8,6 +9,7 @@ import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
 import com.tehbeard.forge.schematic.handlers.schematic.SchematicRotationHandler;
+import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;
 
 /**
  * Abstract {@link IFactoryOuput} that has methods for manipulating a world It
@@ -49,17 +51,22 @@ public abstract class ActOnWorld implements IFactoryOuput {
 
                     idx++;
                     if (idx % 100 == 0) {
-                        System.out.println(idx + "/" + total
-                                + "Blocks processed");
+                        SchematicDataRegistry.logger().config(
+                                idx + "/" + total + "Blocks processed");
                     }
 
+                    // Generate relative location based on rotation and offset.
                     SchVector schematicWorldOffsetVector = new SchVector(x, y,
                             z).add(file.getInitialVector()).rotateVector(
                             rotations);
 
+                    // Generate world location based on start location +
+                    // relative location.
                     SchVector worldVector = new SchVector(worldVec);
                     worldVector.add(schematicWorldOffsetVector);
 
+                    // Get block and meta ids, if block id is -1, we skip this
+                    // block
                     int b_id = file.getBlockId(x, y, z);
                     byte b_meta = file.getBlockData(x, y, z);
 
@@ -67,16 +74,36 @@ public abstract class ActOnWorld implements IFactoryOuput {
                         continue;
                     }
 
-                    TileEntity te = file.getTileEntityAt(x, y, z);
-                    if (te != null) {
+                    // Get TileEntity and process
+                    TileEntity te = null;
+                    NBTTagCompound tileEntityTag = file.getTileEntityTagAt(x,
+                            y, z);
+                    if (tileEntityTag != null) {
                         SchematicDataRegistry.logger().config(
-                                "Initialising Tile Entity " + te.toString());
+                                "Initialising Tile Entity "
+                                        + tileEntityTag.toString());
+                        TileEntityTranslator teHandler = SchematicDataRegistry.tileEntityManager
+                                .get(tileEntityTag.getString("id"));
+                        if (teHandler != null) {
+                            te = teHandler.unpack(tileEntityTag,
+                                    worldVector.getX(), worldVector.getY(),
+                                    worldVector.getZ());
+                        } else {
+                            te = SchematicDataRegistry.defaultTileEntityManager
+                                    .unpack(tileEntityTag, worldVector.getX(),
+                                            worldVector.getY(),
+                                            worldVector.getZ());
+                        }
+
+                        // Something went wrong
+                        if (te == null)
+                            throw new RuntimeException(
+                                    "Could not deserialize TileEntity correctly");
                     }
 
                     // Grab handler and try to rotate data
                     SchematicDataHandler handler = SchematicDataRegistry.dataHandlers[b_id];
                     if (handler instanceof SchematicRotationHandler) {
-                        int old_meta = b_meta;
                         b_meta = (byte) ((SchematicRotationHandler) handler)
                                 .rotateData(file, x, y, z, b_id, b_meta,
                                         rotations);
@@ -85,11 +112,9 @@ public abstract class ActOnWorld implements IFactoryOuput {
                                     .rotateTileEntity(file, x, y, z, b_id,
                                             b_meta, te, rotations);
                         }
-                        SchematicDataRegistry.logger().config(
-                                "Transformer found for " + b_id + " : "
-                                        + old_meta + " -> " + b_meta);
                     }
 
+                    // Run the action
                     Object res = action(x, y, z, b_id, b_meta, te, worldVector,
                             file);
 
@@ -99,7 +124,7 @@ public abstract class ActOnWorld implements IFactoryOuput {
                 }
             }
         }
-        System.out.println(idx + "/" + total + "Blocks processed");
+        // System.out.println(idx + "/" + total + "Blocks processed");
 
         postAction(worldVec, file);
         return null;

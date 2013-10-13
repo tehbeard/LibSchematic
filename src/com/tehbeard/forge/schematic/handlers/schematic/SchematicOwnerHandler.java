@@ -1,6 +1,6 @@
 package com.tehbeard.forge.schematic.handlers.schematic;
 
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
@@ -29,6 +29,6 @@ public interface SchematicOwnerHandler extends SchematicDataHandler {
      * @param newOwner
      */
     public void setOwner(SchematicFile schematic, int x, int y, int z,
-            int blockId, int metadata, TileEntity entity, String newOwner);
+            int blockId, int metadata, NBTTagCompound entity, String newOwner);
 
 }

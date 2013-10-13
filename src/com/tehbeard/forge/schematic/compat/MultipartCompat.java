@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import codechicken.multipart.TileMultipart;
 
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
-import com.tehbeard.forge.schematic.handlers.tileentity.ITileEntityLoadHandler;
+import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -21,18 +21,15 @@ public class MultipartCompat {
             SchematicDataRegistry.logger().info(
                     "Installing Forge Multipart handler");
 
-            ITileEntityLoadHandler multipartLoader = new ITileEntityLoadHandler() {
+            TileEntityTranslator multipartLoader = new TileEntityTranslator() {
 
                 @Override
-                public TileEntity generateTileEntity(NBTTagCompound tag) {
-                    return TileMultipart.createFromNBT(tag);// TODO - Fix when I
-                                                            // get a version of
-                                                            // FMP with the
-                                                            // helper.
+                public TileEntity unpack(NBTTagCompound tag, int x, int y, int z) {
+                    return TileMultipart.createFromNBT(tag);
                 }
             };
 
-            SchematicDataRegistry.tileEntityLoaders.put("savedMultipart",
+            SchematicDataRegistry.tileEntityManager.put("savedMultipart",
                     multipartLoader);
 
         }

@@ -30,9 +30,7 @@ public class PasteToWorld extends ActOnWorld {
             TileEntity te, SchVector worldVector, SchematicFile file) {
         if (Block.blocksList[b_id] != null || b_id == 0) {
 
-            // world.setBlock(worldVector.getX(), worldVector.getY(),
-            // worldVector.getZ(), b_id, b_meta,2);// - Vanilla Standard
-
+            // Make sure chunk exists.
             Chunk chunk = world.getChunkFromBlockCoords(worldVector.getX(),
                     worldVector.getZ());
             ExtendedBlockStorage storageArray = chunk.getBlockStorageArray()[worldVector
@@ -48,6 +46,7 @@ public class PasteToWorld extends ActOnWorld {
                 storageArray = chunk.getBlockStorageArray()[worldVector.getY() >> 4];
             }
 
+            // Set the block data
             storageArray.setExtBlockID(worldVector.getX() & 15,
                     worldVector.getY() & 15, worldVector.getZ() & 15, b_id);
             storageArray.setExtBlockMetadata(worldVector.getX() & 15,
@@ -59,8 +58,8 @@ public class PasteToWorld extends ActOnWorld {
 
             world.markBlockForUpdate(worldVector.getX(), worldVector.getY(),
                     worldVector.getZ());
-            // world;
 
+            // place Tile Entity
             if (te != null) {
                 world.setBlockTileEntity(worldVector.getX(),
                         worldVector.getY(), worldVector.getZ(), te);

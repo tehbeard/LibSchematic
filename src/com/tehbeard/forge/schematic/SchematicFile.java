@@ -12,7 +12,6 @@ import java.util.List;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
 import com.tehbeard.forge.schematic.worker.AbstractSchematicWorker;
@@ -445,27 +444,6 @@ public class SchematicFile {
                 return tileEntity;
         }
         return null;
-    }
-
-    /**
-     * Returns a tile entity object or null if none found
-     * 
-     * @param x
-     * @param y
-     * @param z
-     * @return
-     */
-    public final TileEntity getTileEntityAt(int x, int y, int z) {
-        NBTTagCompound te = getTileEntityTagAt(x, y, z);
-        if (te == null)
-            return null;
-        String tileId = te.getString("id");
-
-        // Run TileEntity tag through loader if needed.
-        if (SchematicDataRegistry.tileEntityLoaders.containsKey(tileId))
-            return SchematicDataRegistry.tileEntityLoaders.get(tileId)
-                    .generateTileEntity(te);
-        return TileEntity.createAndLoadEntity(te);
     }
 
     /**
