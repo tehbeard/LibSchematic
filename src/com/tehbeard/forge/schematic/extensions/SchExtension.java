@@ -7,20 +7,25 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation declaring data about a SchematicExtension
+ * 
  * @author James
- *
+ * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface SchExtension {
     /**
      * Name of schematic extension for logging purposes
+     * 
      * @return
      */
-String name();
-/**
- * Dot separated path of an NBT element to look for, if found then load this extension
- * @return
- */
-String checkPath();
+    String name();
+
+    /**
+     * Dot separated path of an NBT element to look for, if found then load this
+     * extension
+     * 
+     * @return
+     */
+    String checkPath();
 }

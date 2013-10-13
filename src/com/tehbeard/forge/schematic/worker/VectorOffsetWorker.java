@@ -5,14 +5,15 @@ import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
  * Offsets a schematic using a {@link SchVector}
+ * 
  * @author James
- *
+ * 
  */
 public class VectorOffsetWorker extends AbstractSchematicWorker {
-    
+
     SchVector vector;
-    
-    public VectorOffsetWorker(SchVector vector){
+
+    public VectorOffsetWorker(SchVector vector) {
         this.vector = vector;
     }
 
@@ -21,5 +22,5 @@ public class VectorOffsetWorker extends AbstractSchematicWorker {
         original.getInitialVector().add(vector);
         return original;
     }
-    
+
 }
