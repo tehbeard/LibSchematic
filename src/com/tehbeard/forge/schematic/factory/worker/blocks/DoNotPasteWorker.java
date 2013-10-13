@@ -1,9 +1,10 @@
-package com.tehbeard.forge.schematic.worker;
+package com.tehbeard.forge.schematic.factory.worker.blocks;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import com.tehbeard.forge.schematic.SchematicFile;
+import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
 
 /**
  * Makes a schematicWorker not paste the specified blocks from the workers

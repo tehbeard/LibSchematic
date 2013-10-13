@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
-import com.tehbeard.forge.schematic.worker.AbstractSchematicWorker;
+import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
 
 /**
  * SchematicFile provides a way to read/write .schematic files. <br/>

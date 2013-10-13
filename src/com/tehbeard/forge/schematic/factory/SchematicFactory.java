@@ -1,10 +1,11 @@
-package com.tehbeard.forge.schematic;
+package com.tehbeard.forge.schematic.factory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tehbeard.forge.schematic.product.IFactoryOuput;
-import com.tehbeard.forge.schematic.worker.AbstractSchematicWorker;
+import com.tehbeard.forge.schematic.SchematicFile;
+import com.tehbeard.forge.schematic.factory.product.IFactoryOuput;
+import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
 
 /**
  * <p>
@@ -38,7 +39,7 @@ import com.tehbeard.forge.schematic.worker.AbstractSchematicWorker;
  */
 public class SchematicFactory {
 
-    private SchematicFile processedSchematic;
+    private SchematicFile processedSchematic = null;
 
     private List<AbstractSchematicWorker> workers = new ArrayList<AbstractSchematicWorker>();
 

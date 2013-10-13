@@ -64,7 +64,7 @@ public class IdTranslateExtension implements SchematicExtension {
             }
             String blockName = b.getUnlocalizedName();
 
-            map.put(modid + "::" + blockName, blockId);
+            map.put(modid + ":" + blockName, blockId);
 
         }
     }

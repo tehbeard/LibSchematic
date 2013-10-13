@@ -1,8 +1,9 @@
-package com.tehbeard.forge.schematic.worker;
+package com.tehbeard.forge.schematic.factory.worker.blocks;
 
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.extensions.IdTranslateExtension;
+import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
 
 /**
  * uses the {@link IdTranslateExtension} to map block id's from a schematic to

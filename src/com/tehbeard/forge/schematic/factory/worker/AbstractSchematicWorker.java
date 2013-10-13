@@ -1,4 +1,4 @@
-package com.tehbeard.forge.schematic.worker;
+package com.tehbeard.forge.schematic.factory.worker;
 
 import com.tehbeard.forge.schematic.SchematicFile;
 

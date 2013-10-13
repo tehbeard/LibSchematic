@@ -1,7 +1,8 @@
-package com.tehbeard.forge.schematic.worker;
+package com.tehbeard.forge.schematic.factory.worker.worldedit;
 
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
+import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
 
 /**
  * Offsets a schematic using WorldEdit's origin vector
