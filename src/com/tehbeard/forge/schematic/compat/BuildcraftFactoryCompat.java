@@ -21,7 +21,7 @@ public class BuildcraftFactoryCompat {
 
             SchematicDataRegistry.setHandler(
                     BuildCraftFactory.quarryBlock.blockID,
-                    new ForgeDirectionRotationHandler(0x0));// Borked?
+                    new ForgeDirectionRotationHandler(0x0));// TODO: Figure out how to serialize?
             SchematicDataRegistry.setHandler(
                     BuildCraftFactory.refineryBlock.blockID,
                     new ForgeDirectionRotationHandler(0x0));
