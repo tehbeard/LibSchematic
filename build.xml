@@ -17,14 +17,8 @@
   </target>
 
   <target name="reset_mcp_src">
-    <!-- Clean output -->
-    <delete dir="${build.dir.development}/mcp/reobf/minecraft" />
-    <!-- Clean Source -->
-    <delete dir="${build.dir.development}/mcp/src/minecraft/" />
-    <!-- Reset source from backup-->
-    <copy todir="${build.dir.development}/mcp/src/minecraft">
-      <fileset dir="${build.dir.development}/mcp/minecraftsrcbackup" />
-    </copy>
+    <delete dir="${build.dir.development}/mcp/src/minecraft/com/tehbeard" />
+    <!--<echo message="${toString:inter}" />-->
   </target>
 
   <target name="reset_lib">
