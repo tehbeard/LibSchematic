@@ -82,15 +82,15 @@ public abstract class ActOnWorld implements IFactoryOuput {
                         SchematicDataRegistry.logger().config(
                                 "Initialising Tile Entity "
                                         + tileEntityTag.toString());
-                        TileEntityTranslator teHandler = SchematicDataRegistry.tileEntityManager
-                                .get(tileEntityTag.getString("id"));
+                        TileEntityTranslator teHandler = SchematicDataRegistry.tileEntityManager.get(tileEntityTag.getString("id"));
                         if (teHandler != null) {
-                            te = teHandler.unpack(tileEntityTag,
+                            SchematicDataRegistry.logger().info("Loaded tile entity manager for id " + tileEntityTag.getString("id"));
+                            te = teHandler.unpack(tileEntityTag,world,
                                     worldVector.getX(), worldVector.getY(),
                                     worldVector.getZ());
                         } else {
                             te = SchematicDataRegistry.defaultTileEntityManager
-                                    .unpack(tileEntityTag, worldVector.getX(),
+                                    .unpack(tileEntityTag,world, worldVector.getX(),
                                             worldVector.getY(),
                                             worldVector.getZ());
                         }

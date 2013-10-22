@@ -2,6 +2,7 @@ package com.tehbeard.forge.schematic.handlers.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 /**
  * Class to handle translating a TileEntity to/from .schematic for certain edge
@@ -21,7 +22,7 @@ public class TileEntityTranslator {
      * @param te
      * @return
      */
-    public NBTTagCompound pack(TileEntity te) {
+    public NBTTagCompound pack(World world,TileEntity te) {
         NBTTagCompound tec = new NBTTagCompound();
         te.writeToNBT(tec);
         return tec;
@@ -38,7 +39,7 @@ public class TileEntityTranslator {
      * @param z
      * @return
      */
-    public TileEntity unpack(NBTTagCompound te, int x, int y, int z) {
+    public TileEntity unpack(NBTTagCompound te,World world, int x, int y, int z) {
         return TileEntity.createAndLoadEntity(te);
     }
 

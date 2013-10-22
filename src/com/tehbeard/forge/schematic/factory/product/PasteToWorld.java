@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
+import codechicken.multipart.MultipartHelper;
+
 import com.tehbeard.forge.schematic.SchVector;
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
@@ -47,22 +49,21 @@ public class PasteToWorld extends ActOnWorld {
             }
 
             // Set the block data
-            storageArray.setExtBlockID(worldVector.getX() & 15,
-                    worldVector.getY() & 15, worldVector.getZ() & 15, b_id);
-            storageArray.setExtBlockMetadata(worldVector.getX() & 15,
-                    worldVector.getY() & 15, worldVector.getZ() & 15, b_meta);
+            storageArray.setExtBlockID(worldVector.getX() & 15,worldVector.getY() & 15, worldVector.getZ() & 15, b_id);
+            storageArray.setExtBlockMetadata(worldVector.getX() & 15,worldVector.getY() & 15, worldVector.getZ() & 15, b_meta);
             chunk.isModified = true;
 
-            world.updateAllLightTypes(worldVector.getX(), worldVector.getY(),
-                    worldVector.getZ());
+            world.updateAllLightTypes(worldVector.getX(), worldVector.getY(),worldVector.getZ());
 
-            world.markBlockForUpdate(worldVector.getX(), worldVector.getY(),
-                    worldVector.getZ());
+            world.markBlockForUpdate(worldVector.getX(), worldVector.getY(),worldVector.getZ());
 
             // place Tile Entity
             if (te != null) {
                 world.setBlockTileEntity(worldVector.getX(),
                         worldVector.getY(), worldVector.getZ(), te);
+                if(file.getTileEntityTagAt(x, y, z).getString("id").equals("savedMultipart")){
+                    MultipartHelper.sendDescPacket(world, te);
+                }
             }
 
         } else {

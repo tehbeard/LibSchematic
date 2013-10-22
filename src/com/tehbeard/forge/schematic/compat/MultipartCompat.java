@@ -5,7 +5,9 @@ import org.bouncycastle.crypto.RuntimeCryptoException;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import codechicken.multipart.BlockMultipart;
+import codechicken.multipart.MultipartHelper;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import codechicken.multipart.handler.MultipartMod;
@@ -27,7 +29,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 
-@Mod(modid = "libschematic.compat.multipart", name = "LibSchematic::Multipart", version = "1.0", useMetadata = true)
+@Mod(modid = "libschematic.compat.multipart", name = "LibSchematic::Multipart", version = "1.0", useMetadata = true,dependencies = "after:ForgeMultipart")
 public class MultipartCompat {
 
     @EventHandler
@@ -39,8 +41,10 @@ public class MultipartCompat {
             TileEntityTranslator multipartLoader = new TileEntityTranslator() {
 
                 @Override
-                public TileEntity unpack(NBTTagCompound tag, int x, int y, int z) {
-                    return TileMultipart.createFromNBT(tag);
+                public TileEntity unpack(NBTTagCompound tag, World world, int x,
+                        int y, int z) {
+                    return MultipartHelper.createTileFromNBT(world, tag);
+
                 }
             };
             
@@ -49,7 +53,7 @@ public class MultipartCompat {
             for(int i =0;i<Block.blocksList.length;i++){
                 if(Block.blocksList[i] instanceof BlockMultipart){
                     id = i;
-                    return;
+                    SchematicDataRegistry.logger().info("Found MultiPart at id: " + i);
                 }
             }
             if(id == -1){
@@ -63,19 +67,20 @@ public class MultipartCompat {
                         int blockId, int metadata, TileEntity tileEntity, int rotations) {
                     TileMultipart multipartTile = (TileMultipart)tileEntity;
                     for(TMultiPart part : multipartTile.jPartList()){
+                        SchematicDataRegistry.logger().info("part: " + part.getType());
                         if(part instanceof McMetaPart){
                             McMetaPart metaPart = (McMetaPart)part;
                             SchematicDataHandler handler = SchematicDataRegistry.getHandler(metaPart.getBlockId());
+                            SchematicDataRegistry.logger().info("Multipart of type " + metaPart.getBlockId() + ":" + ((int)metaPart.meta));
                             if(handler instanceof SchematicRotationHandler){
                                 SchematicRotationHandler rotator = (SchematicRotationHandler)handler;
-                                rotator.rotateData(schematic, x, y, z, metaPart.getBlockId(), metaPart.meta, rotations);
-                                rotator.rotateTileEntity(schematic, x, y, z, metaPart.getBlockId(), metaPart.meta, metaPart.getTile(), rotations);
+                                metaPart.meta = (byte)rotator.rotateData(schematic, x, y, z, metaPart.getBlockId(), metaPart.meta, rotations);
+                                //rotator.rotateTileEntity(schematic, x, y, z, metaPart.getBlockId(), metaPart.meta, metaPart.ti(), rotations);
                             }
                             
                             
                         }
-                    }
-                multipartTile.markDirty();    
+                    }    
                 }
             };
             SchematicDataRegistry.setHandler(id, multiPartRotationHandler);
