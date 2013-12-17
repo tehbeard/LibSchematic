@@ -1,5 +1,8 @@
 bin
+build
+eclipse
 doc
+.gradle
 .settings
 target
 .project

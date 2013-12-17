@@ -1,8 +1,0 @@
-#Directories
-dir.development=/path/to/forge
-dir.workspace=/path/to/project
-dir.release=/path/to/releases/folder
-#Mod
-mod.name=NameOfMod
-mod.version=1.0
-release.minecraft.version=MCVERSION
