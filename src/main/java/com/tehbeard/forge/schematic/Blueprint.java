@@ -23,7 +23,7 @@ public class Blueprint {
 
     private boolean ignoreTileEntityData = false;// By default save tile
                                                  // entities
-    private boolean ignoreEntityData = true;// By default
+    private boolean ignoreEntityData = true;// By default ignore entities
 
     private World world;
 

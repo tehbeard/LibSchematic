@@ -1,4 +1,4 @@
-package com.tehbeard.forge.schematic.compat;
+/*package com.tehbeard.forge.schematic.compat;
 
 import buildcraft.BuildCraftFactory;
 
@@ -28,3 +28,4 @@ public class BuildcraftFactoryCompat {
         }
     }
 }
+*/

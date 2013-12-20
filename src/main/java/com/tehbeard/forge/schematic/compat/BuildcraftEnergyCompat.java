@@ -1,4 +1,4 @@
-package com.tehbeard.forge.schematic.compat;
+/*package com.tehbeard.forge.schematic.compat;
 
 import net.minecraft.tileentity.TileEntity;
 import buildcraft.BuildCraftEnergy;
@@ -45,3 +45,4 @@ public class BuildcraftEnergyCompat {
         }
     }
 }
+*/

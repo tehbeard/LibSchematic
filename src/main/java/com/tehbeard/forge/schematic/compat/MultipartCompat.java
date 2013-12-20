@@ -1,7 +1,5 @@
 package com.tehbeard.forge.schematic.compat;
 
-import org.bouncycastle.crypto.RuntimeCryptoException;
-
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -10,16 +8,11 @@ import codechicken.multipart.BlockMultipart;
 import codechicken.multipart.MultipartHelper;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
-import codechicken.multipart.handler.MultipartMod;
-import codechicken.multipart.handler.MultipartProxy;
-import codechicken.multipart.minecraft.LeverPart;
-import codechicken.multipart.minecraft.McBlockPart;
 import codechicken.multipart.minecraft.McMetaPart;
 
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
-import com.tehbeard.forge.schematic.handlers.rotations.SimpleRotationHandler;
 import com.tehbeard.forge.schematic.handlers.rotations.TileEntityRotationHandler;
 import com.tehbeard.forge.schematic.handlers.schematic.SchematicRotationHandler;
 import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;

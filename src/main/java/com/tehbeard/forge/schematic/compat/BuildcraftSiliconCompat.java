@@ -1,4 +1,4 @@
-package com.tehbeard.forge.schematic.compat;
+/*package com.tehbeard.forge.schematic.compat;
 
 import buildcraft.BuildCraftSilicon;
 
@@ -25,3 +25,4 @@ public class BuildcraftSiliconCompat {
         }
     }
 }
+*/
