@@ -33,8 +33,7 @@ public class TileEntityTranslator {
      * TileEntity.createAndLoadEntity(..)
      * 
      * @param te
-     * @param x
-     *            in world coords for use in unpacking
+     * @param x in world coords for use in unpacking, do not use to place the TileEntity.
      * @param y
      * @param z
      * @return

@@ -17,12 +17,12 @@ import cpw.mods.fml.common.registry.ItemData;
 
 /**
  * The Id translation service is an extension for Schematics that stores a map
- * of block/item id to psuedo-unique key<br/>
- * The key is generated via Forge's {@link GameData} class, and takes the form
- * MODID::BLOCKNAME This extension is very useful for mods that appear in
- * multiple mod packs and contain configurable ids. It allows a mod author to
- * distribute one schematic whose id's will be converted at runtime to the
- * correct ones for that particular installtion.
+ * of block/item integer id to it's String id (of the format modid:uniqueName)<br/>
+ * The key is generated via Forge's {@link GameData} class, This extension is 
+ * very useful for mods that appear in multiple mod packs and contain 
+ * configurable ids. It allows a mod author to distribute one schematic whose 
+ * id's will be converted at runtime to the correct values for that particular 
+ * installation.
  * 
  * @author James
  * 
@@ -34,13 +34,17 @@ public class IdTranslateExtension implements SchematicExtension {
 
     private static Map<String, Integer> localMapping = new HashMap<String, Integer>();
 
+    /**
+     * Generate the mapping of the currently loaded block / item -> string.
+     * This is called by SchematicDataRegistry in PostInit
+     */
     public static void initLocalMapping() {
         map(localMapping);
     }
 
     /**
-     * Uses Forge's {@link GameData} class to create a mapping, useful when
-     * saving schematics to encode ids for cross pack compatibility
+     * Uses Forge's {@link GameData} class to create a mapping for this configuration of
+     * block / items
      */
     public void generateFromGameData() {
         map(nbtMapping);

@@ -1,3 +1,5 @@
+package com.tehbeard.forge.schematic.compat.buildcraft;
+
 /*package com.tehbeard.forge.schematic.compat;
 
 import net.minecraft.tileentity.TileEntity;

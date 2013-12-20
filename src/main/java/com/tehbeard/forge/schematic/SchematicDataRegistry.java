@@ -65,15 +65,13 @@ public class SchematicDataRegistry {
     // ok, check any blocks for SchematicDataHandler
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        logger.info("Polling block array for Data handlers");
-
+        logger.info("Polling block array for Schematic data handlers");
         for (Block b : Block.blocksList) {
             if (b instanceof SchematicDataHandler) {
                 if (getHandler(b.blockID) == null) {
                     setHandler(b.blockID, (SchematicDataHandler) b);
                 } else {
-                    logger.warning("Alert! SchematicDataHandler already registered for block "
-                            + b.blockID);
+                    logger.log(Level.WARNING, "Alert! SchematicDataHandler already registered for block {0} {1}", new Object[]{b.blockID,getHandler(b.blockID).getClass().toString()});
                 }
             }
         }

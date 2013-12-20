@@ -1,4 +1,4 @@
-package com.tehbeard.forge.schematic.factory.product;
+package com.tehbeard.forge.schematic.factory.output;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

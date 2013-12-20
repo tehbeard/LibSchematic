@@ -466,8 +466,12 @@ public class SchematicFile {
 
     }
 
-    public void addExtension(SchematicExtension cl) {
-        extensions.add(cl);
+    /**
+     * Adds a SchematicExtension to this Schematic
+     * @param extension 
+     */
+    public void addExtension(SchematicExtension extension) {
+        extensions.add(extension);
     }
 
     /**

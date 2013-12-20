@@ -1,4 +1,4 @@
-package com.tehbeard.forge.schematic.factory.product;
+package com.tehbeard.forge.schematic.factory.output;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -14,6 +14,7 @@ import codechicken.multipart.MultipartHelper;
 import com.tehbeard.forge.schematic.SchVector;
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
+import java.util.logging.Level;
 
 /**
  * Pastes a schematic into a world as solid blocks
@@ -68,9 +69,8 @@ public class PasteToWorld extends ActOnWorld {
 
         } else {
             if (b_id > 0) {
-                SchematicDataRegistry.logger().severe(
-                        "UNKNOWN BLOCK [" + x + ", " + y + ", " + z + "] "
-                                + b_id + ":" + b_meta);
+                SchematicDataRegistry.logger().log(
+                        Level.SEVERE, "UNKNOWN BLOCK [{0}, {1}, {2}] {3}:{4}", new Object[]{x, y, z, b_id, b_meta});
             }
         }
         return null;
@@ -80,8 +80,6 @@ public class PasteToWorld extends ActOnWorld {
     protected void postAction(SchVector worldVector, SchematicFile file) {
         for (NBTTagCompound e : file.getEntities()) {
             // Entity entity = EntityList.createEntityFromNBT(e, world);
-            SchematicDataRegistry.logger().info(
-                    "World is " + (world.isRemote ? " client " : " server "));
             Entity entity = EntityList.createEntityFromNBT(e, world);
             if (entity == null) {
                 continue;

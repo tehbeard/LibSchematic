@@ -15,11 +15,11 @@ import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
  * @author James
  * 
  */
-public class DoNotPasteWorker extends AbstractSchematicWorker {
+public class TransparencyWorker extends AbstractSchematicWorker {
 
     private Set<Integer> blockIds;
 
-    public DoNotPasteWorker(int... blockIds) {
+    public TransparencyWorker(int... blockIds) {
         this.blockIds = new HashSet<Integer>();
         for (int i : blockIds) {
             this.blockIds.add(i);

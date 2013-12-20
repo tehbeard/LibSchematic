@@ -28,7 +28,8 @@ public interface SchematicExtension {
     /**
      * Creates a copy of this {@link SchematicExtension}, using the supplied
      * {@link SchematicFile}
-     * 
+     * SchematicExtension <b>SHOULD NOT</b> add itself to the SchematicFile, this
+     * is done elsewhere.
      * @param file
      * @return
      */

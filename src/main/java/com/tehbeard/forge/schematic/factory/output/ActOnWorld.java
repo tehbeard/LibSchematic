@@ -1,4 +1,4 @@
-package com.tehbeard.forge.schematic.factory.product;
+package com.tehbeard.forge.schematic.factory.output;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -10,6 +10,7 @@ import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
 import com.tehbeard.forge.schematic.handlers.schematic.SchematicRotationHandler;
 import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;
+import java.util.logging.Level;
 
 /**
  * Abstract {@link IFactoryOuput} that has methods for manipulating a world It
@@ -51,8 +52,8 @@ public abstract class ActOnWorld implements IFactoryOuput {
 
                     idx++;
                     if (idx % 100 == 0) {
-                        SchematicDataRegistry.logger().config(
-                                idx + "/" + total + "Blocks processed");
+                        SchematicDataRegistry.logger().log(
+                                Level.CONFIG, "{0}/{1} Blocks processed", new Object[]{idx, total});
                     }
 
                     // Generate relative location based on rotation and offset.
@@ -79,12 +80,11 @@ public abstract class ActOnWorld implements IFactoryOuput {
                     NBTTagCompound tileEntityTag = file.getTileEntityTagAt(x,
                             y, z);
                     if (tileEntityTag != null) {
-                        SchematicDataRegistry.logger().config(
-                                "Initialising Tile Entity "
-                                        + tileEntityTag.toString());
+                        SchematicDataRegistry.logger().log(
+                                Level.CONFIG, "Initialising Tile Entity {0}", tileEntityTag.toString());
                         TileEntityTranslator teHandler = SchematicDataRegistry.tileEntityManager.get(tileEntityTag.getString("id"));
                         if (teHandler != null) {
-                            SchematicDataRegistry.logger().info("Loaded tile entity manager for id " + tileEntityTag.getString("id"));
+                            SchematicDataRegistry.logger().log(Level.CONFIG, "Loaded tile entity manager for id {0}", tileEntityTag.getString("id"));
                             te = teHandler.unpack(tileEntityTag,world,
                                     worldVector.getX(), worldVector.getY(),
                                     worldVector.getZ());

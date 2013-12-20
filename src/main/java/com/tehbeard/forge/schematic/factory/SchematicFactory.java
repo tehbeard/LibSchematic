@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tehbeard.forge.schematic.SchematicFile;
-import com.tehbeard.forge.schematic.factory.product.IFactoryOuput;
+import com.tehbeard.forge.schematic.factory.output.IFactoryOuput;
 import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
 
 /**
