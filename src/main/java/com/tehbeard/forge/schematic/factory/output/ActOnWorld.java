@@ -103,7 +103,7 @@ public abstract class ActOnWorld implements IFactoryOuput {
 
                     // Grab handler and try to rotate data
                     SchematicDataHandler handler = SchematicDataRegistry.dataHandlers[b_id];
-                    if (handler instanceof SchematicRotationHandler) {
+                    if (handler instanceof SchematicRotationHandler && rotations > 0) {
                         b_meta = (byte) ((SchematicRotationHandler) handler)
                                 .rotateData(file, x, y, z, b_id, b_meta,
                                         rotations);
