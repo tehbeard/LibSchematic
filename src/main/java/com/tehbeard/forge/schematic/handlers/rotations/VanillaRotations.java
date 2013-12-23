@@ -2,7 +2,7 @@ package com.tehbeard.forge.schematic.handlers.rotations;
 
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
-import com.tehbeard.forge.schematic.handlers.schematic.SchematicRotationHandler;
+import com.tehbeard.forge.schematic.handlers.SchematicRotationHandler;
 
 /**
  * Container class for all vanilla blocks/tile entities requiring rotation. If

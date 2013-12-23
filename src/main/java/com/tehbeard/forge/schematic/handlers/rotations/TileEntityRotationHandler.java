@@ -4,7 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
 import com.tehbeard.forge.schematic.SchematicFile;
-import com.tehbeard.forge.schematic.handlers.schematic.SchematicRotationHandler;
+import com.tehbeard.forge.schematic.handlers.SchematicRotationHandler;
 
 /**
  * For blocks that are purely TE based in rotation

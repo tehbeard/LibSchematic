@@ -14,7 +14,7 @@ import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
 import com.tehbeard.forge.schematic.handlers.rotations.TileEntityRotationHandler;
-import com.tehbeard.forge.schematic.handlers.schematic.SchematicRotationHandler;
+import com.tehbeard.forge.schematic.handlers.SchematicRotationHandler;
 import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;
 
 import cpw.mods.fml.common.Loader;

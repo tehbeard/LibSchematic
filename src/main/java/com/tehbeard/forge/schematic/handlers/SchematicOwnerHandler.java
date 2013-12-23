@@ -1,4 +1,4 @@
-package com.tehbeard.forge.schematic.handlers.schematic;
+package com.tehbeard.forge.schematic.handlers;
 
 import net.minecraft.nbt.NBTTagCompound;
 

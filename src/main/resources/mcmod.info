@@ -16,7 +16,8 @@
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
   "parent":"libschematic",
-  "dependencies": [ "AppliedEnergistics" ],
+  "requiredMods":["libschematic"],
+  "dependencies": [ "AppliedEnergistics"],
   "useDependencyInformation":"true"
 }
 ,

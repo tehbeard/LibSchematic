@@ -3,7 +3,7 @@ package com.tehbeard.forge.schematic.factory.worker;
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
-import com.tehbeard.forge.schematic.handlers.schematic.SchematicOwnerHandler;
+import com.tehbeard.forge.schematic.handlers.SchematicOwnerHandler;
 
 /**
  * Uses the {@link SchematicDataRegistry}s list of {@link SchematicDataHandler}
