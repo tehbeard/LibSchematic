@@ -1,10 +1,9 @@
-package com.tehbeard.forge.schematic.compat;
+package com.tehbeard.forge.schematic.compat.te;
 
 
 import thermalexpansion.block.TEBlocks;
 
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
-import com.tehbeard.forge.schematic.compat.te.COFHTileRotator;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
 
 import cpw.mods.fml.common.Loader;

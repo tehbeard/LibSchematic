@@ -3,7 +3,7 @@
   "modid": "libschematic",
   "name": "LibSchematic",
   "version": "1.0",
-  "description": "Provides a unified schematic library that allows cross compatbility between forge mods when pasting their blocks.",
+  "description": "Framework allowing other mods to manipulate .schematic files containing mod blocks/items.",
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
   "logoFile":"/mods/libschematic/libschematic.png"
@@ -12,12 +12,12 @@
   "modid": "libschematic.compat.appeng",
   "name": "LibSchematic::AppliedEnergistics",
   "version": "1.0",
-  "description": "Adds support for Applied Energisitics blocks",
+  "description": "Adds AppEng support to LibSchematic",
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
   "parent":"libschematic",
   "requiredMods":["libschematic"],
-  "dependencies": [ "AppliedEnergistics"],
+  "dependencies": ["libschematic","AppliedEnergistics"],
   "useDependencyInformation":"true"
 }
 ,
@@ -25,7 +25,7 @@
   "modid": "libschematic.compat.ironchest",
   "name": "LibSchematic::IronChest",
   "version": "1.0",
-  "description": "IronChests support",
+  "description": "Adds IronChest support to LibSchematic",
   "url":"tehbeard.com",
   "authorList":["Tehbeard"],
   "logoFile":"/mods/libschematic/libschematic.png",
@@ -62,6 +62,32 @@
   "useDependencyInformation":"true",
   "parent":"libschematic"
 }
+,
+{
+  "modid": "libschematic.compat.thermalexpansion",
+  "name": "LibSchematic::ThermalExpansion",
+  "version": "1.0",
+  "description": "Thermal expansion 3 support",
+  "url":"tehbeard.com",
+  "authorList":["Tehbeard"],
+  "logoFile":"/mods/libschematic/libschematic.png",
+  "requiredMods":["libschematic"],
+  "dependencies":["libschematic","ThermalExpansion"],
+  "useDependencyInformation":"true",
+  "parent":"libschematic"
+}
+,
+{
+  "modid": "libschematic.compat.multipart",
+  "name": "LibSchematic::Multipart",
+  "version": "1.0",
+  "description": "Forge Multipart support",
+  "url":"tehbeard.com",
+  "authorList":["Tehbeard"],
+  "logoFile":"/mods/libschematic/libschematic.png",
+  "requiredMods":["libschematic"],
+  "dependencies":["libschematic","ForgeMultipart"],
+  "useDependencyInformation":"true",
+  "parent":"libschematic"
+}
 ]
-
-

@@ -10,7 +10,8 @@ import com.tehbeard.forge.schematic.handlers.rotations.*;
 public class COFHTileRotator extends TileEntityRotationHandler{
 
 	/**
-	 * Rotate using the {@link IReconfigurableFacing} interface
+	 * Rotate using the {@link IReconfigurableFacing} interface, this module should work
+	 * for all cofh based blocks
 	 */
 	@Override
 	public void rotateTileEntity(SchematicFile schematic, int x,

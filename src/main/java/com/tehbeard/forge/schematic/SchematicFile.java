@@ -26,14 +26,8 @@ import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
  * WorldEdit stores with .schematic files</li>
  * <li>metadata tags (own feature) - Add arbitrary flags to a .schematic (e.g.
  * could be used to classify a .schematic's type for worldgen?)</li>
- * </ul>
- * Planned extensions:
- * <ul>
  * <li>blockId <-> name dictionary to make .schematic portable across different
  * configurations (read: different block ids for the same block)</li>
- * <li>Layers support (Own feature) to provide more complex sub-selection of
- * blocks in a schematic</li>
- * </ul>
  * <p>
  * {@link SchematicExtension}s can be extended by mods to provide new kinds of
  * metadata with a {@link SchematicFile}
@@ -57,9 +51,10 @@ public class SchematicFile {
     private final List<NBTTagCompound> tileEntities = new ArrayList<NBTTagCompound>();
     private final List<NBTTagCompound> entities = new ArrayList<NBTTagCompound>();
 
+    //Schematic extensions
     private List<SchematicExtension> extensions = new ArrayList<SchematicExtension>();
 
-    private SchVector initialVector = new SchVector();
+    private SchVector initialVector = new SchVector(0,0,0);
 
     /**
      * Constructs an empty schematic, Not much use right now, will be when
@@ -199,8 +194,6 @@ public class SchematicFile {
      * @throws IOException
      */
     public NBTTagCompound saveSchematicToTag() throws IOException {
-        // throw new
-        // UnsupportedOperationException("Not implemented in this version");
 
         NBTTagCompound tag = new NBTTagCompound("Schematic");
         tag.setString("Materials", "Alpha");
@@ -293,8 +286,7 @@ public class SchematicFile {
         int index = y * width * length + z * width + x;
 
         if (index < 0 || index >= blocks.length)
-            throw new IllegalStateException(
-                    "Invalid coordinates for block get!");
+            throw new IllegalStateException("Invalid coordinates for block get! [" + x + ", " + y + ", " + z + "]");
 
         return blocks[index];
     }
