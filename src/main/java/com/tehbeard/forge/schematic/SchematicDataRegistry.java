@@ -75,9 +75,6 @@ public class SchematicDataRegistry {
                 }
             }
         }
-
-        IdTranslateExtension.initLocalMapping();
-
     }
 
     /*

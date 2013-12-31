@@ -3,26 +3,16 @@ package com.tehbeard.forge.schematic.extensions;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
-import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.ItemData;
-
 /**
- * The Id translation service is an extension for Schematics that stores a map
- * of block/item integer id to it's String id (of the format modid:uniqueName)<br/>
- * The key is generated via Forge's {@link GameData} class, This extension is 
- * very useful for mods that appear in multiple mod packs and contain 
- * configurable ids. It allows a mod author to distribute one schematic whose 
- * id's will be converted at runtime to the correct values for that particular 
- * installation.
+ * Allows schematics to be used in multiple enviroments without issues due to differences
+ * in ids
  * 
  * @author James
  * 
@@ -30,108 +20,66 @@ import cpw.mods.fml.common.registry.ItemData;
 @SchExtension(name = "Id translation service", checkPath = "IdTable")
 public class IdTranslateExtension implements SchematicExtension {
 
-    private Map<String, Integer> nbtMapping = new HashMap<String, Integer>();
+	private static Map<String,Integer> localEnv = new HashMap<String, Integer>();
+	
+	private Map<String,Integer> schematicEnv = new HashMap<String, Integer>();
+	
+	//Mapping schematic id to runtime id
+	private int[] blockCache = new int[4096];
+	private int[] itemCache = new int[32000];
+	
+	private void cleanCache(){
+		int[] blockCache = new int[4096];
+		int[] itemCache = new int[32000];
+	}
+	
+	private void redoCache(){
+		//Take our current runtime as the authorative source.
+		for( Entry<String, Integer> entry : localEnv.entrySet()){
+			
+			int localId = entry.getValue();
+			int schematicId = schematicEnv.containsKey(entry.getKey()) ? schematicEnv.get(entry.getKey()) : -1;
+			
+		}
+	}
+	
+	/**
+	 * Map a string to an id (minecraft:stone -> 1) that exists in this current runtime
+	 * @param ident
+	 * @param uid
+	 */
+	public void addLocalMapping(String ident,int uid){
+		localEnv.put(ident, uid);
+	}
+	
+	/**
+	 * Map a string to an id (minecraft:stone -> 1) to this schematic
+	 * @param ident
+	 * @param uid
+	 */
+	public void addSchematicMapping(String ident,int uid){
+		schematicEnv.put(ident, uid);
+	}
+	
+	
+	@Override
+	public void onLoad(NBTTagCompound tag, SchematicFile file) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    private static Map<String, Integer> localMapping = new HashMap<String, Integer>();
+	@Override
+	public void onSave(NBTTagCompound tag, SchematicFile file) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    /**
-     * Generate the mapping of the currently loaded block / item -> string.
-     * This is called by SchematicDataRegistry in PostInit
-     */
-    public static void initLocalMapping() {
-        map(localMapping);
-    }
+	@Override
+	public SchematicExtension copy(SchematicFile file) {
+		// TODO Auto-generated method stub
+		return new IdTranslateExtension();
+	}
 
-    /**
-     * Uses Forge's {@link GameData} class to create a mapping for this configuration of
-     * block / items
-     */
-    public void generateFromGameData() {
-        map(nbtMapping);
-    }
-
-    private static void map(Map<String, Integer> map) {
-        NBTTagList list = new NBTTagList();
-        GameData.writeItemData(list);
-        Set<ItemData> data = GameData.buildWorldItemData(list);
-        for (ItemData d : data) {
-            int blockId = d.getItemId();
-            String modid = d.getModId();
-
-            if (blockId < 0 || blockId > 4095) {
-                continue;
-            }
-
-            Block b = Block.blocksList[blockId];
-            if (b == null) {
-                continue;
-            }
-            String blockName = b.getUnlocalizedName();
-
-            map.put(modid + ":" + blockName, blockId);
-
-        }
-    }
-
-    public int translateId(int id) {
-
-        for (Entry<String, Integer> entry : nbtMapping.entrySet()) {
-            if (entry.getValue() == id)
-                return localMapping.get(entry.getKey());
-        }
-        return id;
-        // throw new IllegalStateException("" + id + " is not mapped");
-    }
-
-    public boolean containsKey(String key) {
-        return nbtMapping.containsKey(key);
-    }
-
-    public Integer get(String key) {
-        return nbtMapping.get(key);
-    }
-
-    public Integer put(String key, Integer id) {
-        return nbtMapping.put(key, id);
-    }
-
-    @Override
-    public void onLoad(NBTTagCompound tag, SchematicFile file) {
-        SchematicDataRegistry.logger().info("Loading data from schematic");
-        NBTTagList map = tag.getTagList("IdTable");
-        for (int i = 0; i < map.tagCount(); i++) {
-            NBTTagCompound entry = (NBTTagCompound) map.tagAt(i);
-
-            nbtMapping.put(entry.getString("uid"), entry.getInteger("id"));
-        }
-
-    }
-
-    @Override
-    public void onSave(NBTTagCompound tag, SchematicFile file) {
-        NBTTagList map = new NBTTagList("IdTable");
-        for (Entry<String, Integer> entry : nbtMapping.entrySet()) {
-            NBTTagCompound c = new NBTTagCompound();
-            c.setString("uid", entry.getKey());
-            int id = entry.getValue();
-            if (id == 1) {
-                id = 4;
-            } else if (id == 4) {
-                id = 1;
-            }
-            c.setInteger("id", id);
-            map.appendTag(c);
-        }
-
-        tag.setTag("IdTable", map);
-
-    }
-
-    @Override
-    public SchematicExtension copy(SchematicFile file) {
-        IdTranslateExtension id = new IdTranslateExtension();
-        id.nbtMapping.putAll(nbtMapping);
-        return id;
-    }
+    
 
 }

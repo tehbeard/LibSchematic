@@ -14,9 +14,9 @@ import com.tehbeard.forge.schematic.SchematicFile;
 public interface SchematicExtension {
 
     /**
-     * Called after loading the base data
-     * 
-     * @param tag
+     * Called when instantiating this extension
+     * @param tag compound tag of whole schematic 
+     * @param file 
      */
     public void onLoad(NBTTagCompound tag, SchematicFile file);
 

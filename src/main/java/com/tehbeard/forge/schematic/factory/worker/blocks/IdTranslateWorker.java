@@ -22,7 +22,7 @@ public class IdTranslateWorker extends AbstractSchematicWorker {
     public SchematicFile modifySchematic(SchematicFile original) {
         IdTranslateExtension ext = original
                 .getExtension(IdTranslateExtension.class);
-        if (ext == null) {
+        if (ext == null || true) {
             SchematicDataRegistry.logger().severe("No extension found");
             return original;
         }
