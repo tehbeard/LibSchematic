@@ -1,8 +1,11 @@
 package com.tehbeard.forge.schematic.factory.worker.blocks;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
-import com.tehbeard.forge.schematic.extensions.IdTranslateExtension;
+import com.tehbeard.forge.schematic.extensions.id.IItemStackConverter;
+import com.tehbeard.forge.schematic.extensions.id.IdTranslateExtension;
 import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
 
 /**
@@ -22,7 +25,7 @@ public class IdTranslateWorker extends AbstractSchematicWorker {
     public SchematicFile modifySchematic(SchematicFile original) {
         IdTranslateExtension ext = original
                 .getExtension(IdTranslateExtension.class);
-        if (ext == null || true) {
+        if (ext == null) {
             SchematicDataRegistry.logger().severe("No extension found");
             return original;
         }
@@ -31,12 +34,22 @@ public class IdTranslateWorker extends AbstractSchematicWorker {
             for (int x = 0; x < original.getWidth(); x++) {
                 for (int z = 0; z < original.getLength(); z++) {
                     int oldid = original.getBlockId(x, y, z);
-                    int newid = ext.translateId(oldid);
+                    int newid = ext.mapBlock(oldid);
                     SchematicDataRegistry.logger().info(
                             "" + oldid + " - " + newid);
                     original.setBlockId(x, y, z, newid);
                 }
             }
+        }
+        
+        //Translate contents of all Tile Entities, use vanilla ItemStack converter to get most cases.
+        //Use specialised 
+        for(NBTTagCompound tileEntity : original.getTileEntities()){
+        	IItemStackConverter converter = IdTranslateExtension.VANILLA_CONVERTER;
+        	if(IdTranslateExtension.converters.containsKey(tileEntity.getString("id"))){
+        		converter = IdTranslateExtension.converters.get(tileEntity.getString("id"));
+        	}
+        	converter.convertTag(tileEntity, ext);
         }
         return original;
     }

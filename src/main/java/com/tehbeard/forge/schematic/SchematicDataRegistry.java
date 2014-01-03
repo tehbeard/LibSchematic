@@ -11,12 +11,12 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.tehbeard.forge.schematic.extensions.ClassCatalogue;
-import com.tehbeard.forge.schematic.extensions.IdTranslateExtension;
 import com.tehbeard.forge.schematic.extensions.LayersExtension;
 import com.tehbeard.forge.schematic.extensions.SchExtension;
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
 import com.tehbeard.forge.schematic.extensions.TagsExtension;
 import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
+import com.tehbeard.forge.schematic.extensions.id.IdTranslateExtension;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
 import com.tehbeard.forge.schematic.handlers.rotations.VanillaRotations;
 import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;
