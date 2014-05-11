@@ -1,5 +1,6 @@
 package com.tehbeard.forge.schematic.factory.output;
 
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -22,8 +23,8 @@ public class ValidateInWorld extends ActOnWorld {
     @Override
     protected Object action(int x, int y, int z, int b_id, int b_meta,
             TileEntity tileEntity, SchVector worldVector, SchematicFile file) {
-        int w_id = world.getBlockId(worldVector.getX(), worldVector.getY(),
-                worldVector.getZ());
+        int w_id = Block.getIdFromBlock(world.getBlock(worldVector.getX(), worldVector.getY(),
+                worldVector.getZ()));
         byte w_meta = (byte) world.getBlockMetadata(worldVector.getX(),
                 worldVector.getY(), worldVector.getZ());
         if (b_id == -1)

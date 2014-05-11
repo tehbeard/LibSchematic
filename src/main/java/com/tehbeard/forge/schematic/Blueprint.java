@@ -2,6 +2,7 @@ package com.tehbeard.forge.schematic;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,19 +79,16 @@ public class Blueprint {
                     continue;
                 }
 
-                System.out.println("located entity of type "
-                        + e.getTranslatedEntityName()
-                        + ", preparing cryogenics");
                 NBTTagCompound tag = new NBTTagCompound();
                 if (e.writeToNBTOptional(tag)) {
                     // Overrride location
                     double x = e.posX - min.getX();
                     double y = e.posY - min.getY();
                     double z = e.posZ - min.getZ();
-                    NBTTagList l = new NBTTagList("Pos");
-                    l.appendTag(new NBTTagDouble(null, x));
-                    l.appendTag(new NBTTagDouble(null, y));
-                    l.appendTag(new NBTTagDouble(null, z));
+                    NBTTagList l = new NBTTagList();
+                    l.appendTag(new NBTTagDouble(x));
+                    l.appendTag(new NBTTagDouble(y));
+                    l.appendTag(new NBTTagDouble(z));
 
                     tag.setTag("Pos", l);
                     file.getEntities().add(tag);
@@ -105,12 +103,12 @@ public class Blueprint {
                     int wy = y + min.getY();
                     int wz = z + min.getZ();
 
-                    file.setBlockId(x, y, z, world.getBlockId(wx, wy, wz));
+                    file.setBlockId(x, y, z, Block.getIdFromBlock(world.getBlock(wx, wy, wz)));
                     file.setBlockData(x, y, z,
                             (byte) (world.getBlockMetadata(wx, wy, wz) & 0xFF));
 
                     if (!ignoreTileEntityData) {
-                        TileEntity te = world.getBlockTileEntity(wx, wy, wz);
+                        TileEntity te = world.getTileEntity(wx, wy, wz);
                         if (te != null) {
                             NBTTagCompound c = new NBTTagCompound();
                             te.writeToNBT(c);

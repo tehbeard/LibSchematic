@@ -26,7 +26,7 @@ public class IdTranslateWorker extends AbstractSchematicWorker {
         IdTranslateExtension ext = original
                 .getExtension(IdTranslateExtension.class);
         if (ext == null) {
-            SchematicDataRegistry.logger().severe("No extension found");
+            SchematicDataRegistry.logger().error("No extension found");
             return original;
         }
 

@@ -1,11 +1,11 @@
 package com.tehbeard.forge.schematic.extensions.id;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 
@@ -33,10 +33,13 @@ public class IdTranslateExtension implements SchematicExtension {
 			//Convert this tag
 			extension.convertItemStackTag(tag);
 			//Recursively check and change all ItemStack tags
-			for(Object o : tag.getTags()){
-				if(o instanceof NBTTagCompound){
-					convertTag((NBTTagCompound) o, extension);
-				}
+			Iterator it = tag.func_150296_c().iterator();
+			while(it.hasNext()){
+			    String _key = (String) it.next();
+			    if(tag.func_150299_b(_key) == 10){
+                    convertTag(tag.getCompoundTag(_key), extension);
+                }
+			    
 			}
 		}
 	};
@@ -177,13 +180,12 @@ public class IdTranslateExtension implements SchematicExtension {
 		return tag;
 	}
 	
-	private Map<String,Integer> fromTag(NBTTagCompound tag){
+	@SuppressWarnings("unchecked")
+    private Map<String,Integer> fromTag(NBTTagCompound tag){
 		HashMap<String, Integer> map = new HashMap<String,Integer>();
-		for(Object o : tag.getTags()){
-			if(o instanceof NBTTagInt ){
-			NBTTagInt t = (NBTTagInt) o;
-			map.put(t.getName(),t.data);
-			}
+
+		for(String _id : (Set<String>)tag.func_150296_c()){ // getTags
+			map.put(_id,tag.getInteger(_id));
 		}
 		return map;
 	}
@@ -201,10 +203,10 @@ public class IdTranslateExtension implements SchematicExtension {
 	public void onSave(NBTTagCompound tag, SchematicFile file) {
 		//Make NBT table
 		NBTTagCompound table = tag.getCompoundTag("IdTable");
-		table.setCompoundTag("blocks",toTag(localBlockMap));
-		table.setCompoundTag("items",toTag(localItemMap));
+		table.setTag("blocks",toTag(localBlockMap));
+		table.setTag("items",toTag(localItemMap));
 		//add to schematic table
-		tag.setCompoundTag("IdTable", table);
+		tag.setTag("IdTable", table);
 	}
 
 	@Override

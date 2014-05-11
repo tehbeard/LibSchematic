@@ -3,13 +3,12 @@ package com.tehbeard.forge.schematic.factory.output;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.item.EntityFallingSand;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.tehbeard.forge.schematic.SchVector;
-import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 
 /**
@@ -29,48 +28,20 @@ public class PasteAsSand extends ActOnWorld {
     @Override
     protected Object action(int x, int y, int z, int b_id, int b_meta,
             TileEntity tileEntity, SchVector worldVector, SchematicFile file) {
-        if (Block.blocksList[b_id] != null || b_id == 0) {
 
-            // world.setBlock(,2);// - Vanilla Standard
             if (b_id == 0)
                 return null;
-            EntityFallingSand block = new EntityFallingSand(world,
+            EntityFallingBlock block = new EntityFallingBlock(world,
                     worldVector.getX() + 0.5D, worldVector.getY() + 0.5D,
-                    worldVector.getZ() + 0.5D, b_id, b_meta);
-            block.fallTime = 2;
+                    worldVector.getZ() + 0.5D, Block.getBlockById(b_id), b_meta);
+            block.field_145812_b = 2; // fallTime
             NBTTagCompound te = file.getTileEntityTagAt(x, y, z);
             if (te != null) {
-                block.fallingBlockTileEntityData = (NBTTagCompound) te.copy();
+                block.field_145810_d = (NBTTagCompound) te.copy(); //fallingBlockTitleEntityData
             }
 
             world.spawnEntityInWorld(block);
-
-            /*
-             * Chunk chunk = world.getChunkFromBlockCoords(worldVector.getX(),
-             * worldVector.getZ()); ExtendedBlockStorage storageArray =
-             * chunk.getBlockStorageArray()[worldVector.getY() >> 4];
-             * 
-             * storageArray.setExtBlockID(worldVector.getX() & 15,
-             * worldVector.getY() & 15, worldVector.getZ() & 15, b_id);
-             * storageArray.setExtBlockMetadata(worldVector.getX() & 15,
-             * worldVector.getY() & 15, worldVector.getZ() & 15, b_meta);
-             * world.markBlockForUpdate(worldVector.getX(), worldVector.getY(),
-             * worldVector.getZ()); //world; TileEntity te =
-             * file.getTileEntityAt(x,y,z); if(te!=null){
-             * SchematicDataRegistry.logger().config("Initialising Tile Entity "
-             * + te.toString()); world.setBlockTileEntity(worldVector.getX(),
-             * worldVector.getY(), worldVector.getZ(),te);
-             * //world.setBlockMetadataWithNotify(worldVector.getX(),
-             * worldVector.getY(),worldVector.getZ(), b_meta,2);//Fix container
-             * blocks being derpy }
-             */
-        } else {
-            if (b_id > 0) {
-                SchematicDataRegistry.logger().severe(
-                        "UNKNOWN BLOCK [" + x + ", " + y + ", " + z + "] "
-                                + b_id + ":" + b_meta);
-            }
-        }
+        
         return null;
     }
 

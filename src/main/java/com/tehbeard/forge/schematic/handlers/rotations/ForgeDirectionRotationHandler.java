@@ -1,6 +1,6 @@
 package com.tehbeard.forge.schematic.handlers.rotations;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.tehbeard.forge.schematic.SchematicFile;
 

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+
+import org.apache.logging.log4j.Logger;
 
 import com.tehbeard.forge.schematic.extensions.ClassCatalogue;
 import com.tehbeard.forge.schematic.extensions.LayersExtension;
@@ -18,7 +18,6 @@ import com.tehbeard.forge.schematic.extensions.TagsExtension;
 import com.tehbeard.forge.schematic.extensions.WorldEditVectorExtension;
 import com.tehbeard.forge.schematic.extensions.id.IdTranslateExtension;
 import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
-import com.tehbeard.forge.schematic.handlers.rotations.VanillaRotations;
 import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;
 
 import cpw.mods.fml.common.Mod;
@@ -26,7 +25,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.GameData;
 
 /**
  * Main entry point for LibSchematic.<br/>
@@ -39,7 +38,6 @@ import cpw.mods.fml.common.network.NetworkMod;
  * 
  */
 @Mod(modid = "libschematic", name = "LibSchematic", version = "1.00")
-@NetworkMod(clientSideRequired = false)
 public class SchematicDataRegistry {
 
     // BEGIN FORGE MOD SECTION
@@ -51,10 +49,6 @@ public class SchematicDataRegistry {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        if (DEBUG_MODE) {
-            logger.setLevel(Level.FINEST);
-        }
-
     }
 
     // Register our shit
@@ -62,19 +56,11 @@ public class SchematicDataRegistry {
     public void init(FMLInitializationEvent event) {
     }
 
-    // ok, check any blocks for SchematicDataHandler
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+
         logger.info("Polling block array for Schematic data handlers");
-        for (Block b : Block.blocksList) {
-            if (b instanceof SchematicDataHandler) {
-                if (getHandler(b.blockID) == null) {
-                    setHandler(b.blockID, (SchematicDataHandler) b);
-                } else {
-                    logger.log(Level.WARNING, "Alert! SchematicDataHandler already registered for block {0} {1}", new Object[]{b.blockID,getHandler(b.blockID).getClass().toString()});
-                }
-            }
-        }
+        //Check all blocks for SchematicDataHandler
     }
 
     /*
@@ -102,72 +88,7 @@ public class SchematicDataRegistry {
     /**
      * Initialise vanilla data handlers
      */
-    static {
-        dataHandlers[Block.chest.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.chestTrapped.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.enderChest.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.furnaceIdle.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.furnaceBurning.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.pistonStickyBase.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.pistonBase.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.pistonExtension.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.pistonMoving.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.ladder.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.signWall.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.dispenser.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.hopperBlock.blockID] = VanillaRotations.CONTAINER_PISTON;
-        dataHandlers[Block.dropper.blockID] = VanillaRotations.CONTAINER_PISTON;
-
-        dataHandlers[Block.torchRedstoneIdle.blockID] = VanillaRotations.WALL_MOUNTED;
-        dataHandlers[Block.torchRedstoneActive.blockID] = VanillaRotations.WALL_MOUNTED;
-        dataHandlers[Block.stoneButton.blockID] = VanillaRotations.WALL_MOUNTED;
-        dataHandlers[Block.woodenButton.blockID] = VanillaRotations.WALL_MOUNTED;
-        dataHandlers[Block.lever.blockID] = VanillaRotations.WALL_MOUNTED;
-        dataHandlers[Block.torchWood.blockID] = VanillaRotations.WALL_MOUNTED;
-
-        dataHandlers[Block.redstoneComparatorActive.blockID] = VanillaRotations.REPEATER;
-        dataHandlers[Block.redstoneComparatorIdle.blockID] = VanillaRotations.REPEATER;
-        dataHandlers[Block.redstoneRepeaterActive.blockID] = VanillaRotations.REPEATER;
-        dataHandlers[Block.redstoneRepeaterIdle.blockID] = VanillaRotations.REPEATER;
-
-        dataHandlers[Block.rail.blockID] = VanillaRotations.RAIL;
-        dataHandlers[Block.railPowered.blockID] = VanillaRotations.RAIL;
-        dataHandlers[Block.railDetector.blockID] = VanillaRotations.RAIL;
-        dataHandlers[Block.railActivator.blockID] = VanillaRotations.RAIL;
-
-        dataHandlers[Block.stairsBrick.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsCobblestone.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsWoodOak.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsWoodSpruce.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsWoodBirch.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsWoodJungle.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsBrick.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsStoneBrick.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsSandStone.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsNetherQuartz.blockID] = VanillaRotations.STAIRS;
-        dataHandlers[Block.stairsNetherBrick.blockID] = VanillaRotations.STAIRS;
-
-        dataHandlers[Block.vine.blockID] = VanillaRotations.VINES;
-
-        dataHandlers[Block.trapdoor.blockID] = VanillaRotations.TRAPDOOR;
-
-        dataHandlers[Block.tripWireSource.blockID] = VanillaRotations.HOOK;
-
-        dataHandlers[Block.fenceGate.blockID] = VanillaRotations.FENCEGATE;
-
-        dataHandlers[Block.anvil.blockID] = VanillaRotations.ANVIL;
-
-        dataHandlers[Block.bed.blockID] = VanillaRotations.BED;
-
-        dataHandlers[Block.signPost.blockID] = VanillaRotations.SIGN_POST;
-
-        dataHandlers[Block.doorWood.blockID] = VanillaRotations.DOOR;
-        dataHandlers[Block.doorIron.blockID] = VanillaRotations.DOOR;
-
-        dataHandlers[Block.blockNetherQuartz.blockID] = VanillaRotations.QUARTZ;
-
-        dataHandlers[Block.wood.blockID] = VanillaRotations.WOOD;
-    }
+    
 
     private static final ClassCatalogue<SchematicExtension> schematicExtensions = new ClassCatalogue<SchematicExtension>(
             SchExtension.class) {
@@ -212,7 +133,7 @@ public class SchematicDataRegistry {
      * owner of the block.
      * 
      * @param blockId
-     *            id of the block you wish to configure
+     *            id of the block you wish to configure e.g. minecraft:chest
      * @param handler
      *            object that implements one of several
      *            {@link SchematicDataHandler} interfaces for manipulating a
@@ -220,14 +141,14 @@ public class SchematicDataRegistry {
      * @throws IllegalArgumentException
      *             on invalid block id
      */
-    public static void setHandler(int blockId, SchematicDataHandler handler) {
-        if (blockId < 0 || blockId >= 4096)
-            throw new IllegalArgumentException("INVALID BLOCKID (0-4095) "
-                    + blockId + " SUPPLIED");
-        dataHandlers[blockId] = handler;
-        logger.info("Added schematic data handler for "
-                + Block.blocksList[blockId].getUnlocalizedName() + "["
-                + blockId + "]");
+    public static void setHandler(String blockNamespace, SchematicDataHandler handler) {
+        Block b = GameData.getBlockRegistry().getObject(blockNamespace);
+        if(b == null){
+            logger.warn("Passed {0} but could not find a block named this!",blockNamespace);
+            return;
+        }
+        int id  = GameData.getBlockRegistry().getIDForObject(b);
+        dataHandlers[id] = handler;
     }
 
     /**
@@ -265,22 +186,22 @@ public class SchematicDataRegistry {
         List<SchematicExtension> l = new ArrayList<SchematicExtension>();
 
         for (String exTagFull : schematicExtensions.getTags()) {
-            logger.fine("Checking for " + exTagFull);
+            logger.debug("Checking for " + exTagFull);
             if (nbtContainsPath(tag, exTagFull)) {
                 try {
                     Class<? extends SchematicExtension> c = schematicExtensions
                             .get(exTagFull);
-                    logger.fine("Loading extension handler ["
+                    logger.debug("Loading extension handler ["
                             + c.getAnnotation(SchExtension.class).name() + "]");
                     SchematicExtension ext = c.newInstance();
                     ext.onLoad(tag, file);
                     l.add(ext);
                 } catch (InstantiationException e) {
-                    logger.severe("Could not load extension, instantiation error ["
+                    logger.error("Could not load extension, instantiation error ["
                             + exTagFull + "]");
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
-                    logger.severe("Could not load extension, access error ["
+                    logger.error("Could not load extension, access error ["
                             + exTagFull + "]");
                     e.printStackTrace();
                 }

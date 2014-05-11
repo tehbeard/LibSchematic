@@ -31,7 +31,6 @@ public class PasteToWorld extends ActOnWorld {
     @Override
     protected Object action(int x, int y, int z, int b_id, int b_meta,
             TileEntity te, SchVector worldVector, SchematicFile file) {
-        if (Block.blocksList[b_id] != null || b_id == 0) {
 
             // Make sure chunk exists.
             Chunk chunk = world.getChunkFromBlockCoords(worldVector.getX(),
@@ -50,29 +49,23 @@ public class PasteToWorld extends ActOnWorld {
             }
 
             // Set the block data
-            storageArray.setExtBlockID(worldVector.getX() & 15,worldVector.getY() & 15, worldVector.getZ() & 15, b_id);
+            storageArray.func_150818_a(worldVector.getX() & 15,worldVector.getY() & 15, worldVector.getZ() & 15, Block.getBlockById(b_id)); //setBlock
             storageArray.setExtBlockMetadata(worldVector.getX() & 15,worldVector.getY() & 15, worldVector.getZ() & 15, b_meta);
             chunk.isModified = true;
 
-            world.updateAllLightTypes(worldVector.getX(), worldVector.getY(),worldVector.getZ());
+            world.func_147451_t(worldVector.getX(), worldVector.getY(),worldVector.getZ()); //updateAllLightTypes
 
             world.markBlockForUpdate(worldVector.getX(), worldVector.getY(),worldVector.getZ());
 
             // place Tile Entity
             if (te != null) {
-                world.setBlockTileEntity(worldVector.getX(),
+                world.setTileEntity(worldVector.getX(),
                         worldVector.getY(), worldVector.getZ(), te);
                 if(file.getTileEntityTagAt(x, y, z).getString("id").equals("savedMultipart")){
                     MultipartHelper.sendDescPacket(world, te);
                 }
             }
 
-        } else {
-            if (b_id > 0) {
-                SchematicDataRegistry.logger().log(
-                        Level.SEVERE, "UNKNOWN BLOCK [{0}, {1}, {2}] {3}:{4}", new Object[]{x, y, z, b_id, b_meta});
-            }
-        }
         return null;
     }
 

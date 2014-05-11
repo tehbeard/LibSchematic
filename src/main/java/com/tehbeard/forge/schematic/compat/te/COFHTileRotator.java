@@ -1,11 +1,11 @@
 package com.tehbeard.forge.schematic.compat.te;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.tileentity.IReconfigurableFacing;
 
 import com.tehbeard.forge.schematic.SchematicFile;
-import com.tehbeard.forge.schematic.handlers.rotations.*;
+import com.tehbeard.forge.schematic.handlers.rotations.TileEntityRotationHandler;
 
 public class COFHTileRotator extends TileEntityRotationHandler{
 

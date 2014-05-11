@@ -22,20 +22,20 @@ public class TagsExtension implements SchematicExtension {
 
     @Override
     public void onLoad(NBTTagCompound tag, SchematicFile file) {
-        NBTTagList list = tag.getCompoundTag("Metadata").getTagList("Tags");
+        NBTTagList list = tag.getCompoundTag("Metadata").getTagList("Tags",8);
         for (int i = 0; i < list.tagCount(); i++) {
-            tags.add(((NBTTagString) list.tagAt(i)).data);
+            tags.add(list.getStringTagAt(i));
         }
     }
 
     @Override
     public void onSave(NBTTagCompound tag, SchematicFile file) {
-        NBTTagList list = new NBTTagList("Tags");
+        NBTTagList list = new NBTTagList();
         for (String stag : tags) {
-            list.appendTag(new NBTTagString(null, stag));
+            list.appendTag(new NBTTagString(stag));
         }
         if (!tag.hasKey("Metadata")) {
-            tag.setCompoundTag("Metadata", new NBTTagCompound());
+            tag.setTag("Metadata", new NBTTagCompound());
         }
         tag.getCompoundTag("Metadata").setTag("Tags", list);
     }

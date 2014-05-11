@@ -124,14 +124,15 @@ public class SchematicFile {
      */
     public SchematicFile(NBTTagCompound tag) throws IOException {
 
-        if (!tag.getName().equalsIgnoreCase("schematic"))
-            throw new IOException("File is not a valid schematic");
+        //TODO - No more getName(), how to validate schematic now?
+//        if (!tag.getName().equalsIgnoreCase("schematic"))
+//            throw new IOException("File is not a valid schematic");
 
         width = tag.getShort("Width");
         height = tag.getShort("Height");
         length = tag.getShort("Length");
 
-        SchematicDataRegistry.logger().config(
+        SchematicDataRegistry.logger().debug(
                 "Schematic loaded, [" + width + ", " + height + ", " + length
                         + "]");
 
@@ -143,7 +144,7 @@ public class SchematicFile {
         byte[] addBlocks = new byte[0];
         // Check and load Additional blocks array
         if (tag.hasKey("AddBlocks")) {
-            SchematicDataRegistry.logger().config(
+            SchematicDataRegistry.logger().debug(
                     "Extended block data detected!");
             addBlocks = tag.getByteArray("AddBlocks");
         }
@@ -163,15 +164,15 @@ public class SchematicFile {
         blockData = tag.getByteArray("Data");
 
         // load tileEntities
-        NBTTagList tileEntityTag = tag.getTagList("TileEntities");
+        NBTTagList tileEntityTag = tag.getTagList("TileEntities",10);
 
         for (int i = 0; i < tileEntityTag.tagCount(); i++) {
-            tileEntities.add((NBTTagCompound) tileEntityTag.tagAt(i));
+            tileEntities.add(tileEntityTag.getCompoundTagAt(i)); 
         }
-        NBTTagList entityTag = tag.getTagList("Entities");
+        NBTTagList entityTag = tag.getTagList("Entities",10);
 
         for (int i = 0; i < entityTag.tagCount(); i++) {
-            entities.add((NBTTagCompound) entityTag.tagAt(i));
+            entities.add(entityTag.getCompoundTagAt(i)); //tagAt
         }
 
         extensions = SchematicDataRegistry.getExtensions(tag, this);
@@ -195,7 +196,7 @@ public class SchematicFile {
      */
     public NBTTagCompound saveSchematicToTag() throws IOException {
 
-        NBTTagCompound tag = new NBTTagCompound("Schematic");
+        NBTTagCompound tag = new NBTTagCompound(); // No Schematic name added
         tag.setString("Materials", "Alpha");
 
         tag.setShort("Width", width);
@@ -242,7 +243,7 @@ public class SchematicFile {
         }
 
         // Save tile entities
-        NBTTagList tel = new NBTTagList("TileEntities");
+        NBTTagList tel = new NBTTagList();
         for (NBTTagCompound te : tileEntities) {
             tel.appendTag(te);
         }
@@ -251,7 +252,7 @@ public class SchematicFile {
         }
 
         // save entities
-        NBTTagList el = new NBTTagList("Entities");
+        NBTTagList el = new NBTTagList();
         for (NBTTagCompound e : entities) {
             el.appendTag(e);
         }
