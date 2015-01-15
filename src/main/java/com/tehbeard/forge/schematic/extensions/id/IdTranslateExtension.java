@@ -82,15 +82,15 @@ public class IdTranslateExtension implements SchematicExtension {
 	 */
 	private void map(int[] cache, Map<String,Integer> local, Map<String,Integer> schematic){
 		SchematicDataRegistry.logger().info("Mapping the cache...");
-		SchematicDataRegistry.logger().info(unwind(local));
-		SchematicDataRegistry.logger().info(unwind(schematic));
+		SchematicDataRegistry.logger().debug(unwind(local));
+		SchematicDataRegistry.logger().debug(unwind(schematic));
 		for( Entry<String, Integer> entry : local.entrySet()){
 			int localId = entry.getValue();
 			int schematicId = schematic.containsKey(entry.getKey()) ? schematic.get(entry.getKey()) : -1;
 			if (schematicId==-1) continue;
 			cache[schematicId] = localId;
 		}
-		SchematicDataRegistry.logger().info(Arrays.toString(cache));
+		SchematicDataRegistry.logger().debug(Arrays.toString(cache));
 		SchematicDataRegistry.logger().info("Mapping of cache complete");
 	}
 	
@@ -143,8 +143,8 @@ public class IdTranslateExtension implements SchematicExtension {
 	private String unwind(Map<?,?> wound) {
 		String s = "";
 
-		for (Object key : wound.keySet()) {
-			s += String.format("[%s : %s] ", key.toString(), wound.get(key).toString());
+		for (Entry<?,?> key : wound.entrySet()) {
+			s += String.format("[%s : %s] ", key.getKey(), key.getValue());
 		}
 
 		return s;

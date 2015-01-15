@@ -31,7 +31,9 @@ public class IdTranslateWorker extends AbstractSchematicWorker {
             return original;
         }
 
-        //NOTE: We're making things
+        //Okay, let's load the schematic into the translator.
+        //Now we can refresh the cache with all these blocks which are in both
+        // the current environment, and the schematics environment
         original.prepareToLoad(ext);
         ext.redoCache();
 

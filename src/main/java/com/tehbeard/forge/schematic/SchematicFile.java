@@ -132,7 +132,7 @@ public class SchematicFile {
         height = tag.getShort("Height");
         length = tag.getShort("Length");
 
-        SchematicDataRegistry.logger().info(
+        SchematicDataRegistry.logger().debug(
                 "Schematic loaded, [" + width + ", " + height + ", " + length
                         + "]");
 
@@ -177,7 +177,7 @@ public class SchematicFile {
 
         extensions = SchematicDataRegistry.getExtensions(tag, this);
 
-        SchematicDataRegistry.logger().info("Block array of file: " + Arrays.toString(blocks));
+        SchematicDataRegistry.logger().debug("Block array of file: " + Arrays.toString(blocks));
     }
 
     /**
@@ -291,8 +291,8 @@ public class SchematicFile {
         if (index < 0 || index >= blocks.length)
             throw new IllegalStateException("Invalid coordinates for block get! [" + x + ", " + y + ", " + z + "]");
 
-        SchematicDataRegistry.logger().info(String.format(
-                "We've translated location %d-%d-%d to index %d in the blocks array, which is %d",
+        SchematicDataRegistry.logger().debug(String.format(
+                "We've translated location %d/%d/%d to index %d in the blocks array, which is %d",
                 x, y, z, index, blocks[index]
         ));
 

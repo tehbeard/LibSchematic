@@ -61,13 +61,13 @@ public class SchematicDataRegistry {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 
-        logger.info("Polling block array for Schematic data handlers");
+        logger().info("Polling block array for Schematic data handlers");
         //Check all blocks for SchematicDataHandler
 
-        logger.info("Shoving everything into the ID Maps");
+        logger().info("Shoving everything into the ID Maps");
         for (Object b : GameData.getBlockRegistry().getKeys()) {
             int _id = Block.getIdFromBlock(GameData.getBlockRegistry().getObject((String) b));
-            logger().info(String.format(
+            logger().debug(String.format(
                      "Block Registry key: %s, to value: %s",
                      b, _id)
             );
@@ -76,12 +76,13 @@ public class SchematicDataRegistry {
 
         for (Object i : GameData.getItemRegistry().getKeys()) {
             int _id = Item.getIdFromItem(GameData.getItemRegistry().getObject((String) i));
-            logger().info(String.format(
+            logger().debug(String.format(
                     "Item Registry key: %s, to value: %s",
                     i, _id
             ));
             IdTranslateExtension.addLocalItem((String) i, _id);
         }
+        logger().debug("Everything shoved into ID Maps");
 
     }
 
@@ -127,9 +128,7 @@ public class SchematicDataRegistry {
     public static final TileEntityTranslator defaultTileEntityManager = new TileEntityTranslator();
 
     /**
-     * Adds an extension for usage.
-     * 
-     * @param _class
+     * @param _class Add this extension for usage
      */
     public void addSchematicExtension(Class<? extends SchematicExtension> _class) {
         schematicExtensions.addProduct(_class);

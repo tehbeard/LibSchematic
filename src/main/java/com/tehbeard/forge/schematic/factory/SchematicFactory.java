@@ -65,7 +65,7 @@ public class SchematicFactory {
                 tmp = worker.modifySchematic(tmp);
             }
 
-            SchematicDataRegistry.logger().info(String.format(
+            SchematicDataRegistry.logger().debug(String.format(
                     "Schematic modified %d times", workers.size()
             ));
 
@@ -90,7 +90,7 @@ public class SchematicFactory {
         for (AbstractSchematicWorker worker : workers) {
             this.workers.add(worker);
         }
-        SchematicDataRegistry.logger().info(String.format(
+        SchematicDataRegistry.logger().debug(String.format(
                 "%d workers loaded", workers.length
         ));
         return this;

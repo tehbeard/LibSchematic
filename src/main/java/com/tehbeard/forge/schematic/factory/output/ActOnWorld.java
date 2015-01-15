@@ -35,7 +35,6 @@ public abstract class ActOnWorld implements IFactoryOuput {
     }
 
     public void setWorldVec(SchVector worldVec) {
-        SchematicDataRegistry.logger().info("World vector set at "+ worldVec);
         this.worldVec = worldVec;
     }
 
@@ -71,8 +70,8 @@ public abstract class ActOnWorld implements IFactoryOuput {
                     int b_id = file.getBlockId(x, y, z);
                     byte b_meta = file.getBlockData(x, y, z);
 
-                    SchematicDataRegistry.logger().info(String.format(
-                            "Block %d-%d-%d has id %d and is made of %s",
+                    SchematicDataRegistry.logger().debug(String.format(
+                            "Block %d/%d/%d has id %d and is made of %s",
                             x, y, z, b_id, Block.getBlockById(b_id).getLocalizedName()
                     ));
 
