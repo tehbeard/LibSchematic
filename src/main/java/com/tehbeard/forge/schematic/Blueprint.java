@@ -104,7 +104,7 @@ public class Blueprint {
                     int wz = z + min.getZ();
 
                     SchematicDataRegistry.logger().debug(String.format(
-                            "ID at world %d-%d-%d of block %s is %d",
+                            "ID at world %d/%d/%d of block %s is %d",
                             x, y, z, world.getBlock(wx, wy, wz).getLocalizedName(),
                             Block.getIdFromBlock(world.getBlock(wx, wy, wz))
                     ));

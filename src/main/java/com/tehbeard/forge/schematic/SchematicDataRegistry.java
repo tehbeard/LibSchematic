@@ -64,6 +64,7 @@ public class SchematicDataRegistry {
         logger().info("Polling block array for Schematic data handlers");
         //Check all blocks for SchematicDataHandler
 
+        //Load in all blocks into the local translator map
         logger().info("Shoving everything into the ID Maps");
         for (Object b : GameData.getBlockRegistry().getKeys()) {
             int _id = Block.getIdFromBlock(GameData.getBlockRegistry().getObject((String) b));
@@ -74,6 +75,7 @@ public class SchematicDataRegistry {
             IdTranslateExtension.addLocalBlock((String) b, _id);
         }
 
+        //Now do the same for all the local items
         for (Object i : GameData.getItemRegistry().getKeys()) {
             int _id = Item.getIdFromItem(GameData.getItemRegistry().getObject((String) i));
             logger().debug(String.format(
@@ -85,14 +87,6 @@ public class SchematicDataRegistry {
         logger().debug("Everything shoved into ID Maps");
 
     }
-
-    /*
-     * @EventHandler public void IMC(IMCEvent event){
-     * 
-     * for(IMCMessage msg : event.getMessages()){ if(msg.isNBTMessage()){ //TODO
-     * - IMC interface } else { logger.warning("Invalid IMC message from " +
-     * msg.getSender()); } } }
-     */
 
     /**
      * Returns the logger for this mod

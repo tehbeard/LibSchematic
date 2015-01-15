@@ -140,6 +140,12 @@ public class IdTranslateExtension implements SchematicExtension {
 		schematicItemMap.put(ident, uid);
 	}
 
+	/**
+	 * Return a debug string of the contents of a map
+	 *
+	 * @param wound The map we're unwinding into a string
+	 * @return The debug string
+	 */
 	private String unwind(Map<?,?> wound) {
 		String s = "";
 
