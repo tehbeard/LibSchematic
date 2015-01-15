@@ -103,6 +103,13 @@ public class Blueprint {
                     int wy = y + min.getY();
                     int wz = z + min.getZ();
 
+                    SchematicDataRegistry.logger().info(String.format(
+                            "ID at world %d-%d-%d of block %s is %d",
+                            x, y, z, world.getBlock(wx, wy, wz).getLocalizedName(),
+                            Block.getIdFromBlock(world.getBlock(wx, wy, wz))
+                    ));
+
+                    file.setBlockId(x,y,z, Block.getIdFromBlock(world.getBlock(wx,wy,wz)));
                     file.setBlockId(x, y, z, Block.getIdFromBlock(world.getBlock(wx, wy, wz)));
                     file.setBlockData(x, y, z,
                             (byte) (world.getBlockMetadata(wx, wy, wz) & 0xFF));

@@ -1,11 +1,9 @@
 package com.tehbeard.forge.schematic.extensions.id;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
+import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 
@@ -87,6 +85,7 @@ public class IdTranslateExtension implements SchematicExtension {
 		for( Entry<String, Integer> entry : local.entrySet()){
 			int localId = entry.getValue();
 			int schematicId = schematic.containsKey(entry.getKey()) ? schematic.get(entry.getKey()) : -1;
+			if (schematicId==-1) continue;
 			cache[schematicId] = localId;
 		}
 	}
@@ -136,13 +135,32 @@ public class IdTranslateExtension implements SchematicExtension {
 	public void addSchematicItem(String ident,int uid){
 		schematicItemMap.put(ident, uid);
 	}
-	
+
+	private String unwind(Map<?,?> wound) {
+		String s = "";
+
+		for (Object key : wound.keySet()) {
+			s += String.format("[%s : %s] ", key.toString(), wound.get(key).toString());
+		}
+
+		return s;
+	}
+
 	/**
 	 * Map a block id from the schematic to the id in this world. 
 	 * @param fromId
 	 * @return
 	 */
 	public int mapBlock(int fromId){
+		SchematicDataRegistry.logger().info(String.format(
+				"%s", Arrays.toString(blockCache)
+		));
+		SchematicDataRegistry.logger().info(String.format(
+				"%s", unwind(localBlockMap)
+		));
+		SchematicDataRegistry.logger().info(String.format(
+				"%s", unwind(localItemMap)
+		));
 		return blockCache[fromId];
 	}
 	

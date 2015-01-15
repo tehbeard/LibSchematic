@@ -3,6 +3,7 @@ package com.tehbeard.forge.schematic.factory;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.factory.output.IFactoryOuput;
 import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
@@ -63,6 +64,11 @@ public class SchematicFactory {
             for (AbstractSchematicWorker worker : workers) {
                 tmp = worker.modifySchematic(tmp);
             }
+
+            SchematicDataRegistry.logger().info(String.format(
+                    "Schematic modified %d times", workers.size()
+            ));
+
             return tmp;
         } catch (Exception e) {
             System.out
@@ -84,6 +90,9 @@ public class SchematicFactory {
         for (AbstractSchematicWorker worker : workers) {
             this.workers.add(worker);
         }
+        SchematicDataRegistry.logger().info(String.format(
+                "%d workers loaded", workers.length
+        ));
         return this;
     }
 

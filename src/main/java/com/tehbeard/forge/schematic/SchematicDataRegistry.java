@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.apache.logging.log4j.Logger;
@@ -61,6 +63,25 @@ public class SchematicDataRegistry {
 
         logger.info("Polling block array for Schematic data handlers");
         //Check all blocks for SchematicDataHandler
+
+        logger.info("Shoving everything into the ID Maps");
+        for (Object b : GameData.getBlockRegistry().getKeys()) {
+            int _id = Block.getIdFromBlock(GameData.getBlockRegistry().getObject((String) b));
+            logger().info(String.format(
+                     "Block Registry key: %s, to value: %s",
+                     b, _id)
+            );
+            IdTranslateExtension.addLocalBlock((String) b, _id);
+        }
+
+        for (Object i : GameData.getItemRegistry().getKeys()) {
+            int _id = Item.getIdFromItem(GameData.getItemRegistry().getObject((String) i));
+            logger().info(String.format(
+                    "Item Registry key: %s, to value: %s",
+                    i, _id
+            ));
+            IdTranslateExtension.addLocalItem((String) i, _id);
+        }
     }
 
     /*
@@ -132,7 +153,7 @@ public class SchematicDataRegistry {
      * LibSchematic on how to process blocks/tile entities, such as rotation or
      * owner of the block.
      * 
-     * @param blockId
+     * @param blockNamespace
      *            id of the block you wish to configure e.g. minecraft:chest
      * @param handler
      *            object that implements one of several
