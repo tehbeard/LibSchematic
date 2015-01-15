@@ -109,7 +109,6 @@ public class Blueprint {
                             Block.getIdFromBlock(world.getBlock(wx, wy, wz))
                     ));
 
-                    file.setBlockId(x,y,z, Block.getIdFromBlock(world.getBlock(wx,wy,wz)));
                     file.setBlockId(x, y, z, Block.getIdFromBlock(world.getBlock(wx, wy, wz)));
                     file.setBlockData(x, y, z,
                             (byte) (world.getBlockMetadata(wx, wy, wz) & 0xFF));

@@ -5,10 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
+import com.tehbeard.forge.schematic.extensions.id.IdTranslateExtension;
+import cpw.mods.fml.common.registry.GameData;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -509,4 +510,21 @@ public class SchematicFile {
         }
         return copy;
     }
+
+    public void prepareToLoad(IdTranslateExtension translator) {
+        Set<Block> blocks = new HashSet<Block>();
+
+        for (int y=0; y<getHeight(); ++y) {
+            for (int x=0; x<getWidth(); ++x) {
+                for (int z=0; z<getLength(); ++z) {
+                    int _id = getBlockId(x, y, z);
+                    Block block = Block.getBlockById(_id);
+                    if (blocks.contains(block)) continue;
+                    blocks.add(block);
+                    translator.addSchematicBlock(GameData.getBlockRegistry().getNameForObject(block), _id);
+                }
+            }
+        }
+    }
+
 }

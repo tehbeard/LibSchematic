@@ -41,14 +41,13 @@ public class IdTranslateExtension implements SchematicExtension {
 			}
 		}
 	};
-	
 
 	/**
 	 * Local runtime dictionary of stringId -> int ids
 	 */
 	private static Map<String,Integer> localBlockMap = new HashMap<String, Integer>();
 	private static Map<String,Integer> localItemMap = new HashMap<String, Integer>();
-	
+
 	/**
 	 * Schematic dictionary of stringId -> int ids
 	 */
@@ -82,12 +81,17 @@ public class IdTranslateExtension implements SchematicExtension {
 	 * @param schematic schematic dictionary of stringId -> int id
 	 */
 	private void map(int[] cache, Map<String,Integer> local, Map<String,Integer> schematic){
+		SchematicDataRegistry.logger().info("Mapping the cache...");
+		SchematicDataRegistry.logger().info(unwind(local));
+		SchematicDataRegistry.logger().info(unwind(schematic));
 		for( Entry<String, Integer> entry : local.entrySet()){
 			int localId = entry.getValue();
 			int schematicId = schematic.containsKey(entry.getKey()) ? schematic.get(entry.getKey()) : -1;
 			if (schematicId==-1) continue;
 			cache[schematicId] = localId;
 		}
+		SchematicDataRegistry.logger().info(Arrays.toString(cache));
+		SchematicDataRegistry.logger().info("Mapping of cache complete");
 	}
 	
 	/**
@@ -152,15 +156,6 @@ public class IdTranslateExtension implements SchematicExtension {
 	 * @return
 	 */
 	public int mapBlock(int fromId){
-		SchematicDataRegistry.logger().info(String.format(
-				"%s", Arrays.toString(blockCache)
-		));
-		SchematicDataRegistry.logger().info(String.format(
-				"%s", unwind(localBlockMap)
-		));
-		SchematicDataRegistry.logger().info(String.format(
-				"%s", unwind(localItemMap)
-		));
 		return blockCache[fromId];
 	}
 	

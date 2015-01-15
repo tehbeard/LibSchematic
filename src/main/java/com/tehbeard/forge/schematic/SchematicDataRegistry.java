@@ -82,6 +82,7 @@ public class SchematicDataRegistry {
             ));
             IdTranslateExtension.addLocalItem((String) i, _id);
         }
+
     }
 
     /*
