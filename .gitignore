@@ -14,3 +14,4 @@ target
 *.schematic
 build.properties
 build_number.properties
+.nb-gradle/profiles/private/aux-config
