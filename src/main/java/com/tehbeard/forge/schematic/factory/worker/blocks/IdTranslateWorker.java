@@ -1,7 +1,5 @@
 package com.tehbeard.forge.schematic.factory.worker.blocks;
 
-import cpw.mods.fml.common.registry.GameData;
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
@@ -42,14 +40,11 @@ public class IdTranslateWorker extends AbstractSchematicWorker {
         for (int y = 0; y < original.getHeight(); y++) {
             for (int x = 0; x < original.getWidth(); x++) {
                 for (int z = 0; z < original.getLength(); z++) {
-                    String oldid = original.getBlockNamespace(x, y, z);
+                    int oldid = original.getBlockId(x, y, z);
                     int newid = ext.mapBlock(oldid);
                     SchematicDataRegistry.logger().info(
                             "" + oldid + " - " + newid);
-                    original.setBlockNamespace(
-                            x, y, z, GameData.getBlockRegistry()
-                                    .getNameForObject(Block.getBlockById(newid))
-                    );
+                    original.setBlockId(x, y, z, newid);
                 }
             }
         }

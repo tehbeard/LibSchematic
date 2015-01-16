@@ -82,15 +82,15 @@ public class IdTranslateExtension implements SchematicExtension {
 	 */
 	private void map(int[] cache, Map<String,Integer> local, Map<String,Integer> schematic){
 		SchematicDataRegistry.logger().info("Mapping the cache...");
-		SchematicDataRegistry.logger().info(unwind(local));
-		SchematicDataRegistry.logger().info(unwind(schematic));
+		SchematicDataRegistry.logger().debug(unwind(local));
+		SchematicDataRegistry.logger().debug(unwind(schematic));
 		for( Entry<String, Integer> entry : local.entrySet()){
 			int localId = entry.getValue();
 			int schematicId = schematic.containsKey(entry.getKey()) ? schematic.get(entry.getKey()) : -1;
 			if (schematicId==-1) continue;
 			cache[schematicId] = localId;
 		}
-		SchematicDataRegistry.logger().info(Arrays.toString(cache));
+		SchematicDataRegistry.logger().debug(Arrays.toString(cache));
 		SchematicDataRegistry.logger().info("Mapping of cache complete");
 	}
 	
@@ -161,8 +161,8 @@ public class IdTranslateExtension implements SchematicExtension {
 	 * @param fromId
 	 * @return
 	 */
-	public int mapBlock(String fromId){
-		return blockCache[schematicBlockMap.get(fromId)];
+	public int mapBlock(int fromId){
+		return blockCache[fromId];
 	}
 	
 	/**
@@ -170,15 +170,15 @@ public class IdTranslateExtension implements SchematicExtension {
 	 * @param fromId
 	 * @return
 	 */
-	public int mapItem(String fromId){
+	public int mapItem(int fromId){
 		//Check block cache, failing that check item cache.
 		int newId = -1;
-		if(!fromId.isEmpty()){
+		if(fromId >= 0 && fromId < 4096){
 			newId = mapBlock(fromId);
 		}
 		
 		if(newId == -1){
-			newId = itemCache[schematicItemMap.get(fromId)];
+			newId = itemCache[fromId];
 		}
 		return newId;
 	}
@@ -236,7 +236,6 @@ public class IdTranslateExtension implements SchematicExtension {
 		return translate;
 	}
 
-	//TODO: Tag needs to include namespace tag
     public void convertItemStackTag(NBTTagCompound tag){
     	//id
     	//Damage
@@ -246,7 +245,7 @@ public class IdTranslateExtension implements SchematicExtension {
     	if(tag.hasKey("id") &&
     	tag.hasKey("Damage") &&
     	tag.hasKey("Count")){
-    		tag.setShort("id",(short)mapItem(tag.getString("namespace")));
+    		tag.setShort("id",(short)mapItem(tag.getShort("id")));
     	}
     	
     }

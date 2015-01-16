@@ -45,7 +45,7 @@ public class SchematicFile {
     private short length = 0;
 
     // block data
-    private String[] blocks;
+    private int[] blocks;
     private byte[] blockData;
 
     // Complex NBT objects
@@ -113,7 +113,7 @@ public class SchematicFile {
      */
     private void resetArrays() {
         int size = width * height * length;
-        blocks = new String[size];
+        blocks = new int[size];
         blockData = new byte[size];
     }
 
@@ -271,8 +271,8 @@ public class SchematicFile {
      * @param vector
      * @return
      */
-    public String getBlockNamespace(SchVector vector) {
-        return getBlockNamespace(vector.getX(), vector.getY(), vector.getZ());
+    public int getBlockId(SchVector vector) {
+        return getBlockId(vector.getX(), vector.getY(), vector.getZ());
     }
 
     /**
@@ -284,7 +284,7 @@ public class SchematicFile {
      * @param z
      * @return
      */
-    public String getBlockNamespace(int x, int y, int z) {
+    public int getBlockId(int x, int y, int z) {
 
         int index = y * width * length + z * width + x;
 
@@ -329,10 +329,10 @@ public class SchematicFile {
      * Set the block id at vector
      * 
      * @param v
-     * @param b_namespace
+     * @param b_id
      */
-    public void setBlockNamespace(SchVector v, String b_namespace) {
-        setBlockNamespace(v.getX(), v.getY(), v.getZ(), b_namespace);
+    public void setBlockId(SchVector v, int b_id) {
+        setBlockId(v.getX(), v.getY(), v.getZ(), b_id);
     }
 
     /**
@@ -341,17 +341,17 @@ public class SchematicFile {
      * @param x
      * @param y
      * @param z
-     * @param namespace
+     * @param block
      */
-    public void setBlockNamespace(int x, int y, int z, String namespace) {
+    public void setBlockId(int x, int y, int z, int block) {
 
         int index = y * width * length + z * width + x;
         if (index < 0 || index >= blocks.length)
             throw new IllegalStateException(
                     "Invalid coordinates for block set! [" + x + ", " + y
-                            + ", " + z + "] " + namespace + " / sch : [" + width
+                            + ", " + z + "] " + block + " / sch : [" + width
                             + ", " + height + ", " + length + "]");
-        blocks[index] = namespace;
+        blocks[index] = block;
     }
 
     /**
@@ -529,19 +529,16 @@ public class SchematicFile {
                 for (int z=0; z<getLength(); ++z) {
 
                     //Get each block
-                    String space = getBlockNamespace(x, y, z);
-                    Block block = Block.getBlockFromName(space);
+                    int _id = getBlockId(x, y, z);
+                    Block block = Block.getBlockById(_id);
 
                     //And add it to the set above
-                    if (block == null || blocks.contains(block)) continue;
+                    if (blocks.contains(block)) continue;
                     blocks.add(block);
 
                     //Now add our block to the schematics registry so that it's
                     // listed in preparation for reloading the cache
-                    translator.addSchematicBlock(
-                            GameData.getBlockRegistry().getNameForObject(block),
-                            Block.getIdFromBlock(block)
-                    );
+                    translator.addSchematicBlock(GameData.getBlockRegistry().getNameForObject(block), _id);
 
                 }
             }
