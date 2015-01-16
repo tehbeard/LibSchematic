@@ -1,11 +1,9 @@
 package com.tehbeard.forge.schematic.extensions.id;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
+import com.tehbeard.forge.schematic.SchematicDataRegistry;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 
@@ -43,14 +41,13 @@ public class IdTranslateExtension implements SchematicExtension {
 			}
 		}
 	};
-	
 
 	/**
 	 * Local runtime dictionary of stringId -> int ids
 	 */
 	private static Map<String,Integer> localBlockMap = new HashMap<String, Integer>();
 	private static Map<String,Integer> localItemMap = new HashMap<String, Integer>();
-	
+
 	/**
 	 * Schematic dictionary of stringId -> int ids
 	 */
@@ -84,11 +81,17 @@ public class IdTranslateExtension implements SchematicExtension {
 	 * @param schematic schematic dictionary of stringId -> int id
 	 */
 	private void map(int[] cache, Map<String,Integer> local, Map<String,Integer> schematic){
+		SchematicDataRegistry.logger().info("Mapping the cache...");
+		SchematicDataRegistry.logger().info(unwind(local));
+		SchematicDataRegistry.logger().info(unwind(schematic));
 		for( Entry<String, Integer> entry : local.entrySet()){
 			int localId = entry.getValue();
 			int schematicId = schematic.containsKey(entry.getKey()) ? schematic.get(entry.getKey()) : -1;
+			if (schematicId==-1) continue;
 			cache[schematicId] = localId;
 		}
+		SchematicDataRegistry.logger().info(Arrays.toString(cache));
+		SchematicDataRegistry.logger().info("Mapping of cache complete");
 	}
 	
 	/**
@@ -136,14 +139,30 @@ public class IdTranslateExtension implements SchematicExtension {
 	public void addSchematicItem(String ident,int uid){
 		schematicItemMap.put(ident, uid);
 	}
-	
+
+	/**
+	 * Return a debug string of the contents of a map
+	 *
+	 * @param wound The map we're unwinding into a string
+	 * @return The debug string
+	 */
+	private String unwind(Map<?,?> wound) {
+		String s = "";
+
+		for (Entry<?,?> key : wound.entrySet()) {
+			s += String.format("[%s : %s] ", key.getKey(), key.getValue());
+		}
+
+		return s;
+	}
+
 	/**
 	 * Map a block id from the schematic to the id in this world. 
 	 * @param fromId
 	 * @return
 	 */
-	public int mapBlock(int fromId){
-		return blockCache[fromId];
+	public int mapBlock(String fromId){
+		return blockCache[schematicBlockMap.get(fromId)];
 	}
 	
 	/**
@@ -151,15 +170,15 @@ public class IdTranslateExtension implements SchematicExtension {
 	 * @param fromId
 	 * @return
 	 */
-	public int mapItem(int fromId){
+	public int mapItem(String fromId){
 		//Check block cache, failing that check item cache.
 		int newId = -1;
-		if(fromId >= 0 && fromId < 4096){
+		if(!fromId.isEmpty()){
 			newId = mapBlock(fromId);
 		}
 		
 		if(newId == -1){
-			newId = itemCache[fromId];
+			newId = itemCache[schematicItemMap.get(fromId)];
 		}
 		return newId;
 	}
@@ -217,6 +236,7 @@ public class IdTranslateExtension implements SchematicExtension {
 		return translate;
 	}
 
+	//TODO: Tag needs to include namespace tag
     public void convertItemStackTag(NBTTagCompound tag){
     	//id
     	//Damage
@@ -226,7 +246,7 @@ public class IdTranslateExtension implements SchematicExtension {
     	if(tag.hasKey("id") &&
     	tag.hasKey("Damage") &&
     	tag.hasKey("Count")){
-    		tag.setShort("id",(short)mapItem(tag.getShort("id")));
+    		tag.setShort("id",(short)mapItem(tag.getString("namespace")));
     	}
     	
     }

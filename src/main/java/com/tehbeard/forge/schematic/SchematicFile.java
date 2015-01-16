@@ -5,10 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
+import com.tehbeard.forge.schematic.extensions.id.IdTranslateExtension;
+import cpw.mods.fml.common.registry.GameData;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -44,7 +45,7 @@ public class SchematicFile {
     private short length = 0;
 
     // block data
-    private int[] blocks;
+    private String[] blocks;
     private byte[] blockData;
 
     // Complex NBT objects
@@ -94,7 +95,6 @@ public class SchematicFile {
      * @throws IOException
      */
     public SchematicFile(InputStream is) throws IOException {
-
         this(CompressedStreamTools.readCompressed(is));
     }
 
@@ -113,7 +113,7 @@ public class SchematicFile {
      */
     private void resetArrays() {
         int size = width * height * length;
-        blocks = new int[size];
+        blocks = new String[size];
         blockData = new byte[size];
     }
 
@@ -176,6 +176,8 @@ public class SchematicFile {
         }
 
         extensions = SchematicDataRegistry.getExtensions(tag, this);
+
+        SchematicDataRegistry.logger().debug("Block array of file: " + Arrays.toString(blocks));
     }
 
     /**
@@ -269,8 +271,8 @@ public class SchematicFile {
      * @param vector
      * @return
      */
-    public int getBlockId(SchVector vector) {
-        return getBlockId(vector.getX(), vector.getY(), vector.getZ());
+    public String getBlockNamespace(SchVector vector) {
+        return getBlockNamespace(vector.getX(), vector.getY(), vector.getZ());
     }
 
     /**
@@ -282,12 +284,17 @@ public class SchematicFile {
      * @param z
      * @return
      */
-    public int getBlockId(int x, int y, int z) {
+    public String getBlockNamespace(int x, int y, int z) {
 
         int index = y * width * length + z * width + x;
 
         if (index < 0 || index >= blocks.length)
             throw new IllegalStateException("Invalid coordinates for block get! [" + x + ", " + y + ", " + z + "]");
+
+        SchematicDataRegistry.logger().debug(String.format(
+                "We've translated location %d/%d/%d to index %d in the blocks array, which is %d",
+                x, y, z, index, blocks[index]
+        ));
 
         return blocks[index];
     }
@@ -322,10 +329,10 @@ public class SchematicFile {
      * Set the block id at vector
      * 
      * @param v
-     * @param b_id
+     * @param b_namespace
      */
-    public void setBlockId(SchVector v, int b_id) {
-        setBlockId(v.getX(), v.getY(), v.getZ(), b_id);
+    public void setBlockNamespace(SchVector v, String b_namespace) {
+        setBlockNamespace(v.getX(), v.getY(), v.getZ(), b_namespace);
     }
 
     /**
@@ -334,17 +341,17 @@ public class SchematicFile {
      * @param x
      * @param y
      * @param z
-     * @param block
+     * @param namespace
      */
-    public void setBlockId(int x, int y, int z, int block) {
+    public void setBlockNamespace(int x, int y, int z, String namespace) {
 
         int index = y * width * length + z * width + x;
         if (index < 0 || index >= blocks.length)
             throw new IllegalStateException(
                     "Invalid coordinates for block set! [" + x + ", " + y
-                            + ", " + z + "] " + block + " / sch : [" + width
+                            + ", " + z + "] " + namespace + " / sch : [" + width
                             + ", " + height + ", " + length + "]");
-        blocks[index] = block;
+        blocks[index] = namespace;
     }
 
     /**
@@ -503,4 +510,43 @@ public class SchematicFile {
         }
         return copy;
     }
+
+    /**
+     * Prepare the IdTranslator for loading in this schematic by
+     * putting in all the blocks found within this schematic to
+     * the IdTranslator Schematic section
+     *
+     * @param translator The translator for which will be used to
+     *                   verify all the blocks within the schematic
+     */
+    public void prepareToLoad(IdTranslateExtension translator) {
+        //We just need a set; no need to count the numbers or anything
+        Set<Block> blocks = new HashSet<Block>();
+
+        //For every block in the schematic...
+        for (int y=0; y<getHeight(); ++y) {
+            for (int x=0; x<getWidth(); ++x) {
+                for (int z=0; z<getLength(); ++z) {
+
+                    //Get each block
+                    String space = getBlockNamespace(x, y, z);
+                    Block block = Block.getBlockFromName(space);
+
+                    //And add it to the set above
+                    if (block == null || blocks.contains(block)) continue;
+                    blocks.add(block);
+
+                    //Now add our block to the schematics registry so that it's
+                    // listed in preparation for reloading the cache
+                    translator.addSchematicBlock(
+                            GameData.getBlockRegistry().getNameForObject(block),
+                            Block.getIdFromBlock(block)
+                    );
+
+                }
+            }
+        }
+
+    }
+
 }

@@ -5,7 +5,7 @@
   "version": "1.0",
   "description": "Framework allowing other mods to manipulate .schematic files containing mod blocks/items.",
   "url":"tehbeard.com",
-  "authorList":["Tehbeard"],
+  "authorList":["Tehbeard", "M4Numbers"],
   "logoFile":"/mods/libschematic/libschematic.png"
 },
 {

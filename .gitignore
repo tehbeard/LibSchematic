@@ -3,6 +3,10 @@ build
 eclipse
 doc
 .gradle
+*.iml
+.idea/*
+gradle
+gradlew*
 .settings
 target
 .project

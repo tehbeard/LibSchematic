@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.apache.logging.log4j.Logger;
@@ -59,17 +61,32 @@ public class SchematicDataRegistry {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 
-        logger.info("Polling block array for Schematic data handlers");
+        logger().info("Polling block array for Schematic data handlers");
         //Check all blocks for SchematicDataHandler
-    }
 
-    /*
-     * @EventHandler public void IMC(IMCEvent event){
-     * 
-     * for(IMCMessage msg : event.getMessages()){ if(msg.isNBTMessage()){ //TODO
-     * - IMC interface } else { logger.warning("Invalid IMC message from " +
-     * msg.getSender()); } } }
-     */
+        //Load in all blocks into the local translator map
+        logger().info("Shoving everything into the ID Maps");
+        for (Object b : GameData.getBlockRegistry().getKeys()) {
+            int _id = Block.getIdFromBlock(GameData.getBlockRegistry().getObject((String) b));
+            logger().debug(String.format(
+                     "Block Registry key: %s, to value: %s",
+                     b, _id)
+            );
+            IdTranslateExtension.addLocalBlock((String) b, _id);
+        }
+
+        //Now do the same for all the local items
+        for (Object i : GameData.getItemRegistry().getKeys()) {
+            int _id = Item.getIdFromItem(GameData.getItemRegistry().getObject((String) i));
+            logger().debug(String.format(
+                    "Item Registry key: %s, to value: %s",
+                    i, _id
+            ));
+            IdTranslateExtension.addLocalItem((String) i, _id);
+        }
+        logger().debug("Everything shoved into ID Maps");
+
+    }
 
     /**
      * Returns the logger for this mod
@@ -105,9 +122,7 @@ public class SchematicDataRegistry {
     public static final TileEntityTranslator defaultTileEntityManager = new TileEntityTranslator();
 
     /**
-     * Adds an extension for usage.
-     * 
-     * @param _class
+     * @param _class Add this extension for usage
      */
     public void addSchematicExtension(Class<? extends SchematicExtension> _class) {
         schematicExtensions.addProduct(_class);
@@ -132,7 +147,7 @@ public class SchematicDataRegistry {
      * LibSchematic on how to process blocks/tile entities, such as rotation or
      * owner of the block.
      * 
-     * @param blockId
+     * @param blockNamespace
      *            id of the block you wish to configure e.g. minecraft:chest
      * @param handler
      *            object that implements one of several
