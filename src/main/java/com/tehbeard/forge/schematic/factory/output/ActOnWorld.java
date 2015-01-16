@@ -1,5 +1,6 @@
 package com.tehbeard.forge.schematic.factory.output;
 
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -67,12 +68,13 @@ public abstract class ActOnWorld implements IFactoryOuput {
 
                     // Get block and meta ids, if block id is -1, we skip this
                     // block
-                    int b_id = file.getBlockId(x, y, z);
+                    String namespace = file.getBlockNamespace(x, y, z);
                     byte b_meta = file.getBlockData(x, y, z);
+                    int b_id = GameData.getBlockRegistry().getId(namespace);
 
                     SchematicDataRegistry.logger().debug(String.format(
-                            "Block %d/%d/%d has id %d and is made of %s",
-                            x, y, z, b_id, Block.getBlockById(b_id).getLocalizedName()
+                            "Block %d/%d/%d has namespace %s with id %d",
+                            x, y, z, namespace, b_id
                     ));
 
                     if (b_id == -1) {

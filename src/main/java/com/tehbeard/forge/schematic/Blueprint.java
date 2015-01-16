@@ -2,6 +2,7 @@ package com.tehbeard.forge.schematic;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -109,7 +110,11 @@ public class Blueprint {
                             Block.getIdFromBlock(world.getBlock(wx, wy, wz))
                     ));
 
-                    file.setBlockId(x, y, z, Block.getIdFromBlock(world.getBlock(wx, wy, wz)));
+                    file.setBlockNamespace(
+                            x, y, z,
+                            GameData.getBlockRegistry()
+                                    .getNameForObject(world.getBlock(wx, wy, wz))
+                    );
                     file.setBlockData(x, y, z,
                             (byte) (world.getBlockMetadata(wx, wy, wz) & 0xFF));
 
