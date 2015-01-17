@@ -36,7 +36,7 @@ public class ReplaceBlockWorker extends AbstractSchematicWorker {
                                 )
                         );
                         original.setBlockId(x, y, z, -1);
-                        original.setBlockId(x, y, z, rec.namespace);
+                        original.setBlockId(x, y, z, rec._id);
                         original.setBlockData(x, y, z, rec.metadata);
                     }
                 }
