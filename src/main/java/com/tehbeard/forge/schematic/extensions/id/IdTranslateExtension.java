@@ -3,13 +3,20 @@ package com.tehbeard.forge.schematic.extensions.id;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.apache.logging.log4j.Logger;
+
 import com.tehbeard.forge.schematic.SchematicDataRegistry;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.extensions.SchExtension;
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
+
+import cpw.mods.fml.common.registry.GameData;
 
 /**
  * Allows schematics to be used in multiple enviroments without issues due to differences
@@ -59,6 +66,33 @@ public class IdTranslateExtension implements SchematicExtension {
 	private int[] itemCache = new int[32256];
 	
 	/**
+	 * Load the game block and item namespace and id pairs into the extension
+	 * @param logger
+	 */
+	public static void initLocalMapping(Logger logger){
+	  //Load in all blocks into the local translator map
+        for (Object b : GameData.getBlockRegistry().getKeys()) {
+            int _id = Block.getIdFromBlock(GameData.getBlockRegistry().getObject((String) b));
+            logger.debug(String.format(
+                     "Block Registry key: %s, to value: %s",
+                     b, _id)
+            );
+            localBlockMap.put((String) b, _id);
+        }
+
+        //Now do the same for all the local items
+        for (Object i : GameData.getItemRegistry().getKeys()) {
+            int _id = Item.getIdFromItem(GameData.getItemRegistry().getObject((String) i));
+            logger.debug(String.format(
+                    "Item Registry key: %s, to value: %s",
+                    i, _id
+            ));
+            localItemMap.put((String) i, _id);
+        }
+        logger.debug("Everything shoved into ID Maps");
+	}
+	
+	/**
 	 * Clean array caches;
 	 */
 	private void cleanCache(){
@@ -104,42 +138,6 @@ public class IdTranslateExtension implements SchematicExtension {
 		map( itemCache,  localItemMap, schematicItemMap);
 	}
 	
-	/**
-	 * Map a string to an id (minecraft:stone -> 1) that exists in this current runtime
-	 * @param ident
-	 * @param uid
-	 */
-	public static void addLocalBlock(String ident,int uid){
-		localBlockMap.put(ident, uid);
-	}
-	
-	/**
-	 * Map a string to an id (minecraft:stone -> 1) to this schematic
-	 * @param ident
-	 * @param uid
-	 */
-	public void addSchematicBlock(String ident,int uid){
-		schematicBlockMap.put(ident, uid);
-	}
-	
-	/**
-	 * Map a string to an id (minecraft:stone -> 1) that exists in this current runtime
-	 * @param ident
-	 * @param uid
-	 */
-	public static void addLocalItem(String ident,int uid){
-		localItemMap.put(ident, uid);
-	}
-	
-	/**
-	 * Map a string to an id (minecraft:stone -> 1) to this schematic
-	 * @param ident
-	 * @param uid
-	 */
-	public void addSchematicItem(String ident,int uid){
-		schematicItemMap.put(ident, uid);
-	}
-
 	/**
 	 * Return a debug string of the contents of a map
 	 *
@@ -191,7 +189,7 @@ public class IdTranslateExtension implements SchematicExtension {
 		schematicItemMap  = new HashMap<String, Integer>(localItemMap);
 	}
 	
-	private NBTTagCompound toTag(Map<String,Integer> map){
+	private NBTTagCompound getTagFromMap(Map<String,Integer> map){
 		NBTTagCompound tag = new NBTTagCompound();
 		for( Entry<String, Integer> e : map.entrySet()){
 			tag.setInteger(e.getKey(), e.getValue());
@@ -200,7 +198,7 @@ public class IdTranslateExtension implements SchematicExtension {
 	}
 	
 	@SuppressWarnings("unchecked")
-    private Map<String,Integer> fromTag(NBTTagCompound tag){
+    private Map<String,Integer> getMapFromTag(NBTTagCompound tag){
 		HashMap<String, Integer> map = new HashMap<String,Integer>();
 
 		for(String _id : (Set<String>)tag.func_150296_c()){ // getTags
@@ -212,8 +210,8 @@ public class IdTranslateExtension implements SchematicExtension {
 	@Override
 	public void onLoad(NBTTagCompound tag, SchematicFile file) {
 		NBTTagCompound table = tag.getCompoundTag("IdTable");
-		localBlockMap = fromTag(table.getCompoundTag("blocks"));
-		localItemMap = fromTag(table.getCompoundTag("items"));
+		localBlockMap = getMapFromTag(table.getCompoundTag("blocks"));
+		localItemMap = getMapFromTag(table.getCompoundTag("items"));
 		
 		redoCache();
 	}
@@ -222,8 +220,8 @@ public class IdTranslateExtension implements SchematicExtension {
 	public void onSave(NBTTagCompound tag, SchematicFile file) {
 		//Make NBT table
 		NBTTagCompound table = tag.getCompoundTag("IdTable");
-		table.setTag("blocks",toTag(localBlockMap));
-		table.setTag("items",toTag(localItemMap));
+		table.setTag("blocks",getTagFromMap(localBlockMap));
+		table.setTag("items",getTagFromMap(localItemMap));
 		//add to schematic table
 		tag.setTag("IdTable", table);
 	}

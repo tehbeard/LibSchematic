@@ -56,7 +56,6 @@ public class PasteToWorld extends ActOnWorld {
             world.func_147451_t(worldVector.getX(), worldVector.getY(),worldVector.getZ()); //updateAllLightTypes
 
             world.markBlockForUpdate(worldVector.getX(), worldVector.getY(),worldVector.getZ());
-
             // place Tile Entity
             if (te != null) {
                 world.setTileEntity(worldVector.getX(),

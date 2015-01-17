@@ -511,39 +511,4 @@ public class SchematicFile {
         return copy;
     }
 
-    /**
-     * Prepare the IdTranslator for loading in this schematic by
-     * putting in all the blocks found within this schematic to
-     * the IdTranslator Schematic section
-     *
-     * @param translator The translator for which will be used to
-     *                   verify all the blocks within the schematic
-     */
-    public void prepareToLoad(IdTranslateExtension translator) {
-        //We just need a set; no need to count the numbers or anything
-        Set<Block> blocks = new HashSet<Block>();
-
-        //For every block in the schematic...
-        for (int y=0; y<getHeight(); ++y) {
-            for (int x=0; x<getWidth(); ++x) {
-                for (int z=0; z<getLength(); ++z) {
-
-                    //Get each block
-                    int _id = getBlockId(x, y, z);
-                    Block block = Block.getBlockById(_id);
-
-                    //And add it to the set above
-                    if (blocks.contains(block)) continue;
-                    blocks.add(block);
-
-                    //Now add our block to the schematics registry so that it's
-                    // listed in preparation for reloading the cache
-                    translator.addSchematicBlock(GameData.getBlockRegistry().getNameForObject(block), _id);
-
-                }
-            }
-        }
-
-    }
-
 }

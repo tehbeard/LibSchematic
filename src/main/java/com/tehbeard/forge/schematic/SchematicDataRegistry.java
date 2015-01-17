@@ -64,27 +64,7 @@ public class SchematicDataRegistry {
         logger().info("Polling block array for Schematic data handlers");
         //Check all blocks for SchematicDataHandler
 
-        //Load in all blocks into the local translator map
-        logger().info("Shoving everything into the ID Maps");
-        for (Object b : GameData.getBlockRegistry().getKeys()) {
-            int _id = Block.getIdFromBlock(GameData.getBlockRegistry().getObject((String) b));
-            logger().debug(String.format(
-                     "Block Registry key: %s, to value: %s",
-                     b, _id)
-            );
-            IdTranslateExtension.addLocalBlock((String) b, _id);
-        }
-
-        //Now do the same for all the local items
-        for (Object i : GameData.getItemRegistry().getKeys()) {
-            int _id = Item.getIdFromItem(GameData.getItemRegistry().getObject((String) i));
-            logger().debug(String.format(
-                    "Item Registry key: %s, to value: %s",
-                    i, _id
-            ));
-            IdTranslateExtension.addLocalItem((String) i, _id);
-        }
-        logger().debug("Everything shoved into ID Maps");
+        IdTranslateExtension.initLocalMapping(logger());
 
     }
 
