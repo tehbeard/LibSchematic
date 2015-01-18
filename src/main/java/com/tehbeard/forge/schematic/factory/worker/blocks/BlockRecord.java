@@ -76,4 +76,40 @@ public final class BlockRecord {
         this(id, (byte) 0);
     }
 
+    /**
+     * Overriding these methods to ensure we're unique and that we only compare
+     * on the important items
+     *
+     * @param obj The {@link BlockRecord} that we're comparing to
+     * @return Whether or not these two objects are equal to one another
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj!=null && obj instanceof BlockRecord) {
+
+            BlockRecord record = (BlockRecord) obj;
+
+            return
+                    this.namespace.equals(record.namespace)
+                    && this.metadata == record.metadata;
+
+        }
+        return false;
+    }
+
+    /**
+     * Since we overrode the equals method, it follows that we should do the same
+     * to the hashcode, again only including those items which are important to
+     * us
+     *
+     * @return The integer value of the contents of this record
+     */
+    @Override
+    public int hashCode(){
+        int hash = 13;
+        hash *= (27 * this.namespace.hashCode());
+        hash *= (27 * this.metadata);
+        return hash;
+    }
+
 }
