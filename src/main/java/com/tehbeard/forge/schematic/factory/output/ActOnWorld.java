@@ -12,6 +12,9 @@ import com.tehbeard.forge.schematic.handlers.SchematicDataHandler;
 import com.tehbeard.forge.schematic.handlers.SchematicRotationHandler;
 import com.tehbeard.forge.schematic.handlers.tileentity.TileEntityTranslator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Abstract {@link IFactoryOuput} that has methods for manipulating a world It
  * is designed for Output's that iterate over a schematic with relation to a
@@ -24,6 +27,7 @@ public abstract class ActOnWorld implements IFactoryOuput {
 
     protected final World world;
     private int rotations;
+    private Map<String, String> replacements = new HashMap<String, String>();
     private SchVector worldVec;
 
     public ActOnWorld(World world) {
@@ -140,6 +144,14 @@ public abstract class ActOnWorld implements IFactoryOuput {
 
     public void setRotations(int rotations) {
         this.rotations = rotations;
+    }
+
+    public Map<String, String> getReplacements() {
+        return replacements;
+    }
+
+    public void setReplacements(Map<String, String> replacements) {
+        this.replacements = replacements;
     }
 
     protected abstract Object action(int x, int y, int z, int b_id, int b_meta,

@@ -10,9 +10,7 @@ import java.util.*;
 import com.tehbeard.forge.schematic.extensions.id.IdTranslateExtension;
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.*;
 
 import com.tehbeard.forge.schematic.extensions.SchematicExtension;
 import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
@@ -132,6 +130,8 @@ public class SchematicFile {
         height = tag.getShort("Height");
         length = tag.getShort("Length");
 
+        String mats = tag.getString("Materials");
+
         SchematicDataRegistry.logger().debug(
                 "Schematic loaded, [" + width + ", " + height + ", " + length
                         + "]");
@@ -177,7 +177,8 @@ public class SchematicFile {
 
         extensions = SchematicDataRegistry.getExtensions(tag, this);
 
-        SchematicDataRegistry.logger().debug("Block array of file: " + Arrays.toString(blocks));
+        SchematicDataRegistry.logger().info("Block array of file: " + Arrays.toString(blocks));
+        SchematicDataRegistry.logger().info("Some kind of material... " + mats);
     }
 
     /**
@@ -330,9 +331,10 @@ public class SchematicFile {
      * 
      * @param v
      * @param b_id
+     * @param b_ns
      */
-    public void setBlockId(SchVector v, int b_id) {
-        setBlockId(v.getX(), v.getY(), v.getZ(), b_id);
+    public void setBlock(SchVector v, int b_id, String b_ns) {
+        setBlock(v.getX(), v.getY(), v.getZ(), b_id, b_ns);
     }
 
     /**
@@ -341,17 +343,18 @@ public class SchematicFile {
      * @param x
      * @param y
      * @param z
-     * @param block
+     * @param blockId
+     * @param blockNamespace
      */
-    public void setBlockId(int x, int y, int z, int block) {
+    public void setBlock(int x, int y, int z, int blockId, String blockNamespace) {
 
         int index = y * width * length + z * width + x;
         if (index < 0 || index >= blocks.length)
             throw new IllegalStateException(
                     "Invalid coordinates for block set! [" + x + ", " + y
-                            + ", " + z + "] " + block + " / sch : [" + width
+                            + ", " + z + "] " + blockId + " / sch : [" + width
                             + ", " + height + ", " + length + "]");
-        blocks[index] = block;
+        blocks[index] = blockId;
     }
 
     /**
@@ -520,8 +523,6 @@ public class SchematicFile {
      *                   verify all the blocks within the schematic
      */
     public void prepareToLoad(IdTranslateExtension translator) {
-        //We just need a set; no need to count the numbers or anything
-        Set<Block> blocks = new HashSet<Block>();
 
         //For every block in the schematic...
         for (int y=0; y<getHeight(); ++y) {
@@ -531,10 +532,6 @@ public class SchematicFile {
                     //Get each block
                     int _id = getBlockId(x, y, z);
                     Block block = Block.getBlockById(_id);
-
-                    //And add it to the set above
-                    if (blocks.contains(block)) continue;
-                    blocks.add(block);
 
                     //Now add our block to the schematics registry so that it's
                     // listed in preparation for reloading the cache

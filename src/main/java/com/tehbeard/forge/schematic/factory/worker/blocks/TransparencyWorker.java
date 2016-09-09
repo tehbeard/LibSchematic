@@ -32,8 +32,8 @@ public class TransparencyWorker extends AbstractSchematicWorker {
             for (int x = 0; x < original.getWidth(); x++) {
                 for (int z = 0; z < original.getLength(); z++) {
                     if (blockIds.contains(original.getBlockId(x, y, z))) {
-                        original.setBlockId(x, y, z, -1);
-                        original.setBlockId(x, y, z, 0);
+                        original.setBlock(x, y, z, -1, ":");
+                        original.setBlock(x, y, z, 0, "minecraft:air");
                     }
                 }
             }

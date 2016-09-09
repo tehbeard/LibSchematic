@@ -2,6 +2,7 @@ package com.tehbeard.forge.schematic.factory.worker.blocks;
 
 import com.tehbeard.forge.schematic.SchematicFile;
 import com.tehbeard.forge.schematic.factory.worker.AbstractSchematicWorker;
+import net.minecraft.block.Block;
 
 import java.util.Map;
 
@@ -67,8 +68,8 @@ public class ReplaceBlockWorker extends AbstractSchematicWorker {
                         );
 
                         //And replace the block with its counterpart
-                        original.setBlockId(x, y, z, -1);
-                        original.setBlockId(x, y, z, rec._id);
+                        original.setBlock(x, y, z, -1, ":");
+                        original.setBlock(x, y, z, rec._id, Block.getBlockById(rec._id).getLocalizedName());
                         original.setBlockData(x, y, z, rec.metadata);
 
                     }
